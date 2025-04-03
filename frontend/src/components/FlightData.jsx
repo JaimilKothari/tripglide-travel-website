@@ -29,7 +29,7 @@ const FlightData = ({
   const [favorites, setFavorites] = useState({});
   const [multiCityFlights, setMultiCityFlights] = useState(initialSearchParams.multiCityFlights || []);
 
-  // Filter states (initialized with defaults from old FlightData)
+  // Filter states
   const [priceRange, setPriceRange] = useState([3000, 6000]);
   const [stopFilter, setStopFilter] = useState("direct");
   const [timeFilter, setTimeFilter] = useState("all");
@@ -38,14 +38,15 @@ const FlightData = ({
   useEffect(() => {
     let enrichedFlights = allFlights.map((flight) => ({
       ...flight,
-      departure: from || flight.departure,
-      arrival: to || flight.arrival,
+      // Use user input if provided, otherwise fall back to flight data
+      departure: from ? from : flight.departure,
+      arrival: to ? to : flight.arrival,
       departureDate: departDate || flight.departureDate,
       returnFlight: tripType === "return" && from && to
         ? flight.returnFlight || {
             ...flight,
-            departure: to,
-            arrival: from,
+            departure: to, // Use user's 'to' as return departure
+            arrival: from, // Use user's 'from' as return arrival
             departureDate: returnDate || flight.departureDate,
             departureTime: "14:00",
             arrivalTime: "16:15",
@@ -60,8 +61,8 @@ const FlightData = ({
     if (tripType === "multicity" && multiCityFlights.length > 0) {
       enrichedFlights = multiCityFlights.map((flight, index) => ({
         ...allFlights[index % allFlights.length],
-        departure: flight.from,
-        arrival: flight.to,
+        departure: flight.from, // Directly use multi-city from
+        arrival: flight.to,    // Directly use multi-city to
         departureDate: flight.depart,
         multiCityFlights: multiCityFlights.map(f => ({
           ...allFlights[index % allFlights.length],
@@ -88,7 +89,7 @@ const FlightData = ({
     }
   }, [location.state, setTripType, setReturnDate]);
 
-  // Apply filters (copied from old FlightData)
+  // Apply filters
   useEffect(() => {
     let results = [...allFlights];
 
@@ -141,6 +142,22 @@ const FlightData = ({
       });
     }
 
+    // Apply user input to filtered results
+    results = results.map((flight) => ({
+      ...flight,
+      departure: from ? from : flight.departure,
+      arrival: to ? to : flight.arrival,
+      departureDate: departDate || flight.departureDate,
+      returnFlight: tripType === "return" && from && to
+        ? {
+            ...flight.returnFlight,
+            departure: to,
+            arrival: from,
+            departureDate: returnDate || flight.departureDate,
+          }
+        : flight.returnFlight,
+    }));
+
     setFilteredFlights(results);
   }, [
     allFlights,
@@ -150,6 +167,11 @@ const FlightData = ({
     timeFilter,
     airlinesFilter,
     cabinClass,
+    from,
+    to,
+    departDate,
+    returnDate,
+    tripType,
   ]);
 
   const handleSearch = (e, multiCityData) => {
@@ -158,8 +180,8 @@ const FlightData = ({
     if (tripType === "multicity" && multiCityData) {
       enrichedFlights = multiCityData.map((flight, index) => ({
         ...allFlights[index % allFlights.length],
-        departure: flight.from,
-        arrival: flight.to,
+        departure: flight.from, // Use user's multi-city from
+        arrival: flight.to,    // Use user's multi-city to
         departureDate: flight.depart,
         multiCityFlights: multiCityData.map(f => ({
           ...allFlights[index % allFlights.length],
@@ -173,14 +195,14 @@ const FlightData = ({
     } else {
       enrichedFlights = allFlights.map((flight) => ({
         ...flight,
-        departure: from,
-        arrival: to,
+        departure: from, // Use user's from
+        arrival: to,     // Use user's to
         departureDate: departDate || flight.departureDate,
         returnFlight: tripType === "return" && from && to
           ? flight.returnFlight || {
               ...flight,
-              departure: to,
-              arrival: from,
+              departure: to, // Use user's to as return departure
+              arrival: from, // Use user's from as return arrival
               departureDate: returnDate || flight.departureDate,
               departureTime: "14:00",
               arrivalTime: "16:15",

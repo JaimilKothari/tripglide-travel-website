@@ -267,7 +267,7 @@ const FlightSearchFormPopup = ({
       <div className="bg-[#001533] p-6 rounded-2xl shadow-lg w-full max-w-4xl relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white text-2xl"
+          className="absolute cursor-pointer top-4 right-4 text-white text-2xl"
         >
           ✕
         </button>
@@ -613,9 +613,9 @@ const FlightSearchFormPopup = ({
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Add nearby airports
             </label>
-            <label className="flex items-center cursor-pointer">
+            {/* <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Direct flights only
-            </label>
+            </label> */}
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Flexible Tickets
             </label>

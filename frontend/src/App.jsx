@@ -18,6 +18,7 @@ import HotelSearch from "./components/HotelSearch";
 import Favorite from "./components/Favorite";
 import FlightData from "./components/FlightData";
 import FlightCart from "./components/FlightCart";
+import BookingConfirmation from "./components/BookingConfirmation";
 
 const initialFlightData = [
   {
@@ -379,6 +380,10 @@ function App() {
           <Route
             path="/favorites"
             element={<Favorite allFlights={allFlights} setAllFlights={setAllFlights} tripType={tripType} returnDate={returnDate} />}
+          />
+          <Route
+            path="/booking-confirmation"
+            element={<BookingConfirmation />}
           />
         </Routes>
       </Router>
