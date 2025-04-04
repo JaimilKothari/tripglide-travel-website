@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaTimes, FaCheckCircle, FaTimesCircle, FaSuitcaseRolling, FaChair, FaUtensils } from "react-icons/fa";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Load Stripe with your publishable key
+const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ"); // Replace with your Stripe Publishable Key
 
 const FlightCart = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedFlight, searchParams } = location.state || {};
-
-  console.log("FlightCart location.state:", location.state); // Debug log
-
   const [selectedFare, setSelectedFare] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  console.log("FlightCart location.state:", location.state);
 
   if (!selectedFlight || !selectedFlight.price) {
     return <div className="p-4 text-center">No valid flight selected. Please go back and select a flight.</div>;
@@ -24,7 +29,7 @@ const FlightCart = () => {
       .map((flight) => `${flight.from} → ${flight.to} • ${flight.depart}`)
       .join(" | ");
   } else if (tripType === "return") {
-    flightSummary = `${from} → ${to} • ${departDate} - ${returnDate}`; // Explicitly include returnDate
+    flightSummary = `${from} → ${to} • ${departDate} - ${returnDate}`;
   } else if (tripType === "oneway") {
     flightSummary = `${from} → ${to} • ${departDate}`;
   }
@@ -33,102 +38,111 @@ const FlightCart = () => {
     {
       type: "Saver",
       price: selectedFlight.price - 1500,
-      baggage: {
-        cabin: "7 Kgs Cabin Baggage",
-        checkIn: "15 Kgs Check-in Baggage",
-      },
+      baggage: { cabin: "7 Kgs Cabin Baggage", checkIn: "15 Kgs Check-in Baggage" },
       flexibility: {
         refund: "No refund on Cancellation",
         dateChange: `Date Change fee starts at ₹ 3,250 (up to 4 days before departure)`,
       },
-      seatsMeals: {
-        seats: "Chargeable Seats",
-        meals: "Chargeable Meals",
-      },
+      seatsMeals: { seats: "Chargeable Seats", meals: "Chargeable Meals" },
     },
     {
       type: "Flexi",
       price: selectedFlight.price + 500,
-      baggage: {
-        cabin: "7 Kgs Cabin Baggage",
-        checkIn: "15 Kgs Check-in Baggage",
-      },
+      baggage: { cabin: "7 Kgs Cabin Baggage", checkIn: "15 Kgs Check-in Baggage" },
       flexibility: {
         refund: "Cancellation fee starts at ₹ 4,139 (up to 4 days before departure)",
         dateChange: `Lower Date Change fee ₹ 299 (up to 4 days before departure)`,
       },
-      seatsMeals: {
-        seats: "Free Seats",
-        meals: "Complimentary Meals",
-      },
+      seatsMeals: { seats: "Free Seats", meals: "Complimentary Meals" },
     },
     {
       type: "Light",
       price: selectedFlight.price - 1250,
-      baggage: {
-        cabin: "12 Kgs Cabin Baggage",
-        checkIn: "23 Kgs (1 Piece x 23 Kgs) Check-in Baggage",
-      },
-      flexibility: {
-        refund: "No refund on Cancellation",
-        dateChange: `Date Change fee starts at ₹ 3,111`,
-      },
-      seatsMeals: {
-        seats: "Seat information not available",
-        meals: "Meals information not available",
-      },
+      baggage: { cabin: "12 Kgs Cabin Baggage", checkIn: "23 Kgs (1 Piece x 23 Kgs) Check-in Baggage" },
+      flexibility: { refund: "No refund on Cancellation", dateChange: `Date Change fee starts at ₹ 3,111` },
+      seatsMeals: { seats: "Seat information not available", meals: "Meals information not available" },
     },
     {
       type: "Standard",
       price: selectedFlight.price,
-      baggage: {
-        cabin: "12 Kgs Cabin Baggage",
-        checkIn: "46 Kgs (2 Pieces x 23 Kgs) Check-in Baggage",
-      },
-      flexibility: {
-        refund: "No refund on Cancellation",
-        dateChange: `Date Change fee starts at ₹ 4,111`,
-      },
-      seatsMeals: {
-        seats: "Seat information not available",
-        meals: "Meals information not available",
-      },
+      baggage: { cabin: "12 Kgs Cabin Baggage", checkIn: "46 Kgs (2 Pieces x 23 Kgs) Check-in Baggage" },
+      flexibility: { refund: "No refund on Cancellation", dateChange: `Date Change fee starts at ₹ 4,111` },
+      seatsMeals: { seats: "Seat information not available", meals: "Meals information not available" },
     },
   ];
 
-  // Set default fare on mount only
   useEffect(() => {
-    if (!selectedFare) {
+    if (!selectedFare && fareOptions.length > 0) {
       setSelectedFare(fareOptions.find((fare) => fare.type === "Standard"));
     }
-  }, []); // Empty dependency array to run only on mount
+  }, [fareOptions]);
 
   const handleSelectFare = (fare) => {
     setSelectedFare(fare);
   };
 
-  const handleBookNow = () => {
-    if (selectedFare) {
-      console.log(`Booking flight with fare: ${selectedFare.type}, price: ₹${selectedFare.price}`);
-      // Add your booking logic here
+  const handleBookNow = async () => {
+    if (!selectedFare) {
+      console.error("No fare selected. Please select a fare option.");
+      setError("Please select a fare option.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      console.log("Creating checkout session with amount:", selectedFare.price * 100);
+      console.log("Request body:", {
+        amount: selectedFare.price * 100,
+        description: `${tripType === "multicity" ? "Multi-city Flight" : tripType === "return" ? "Return Flight" : "One-way Flight"} - ${flightSummary}`,
+      });
+
+      // Store booking details in sessionStorage before redirecting to Stripe Checkout
+      const bookingDetails = {
+        selectedFlight,
+        selectedFare,
+        searchParams,
+      };
+      sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+
+      // Create a Checkout Session on the backend
+      const response = await fetch("http://localhost:5000/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: selectedFare.price * 100, // Amount in cents
+          description: `${tripType === "multicity" ? "Multi-city Flight" : tripType === "return" ? "Return Flight" : "One-way Flight"} - ${flightSummary}`,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+      }
+
+      const { sessionId } = await response.json();
+      console.log("Received sessionId:", sessionId);
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        throw new Error(`Stripe redirect error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      setError(`Failed to initiate payment: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Navigate back while preserving the state
   const handleGoBack = () => {
-    console.log("handleGoBack called, navigating back with state:", location.state); // Debug log
+    console.log("handleGoBack called, navigating back with state:", location.state);
     navigate(-1, {
-      state: {
-        selectedFlight,
-        searchParams: {
-          tripType,
-          from,
-          to,
-          departDate,
-          returnDate,
-          multiCityFlights,
-        },
-      },
+      state: { selectedFlight, searchParams: { tripType, from, to, departDate, returnDate, multiCityFlights } },
     });
   };
 
@@ -142,10 +156,7 @@ const FlightCart = () => {
               {tripType === "oneway" ? "One Way" : tripType === "return" ? "Return" : "Multi-city"}
             </span>
           </div>
-          <button
-            onClick={handleGoBack}
-            className="text-gray-500 hover:text-gray-700 cursor-pointer"
-          >
+          <button onClick={handleGoBack} className="text-gray-500 hover:text-gray-700 cursor-pointer">
             <FaTimes size={20} />
           </button>
         </div>
@@ -253,6 +264,8 @@ const FlightCart = () => {
           ))}
         </div>
 
+        {error && <div className="p-4 text-red-500">{error}</div>}
+
         <div className="flex justify-between items-center p-4 border-t">
           <p className="text-xl font-bold">
             ₹ {selectedFare ? selectedFare.price.toLocaleString() : selectedFlight.price.toLocaleString()}{" "}
@@ -261,9 +274,10 @@ const FlightCart = () => {
           <div>
             <button
               onClick={handleBookNow}
-              className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
+              className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+              disabled={!selectedFare || loading}
             >
-              BOOK NOW
+              {loading ? "Processing..." : "BOOK NOW"}
             </button>
           </div>
         </div>

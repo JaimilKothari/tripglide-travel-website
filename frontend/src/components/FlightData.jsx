@@ -23,13 +23,13 @@ const FlightData = ({
   const [to, setTo] = useState(initialSearchParams.to || "");
   const [departDate, setDepartDate] = useState(initialSearchParams.departDate || "");
   const [cabinClass, setCabinClass] = useState(initialSearchParams.cabinClass || "Economy");
+  const [flexibleTickets, setFlexibleTickets] = useState(initialSearchParams.flexibleTickets || false); // New state
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("best");
   const [expandedFlightId, setExpandedFlightId] = useState(null);
   const [favorites, setFavorites] = useState({});
   const [multiCityFlights, setMultiCityFlights] = useState(initialSearchParams.multiCityFlights || []);
 
-  // Filter states (initialized with defaults from old FlightData)
   const [priceRange, setPriceRange] = useState([3000, 6000]);
   const [stopFilter, setStopFilter] = useState("direct");
   const [timeFilter, setTimeFilter] = useState("all");
@@ -38,8 +38,8 @@ const FlightData = ({
   useEffect(() => {
     let enrichedFlights = allFlights.map((flight) => ({
       ...flight,
-      departure: from || flight.departure,
-      arrival: to || flight.arrival,
+      departure: from ? from : flight.departure,
+      arrival: to ? to : flight.arrival,
       departureDate: departDate || flight.departureDate,
       returnFlight: tripType === "return" && from && to
         ? flight.returnFlight || {
@@ -85,10 +85,11 @@ const FlightData = ({
       setReturnDate(location.state.returnDate || "");
       setCabinClass(location.state.cabinClass || "Economy");
       setMultiCityFlights(location.state.multiCityFlights || []);
+      setFlexibleTickets(location.state.flexibleTickets || false); // Set from navigation state
     }
   }, [location.state, setTripType, setReturnDate]);
 
-  // Apply filters (copied from old FlightData)
+  // Apply filters and sorting
   useEffect(() => {
     let results = [...allFlights];
 
@@ -125,7 +126,16 @@ const FlightData = ({
       results = results.filter((flight) => airlinesFilter.includes(flight.airline));
     }
 
-    if (selectedFilter === "cheapest") {
+    // Sorting logic
+    if (flexibleTickets) {
+      // Sort by cheapest first, then by best (price + duration)
+      results.sort((a, b) => {
+        if (a.price !== b.price) return a.price - b.price; // Cheapest first
+        const scoreA = a.price / 1000 + parseInt(a.duration.split("h")[0]);
+        const scoreB = b.price / 1000 + parseInt(b.duration.split("h")[0]);
+        return scoreA - scoreB; // Then best
+      });
+    } else if (selectedFilter === "cheapest") {
       results.sort((a, b) => a.price - b.price);
     } else if (selectedFilter === "fastest") {
       results.sort((a, b) => {
@@ -141,6 +151,21 @@ const FlightData = ({
       });
     }
 
+    results = results.map((flight) => ({
+      ...flight,
+      departure: from ? from : flight.departure,
+      arrival: to ? to : flight.arrival,
+      departureDate: departDate || flight.departureDate,
+      returnFlight: tripType === "return" && from && to
+        ? {
+            ...flight.returnFlight,
+            departure: to,
+            arrival: from,
+            departureDate: returnDate || flight.departureDate,
+          }
+        : flight.returnFlight,
+    }));
+
     setFilteredFlights(results);
   }, [
     allFlights,
@@ -150,11 +175,19 @@ const FlightData = ({
     timeFilter,
     airlinesFilter,
     cabinClass,
+    from,
+    to,
+    departDate,
+    returnDate,
+    tripType,
+    flexibleTickets, // Add dependency
   ]);
 
-  const handleSearch = (e, multiCityData) => {
+  const handleSearch = (e, multiCityData, flexibleTicketsFromPopup) => {
     e.preventDefault();
     let enrichedFlights = [];
+    const flexibleTicketsValue = flexibleTicketsFromPopup !== undefined ? flexibleTicketsFromPopup : flexibleTickets;
+
     if (tripType === "multicity" && multiCityData) {
       enrichedFlights = multiCityData.map((flight, index) => ({
         ...allFlights[index % allFlights.length],
@@ -194,6 +227,7 @@ const FlightData = ({
     }
     setAllFlights(enrichedFlights);
     setFilteredFlights(enrichedFlights);
+    setFlexibleTickets(flexibleTicketsValue); // Update state
     navigate("/search-results", { 
       state: { 
         tripType, 
@@ -202,7 +236,8 @@ const FlightData = ({
         departDate, 
         returnDate, 
         cabinClass,
-        multiCityFlights: tripType === "multicity" ? multiCityData : undefined 
+        multiCityFlights: tripType === "multicity" ? multiCityData : undefined,
+        flexibleTickets: flexibleTicketsValue, // Pass flexibleTickets
       } 
     });
   };
@@ -255,8 +290,6 @@ const FlightData = ({
         setReturnDate={setReturnDate}
         setCabinClass={setCabinClass}
         handleSearch={handleSearch}
-        departureAirports={uniqueAirports}
-        arrivalAirports={uniqueAirports}
         multiCityFlights={multiCityFlights}
         setMultiCityFlights={setMultiCityFlights}
       />

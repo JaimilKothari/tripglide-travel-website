@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TravelersCabinClass from "./TravelersCabinClass";
+import axios from "axios";
 
 const FlightSearchFormPopup = ({
   isOpen,
@@ -37,65 +38,70 @@ const FlightSearchFormPopup = ({
 
   const today = new Date().toISOString().split("T")[0];
 
-  // Fetch airport data from Flask API
+  // Fetch airport data from Flask API whenever the popup opens
   useEffect(() => {
+    if (!isOpen) return; // Only fetch when popup is open
+
     const fetchAirports = async () => {
       try {
-        const response = await fetch("http://localhost:5000/get_flights");
-        const data = await response.json();
-        if (data.departure_airport && data.arrival_airport) {
-          setDepartureAirports(data.departure_airport);
-          setArrivalAirports(data.arrival_airport);
-          setFilteredDepartureAirports(data.departure_airport);
-          setFilteredArrivalAirports(data.arrival_airport);
-        } else {
-          console.error("No airports found in API response");
-        }
+        const response = await axios.get("http://127.0.0.1:5000/get_flights");
+        setDepartureAirports(response.data.departure_airport || []);
+        setArrivalAirports(response.data.arrival_airport || []);
       } catch (error) {
-        console.error("Error fetching airports:", error);
+        console.error("Error fetching airport data:", error);
       }
     };
     fetchAirports();
-  }, []);
+  }, [isOpen]); // Dependency on isOpen ensures refetch when popup opens
 
+  // Filter departure airports
   useEffect(() => {
     setFilteredDepartureAirports(
-      departureAirports.filter(
-        (airport) =>
-          airport.toLowerCase().includes(from.toLowerCase()) && airport !== to
-      )
+      departureAirports.filter((airport) => airport !== to)
     );
     setFromFocusIndex(-1);
   }, [from, to, departureAirports]);
 
+  // Filter arrival airports
   useEffect(() => {
     setFilteredArrivalAirports(
-      arrivalAirports.filter(
-        (airport) =>
-          airport.toLowerCase().includes(to.toLowerCase()) && airport !== from
-      )
+      arrivalAirports.filter((airport) => airport !== from)
     );
     setToFocusIndex(-1);
   }, [to, from, arrivalAirports]);
 
+  // Initialize multi-city dropdowns
   useEffect(() => {
     if (multiCityFlights.length > 0) {
       setMultiCityDropdowns(
-        multiCityFlights.map((flight) => ({
+        multiCityFlights.map(() => ({
           showFrom: false,
           showTo: false,
-          filteredFrom: departureAirports.filter((a) =>
-            a.toLowerCase().includes(flight.from.toLowerCase()) && a !== flight.to
-          ),
-          filteredTo: arrivalAirports.filter((a) =>
-            a.toLowerCase().includes(flight.to.toLowerCase()) && a !== flight.from
-          ),
+          filteredFrom: [],
+          filteredTo: [],
         }))
       );
       setMultiCityFocusIndices(multiCityFlights.map(() => ({ from: -1, to: -1 })));
-    } else {
-      setMultiCityDropdowns([]);
-      setMultiCityFocusIndices([]);
+    }
+  }, [multiCityFlights.length]);
+
+  // Update multi-city dropdowns with filtered airports
+  useEffect(() => {
+    if (multiCityDropdowns.length > 0) {
+      const updatedDropdowns = multiCityFlights.map((flight, index) => ({
+        ...multiCityDropdowns[index],
+        filteredFrom: departureAirports.filter(
+          (airport) =>
+            airport.toLowerCase().includes(flight.from.toLowerCase()) &&
+            airport !== flight.to
+        ),
+        filteredTo: arrivalAirports.filter(
+          (airport) =>
+            airport.toLowerCase().includes(flight.to.toLowerCase()) &&
+            airport !== flight.from
+        ),
+      }));
+      setMultiCityDropdowns(updatedDropdowns);
     }
   }, [multiCityFlights, departureAirports, arrivalAirports]);
 
@@ -146,6 +152,9 @@ const FlightSearchFormPopup = ({
     const updatedDropdowns = [...multiCityDropdowns];
     updatedDropdowns[index].showFrom = false;
     setMultiCityDropdowns(updatedDropdowns);
+    const updatedFocus = [...multiCityFocusIndices];
+    updatedFocus[index].from = -1;
+    setMultiCityFocusIndices(updatedFocus);
   };
 
   const handleMultiCityToSelect = (airport, index) => {
@@ -155,14 +164,34 @@ const FlightSearchFormPopup = ({
     const updatedDropdowns = [...multiCityDropdowns];
     updatedDropdowns[index].showTo = false;
     setMultiCityDropdowns(updatedDropdowns);
+    const updatedFocus = [...multiCityFocusIndices];
+    updatedFocus[index].to = -1;
+    setMultiCityFocusIndices(updatedFocus);
   };
 
   const toggleMultiCityDropdown = (index, type) => {
-    const updatedDropdowns = multiCityDropdowns.map((dropdown, i) => ({
-      ...dropdown,
-      showFrom: i === index && type === "from" ? !dropdown.showFrom : false,
-      showTo: i === index && type === "to" ? !dropdown.showTo : false,
-    }));
+    const updatedDropdowns = [...multiCityDropdowns];
+    if (type === "from") {
+      updatedDropdowns[index].showFrom = !updatedDropdowns[index].showFrom;
+      updatedDropdowns.forEach((dropdown, i) => {
+        if (i !== index) {
+          dropdown.showFrom = false;
+          dropdown.showTo = false;
+        } else {
+          dropdown.showTo = false;
+        }
+      });
+    } else {
+      updatedDropdowns[index].showTo = !updatedDropdowns[index].showTo;
+      updatedDropdowns.forEach((dropdown, i) => {
+        if (i !== index) {
+          dropdown.showFrom = false;
+          dropdown.showTo = false;
+        } else {
+          dropdown.showFrom = false;
+        }
+      });
+    }
     setMultiCityDropdowns(updatedDropdowns);
     setShowFromDropdown(false);
     setShowToDropdown(false);
@@ -248,12 +277,20 @@ const FlightSearchFormPopup = ({
         setShowToDropdown(false);
       }
       if (multiCityRefs.current.length > 0) {
-        const updatedDropdowns = multiCityDropdowns.map((dropdown) => ({
-          ...dropdown,
-          showFrom: false,
-          showTo: false,
-        }));
-        setMultiCityDropdowns(updatedDropdowns);
+        let closeAll = true;
+        multiCityRefs.current.forEach((refs, index) => {
+          if (!refs) return;
+          if (refs.fromRef && refs.fromRef.contains(event.target)) closeAll = false;
+          if (refs.toRef && refs.toRef.contains(event.target)) closeAll = false;
+        });
+        if (closeAll) {
+          const updatedDropdowns = [...multiCityDropdowns];
+          updatedDropdowns.forEach((dropdown) => {
+            dropdown.showFrom = false;
+            dropdown.showTo = false;
+          });
+          setMultiCityDropdowns(updatedDropdowns);
+        }
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -267,7 +304,7 @@ const FlightSearchFormPopup = ({
       <div className="bg-[#001533] p-6 rounded-2xl shadow-lg w-full max-w-4xl relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white text-2xl"
+          className="absolute cursor-pointer top-4 right-4 text-white text-2xl"
         >
           ✕
         </button>
@@ -334,7 +371,7 @@ const FlightSearchFormPopup = ({
                     onClick={() => toggleMultiCityDropdown(index, "from")}
                     onKeyDown={(e) => handleMultiCityKeyDown(e, index, "from")}
                     className="w-full p-3 rounded-lg bg-white text-black"
-                    placeholder="Select departure airport"
+                    placeholder="Select or type departure airport"
                     required
                   />
                   {multiCityDropdowns[index]?.showFrom && (
@@ -380,7 +417,7 @@ const FlightSearchFormPopup = ({
                     onClick={() => toggleMultiCityDropdown(index, "to")}
                     onKeyDown={(e) => handleMultiCityKeyDown(e, index, "to")}
                     className="w-full p-3 rounded-lg bg-white text-black"
-                    placeholder="Select arrival airport"
+                    placeholder="Select or type arrival airport"
                     required
                   />
                   {multiCityDropdowns[index]?.showTo && (
@@ -471,17 +508,14 @@ const FlightSearchFormPopup = ({
               <label className="block text-white font-semibold mb-1">From</label>
               <input
                 value={from}
-                onChange={(e) => {
-                  setFrom(e.target.value);
-                  setShowFromDropdown(true);
-                }}
                 onClick={() => {
                   setShowFromDropdown(true);
                   setShowToDropdown(false);
                 }}
                 onKeyDown={handleFromKeyDown}
-                className="w-full p-3 rounded-lg bg-white text-black"
-                placeholder="Select departure airport"
+                className="w-full p-3 rounded-lg bg-white text-black cursor-pointer"
+                placeholder="Select airport"
+                readOnly // Prevents manual input
                 required
               />
               {showFromDropdown && (
@@ -519,17 +553,14 @@ const FlightSearchFormPopup = ({
               <label className="block text-white font-semibold mb-1">To</label>
               <input
                 value={to}
-                onChange={(e) => {
-                  setTo(e.target.value);
-                  setShowToDropdown(true);
-                }}
                 onClick={() => {
                   setShowToDropdown(true);
                   setShowFromDropdown(false);
                 }}
                 onKeyDown={handleToKeyDown}
-                className="w-full p-3 rounded-lg bg-white text-black"
-                placeholder="Select arrival airport"
+                className="w-full p-3 rounded-lg bg-white text-black cursor-pointer"
+                placeholder="Select airport"
+                readOnly // Prevents manual input
                 required
               />
               {showToDropdown && (
@@ -612,9 +643,6 @@ const FlightSearchFormPopup = ({
           <div className="flex flex-wrap gap-4 items-center mt-4 text-white">
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Add nearby airports
-            </label>
-            <label className="flex items-center cursor-pointer">
-              <input type="checkbox" className="mr-2" /> Direct flights only
             </label>
             <label className="flex items-center cursor-pointer">
               <input type="checkbox" className="mr-2" /> Flexible Tickets
