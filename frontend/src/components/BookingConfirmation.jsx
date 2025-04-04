@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaCheckCircle, FaPlaneDeparture } from "react-icons/fa";
+import { FaCheckCircle, FaPlaneDeparture, FaHotel, FaCar } from "react-icons/fa";
 
 const BookingConfirmation = () => {
   const navigate = useNavigate();
@@ -50,8 +50,8 @@ const BookingConfirmation = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 pb-12">
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full mb-6">
         <div className="flex items-center justify-center mb-4">
           <FaCheckCircle className="text-green-500 text-4xl mr-2" />
           <h2 className="text-2xl font-bold text-green-700">Booking Confirmed!</h2>
@@ -100,6 +100,54 @@ const BookingConfirmation = () => {
             className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
           >
             Back to Home
+          </button>
+        </div>
+      </div>
+
+      <div><h2 className="text-2xl font-bold mb-5">--- Complete your trip ---</h2></div>
+      
+      {/* Hotel Card */}
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full mb-6">
+        <div className="flex flex-col items-center mb-4">
+          <div className="bg-yellow-100 rounded-full p-4 mb-4">
+            <FaHotel className="text-yellow-500 text-4xl" />
+          </div>
+        </div>
+
+        <div className="mb-6 text-center">
+          <h2 className="text-xl font-semibold mb-2">Need a place to stay in?</h2>
+          <p className="text-gray-700">Explore hotels in the best spots nearby.</p>
+        </div>
+
+        <div className="text-center">
+          <button
+            onClick={() => navigate("/hotels")}
+            className="bg-blue-600 text-white px-8 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
+          >
+            Explore hotels
+          </button>
+        </div>
+      </div>
+      
+      {/* Car Hire Card */}
+      <div className="bg-gray-100 rounded-lg shadow-lg p-6 max-w-lg w-full">
+        <div className="flex flex-col items-center mb-4">
+          <div className="bg-blue-100 rounded-full p-4 mb-4">
+            <FaCar className="text-blue-500 text-4xl" />
+          </div>
+          <h2 className="text-xl font-semibold">Complete your car journey</h2>
+        </div>
+
+        <div className="mb-6 text-center">
+          <p className="text-gray-700">Skip the crowds on public transport and relax on the road.</p>
+        </div>
+
+        <div className="text-center">
+          <button
+            onClick={() => navigate("/carhire")}
+            className="bg-blue-600 text-white px-8 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
+          >
+            Find a car
           </button>
         </div>
       </div>

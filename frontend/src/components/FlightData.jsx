@@ -23,13 +23,13 @@ const FlightData = ({
   const [to, setTo] = useState(initialSearchParams.to || "");
   const [departDate, setDepartDate] = useState(initialSearchParams.departDate || "");
   const [cabinClass, setCabinClass] = useState(initialSearchParams.cabinClass || "Economy");
+  const [flexibleTickets, setFlexibleTickets] = useState(initialSearchParams.flexibleTickets || false); // New state
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("best");
   const [expandedFlightId, setExpandedFlightId] = useState(null);
   const [favorites, setFavorites] = useState({});
   const [multiCityFlights, setMultiCityFlights] = useState(initialSearchParams.multiCityFlights || []);
 
-  // Filter states
   const [priceRange, setPriceRange] = useState([3000, 6000]);
   const [stopFilter, setStopFilter] = useState("direct");
   const [timeFilter, setTimeFilter] = useState("all");
@@ -38,15 +38,14 @@ const FlightData = ({
   useEffect(() => {
     let enrichedFlights = allFlights.map((flight) => ({
       ...flight,
-      // Use user input if provided, otherwise fall back to flight data
       departure: from ? from : flight.departure,
       arrival: to ? to : flight.arrival,
       departureDate: departDate || flight.departureDate,
       returnFlight: tripType === "return" && from && to
         ? flight.returnFlight || {
             ...flight,
-            departure: to, // Use user's 'to' as return departure
-            arrival: from, // Use user's 'from' as return arrival
+            departure: to,
+            arrival: from,
             departureDate: returnDate || flight.departureDate,
             departureTime: "14:00",
             arrivalTime: "16:15",
@@ -61,8 +60,8 @@ const FlightData = ({
     if (tripType === "multicity" && multiCityFlights.length > 0) {
       enrichedFlights = multiCityFlights.map((flight, index) => ({
         ...allFlights[index % allFlights.length],
-        departure: flight.from, // Directly use multi-city from
-        arrival: flight.to,    // Directly use multi-city to
+        departure: flight.from,
+        arrival: flight.to,
         departureDate: flight.depart,
         multiCityFlights: multiCityFlights.map(f => ({
           ...allFlights[index % allFlights.length],
@@ -86,10 +85,11 @@ const FlightData = ({
       setReturnDate(location.state.returnDate || "");
       setCabinClass(location.state.cabinClass || "Economy");
       setMultiCityFlights(location.state.multiCityFlights || []);
+      setFlexibleTickets(location.state.flexibleTickets || false); // Set from navigation state
     }
   }, [location.state, setTripType, setReturnDate]);
 
-  // Apply filters
+  // Apply filters and sorting
   useEffect(() => {
     let results = [...allFlights];
 
@@ -126,7 +126,16 @@ const FlightData = ({
       results = results.filter((flight) => airlinesFilter.includes(flight.airline));
     }
 
-    if (selectedFilter === "cheapest") {
+    // Sorting logic
+    if (flexibleTickets) {
+      // Sort by cheapest first, then by best (price + duration)
+      results.sort((a, b) => {
+        if (a.price !== b.price) return a.price - b.price; // Cheapest first
+        const scoreA = a.price / 1000 + parseInt(a.duration.split("h")[0]);
+        const scoreB = b.price / 1000 + parseInt(b.duration.split("h")[0]);
+        return scoreA - scoreB; // Then best
+      });
+    } else if (selectedFilter === "cheapest") {
       results.sort((a, b) => a.price - b.price);
     } else if (selectedFilter === "fastest") {
       results.sort((a, b) => {
@@ -142,7 +151,6 @@ const FlightData = ({
       });
     }
 
-    // Apply user input to filtered results
     results = results.map((flight) => ({
       ...flight,
       departure: from ? from : flight.departure,
@@ -172,16 +180,19 @@ const FlightData = ({
     departDate,
     returnDate,
     tripType,
+    flexibleTickets, // Add dependency
   ]);
 
-  const handleSearch = (e, multiCityData) => {
+  const handleSearch = (e, multiCityData, flexibleTicketsFromPopup) => {
     e.preventDefault();
     let enrichedFlights = [];
+    const flexibleTicketsValue = flexibleTicketsFromPopup !== undefined ? flexibleTicketsFromPopup : flexibleTickets;
+
     if (tripType === "multicity" && multiCityData) {
       enrichedFlights = multiCityData.map((flight, index) => ({
         ...allFlights[index % allFlights.length],
-        departure: flight.from, // Use user's multi-city from
-        arrival: flight.to,    // Use user's multi-city to
+        departure: flight.from,
+        arrival: flight.to,
         departureDate: flight.depart,
         multiCityFlights: multiCityData.map(f => ({
           ...allFlights[index % allFlights.length],
@@ -195,14 +206,14 @@ const FlightData = ({
     } else {
       enrichedFlights = allFlights.map((flight) => ({
         ...flight,
-        departure: from, // Use user's from
-        arrival: to,     // Use user's to
+        departure: from,
+        arrival: to,
         departureDate: departDate || flight.departureDate,
         returnFlight: tripType === "return" && from && to
           ? flight.returnFlight || {
               ...flight,
-              departure: to, // Use user's to as return departure
-              arrival: from, // Use user's from as return arrival
+              departure: to,
+              arrival: from,
               departureDate: returnDate || flight.departureDate,
               departureTime: "14:00",
               arrivalTime: "16:15",
@@ -216,6 +227,7 @@ const FlightData = ({
     }
     setAllFlights(enrichedFlights);
     setFilteredFlights(enrichedFlights);
+    setFlexibleTickets(flexibleTicketsValue); // Update state
     navigate("/search-results", { 
       state: { 
         tripType, 
@@ -224,7 +236,8 @@ const FlightData = ({
         departDate, 
         returnDate, 
         cabinClass,
-        multiCityFlights: tripType === "multicity" ? multiCityData : undefined 
+        multiCityFlights: tripType === "multicity" ? multiCityData : undefined,
+        flexibleTickets: flexibleTicketsValue, // Pass flexibleTickets
       } 
     });
   };
@@ -277,8 +290,6 @@ const FlightData = ({
         setReturnDate={setReturnDate}
         setCabinClass={setCabinClass}
         handleSearch={handleSearch}
-        departureAirports={uniqueAirports}
-        arrivalAirports={uniqueAirports}
         multiCityFlights={multiCityFlights}
         setMultiCityFlights={setMultiCityFlights}
       />
