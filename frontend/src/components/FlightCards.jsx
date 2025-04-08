@@ -66,7 +66,7 @@ const FlightCards = ({
                 ? "bg-blue-600 text-white"
                 : "bg-gray-100 hover:bg-gray-200"
             }`}
-            onClick={() => handleFilterClick(filter)} // Explicit handler
+            onClick={() => handleFilterClick(filter)} 
           >
             {filter.charAt(0).toUpperCase() + filter.slice(1)}
           </button>

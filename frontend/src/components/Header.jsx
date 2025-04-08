@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { FaGlobe, FaUser, FaBars, FaHeart, FaPlane, FaHotel, FaCar, FaFlag, FaSearchLocation, FaQuestionCircle } from "react-icons/fa";
+import { FaGlobe, FaUser, FaBars, FaHeart, FaPlane, FaHotel, FaCar, FaFlag, FaSearchLocation, FaQuestionCircle, FaChartBar } from "react-icons/fa";
 import logo from "../assets/image/logo2.png";
 
 export default function Header({ user, handleLogout, allFlights, tripType, returnDate }) {
@@ -62,7 +62,7 @@ export default function Header({ user, handleLogout, allFlights, tripType, retur
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <Link to="/country-facts" className="p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+          <Link to="/country-facts" className="p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer" title="Country Facts">
             <FaGlobe />
           </Link>
           <div
@@ -72,6 +72,10 @@ export default function Header({ user, handleLogout, allFlights, tripType, retur
           >
             <FaHeart />
           </div>
+          <a href="https://dashboard.stripe.com/test/guests/gcus_1R9jv32RiOcrGJvia7h7puky" 
+          className="p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer" title="Stripe Dashboard" target="_blank" rel="noopener noreferrer">
+            <FaChartBar />
+          </a>
           {user ? (
             <div className="relative" ref={profileRef}>
               <div

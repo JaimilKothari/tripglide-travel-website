@@ -9,8 +9,6 @@ import FlightDealsCards from "./FlightDealsCards";
 import { useNavigate } from "react-router-dom";
 import { FaPlane, FaCalendarAlt, FaTag } from "react-icons/fa";
 import axios from "axios";
-
-// Import the new FlightData component (others are used within FlightData)
 import FlightData from "./FlightData";
 
 export default function SearchSection() {
@@ -26,24 +24,19 @@ export default function SearchSection() {
   ]);
   const [departureAirports, setDepartureAirports] = useState([]);
   const [arrivalAirports, setArrivalAirports] = useState([]);
-
-  // State for custom dropdowns
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
   const [filteredDepartureAirports, setFilteredDepartureAirports] = useState([]);
   const [filteredArrivalAirports, setFilteredArrivalAirports] = useState([]);
   const [multiCityDropdowns, setMultiCityDropdowns] = useState([]);
-
-  // State for focused dropdown items
   const [fromFocusIndex, setFromFocusIndex] = useState(-1);
   const [toFocusIndex, setToFocusIndex] = useState(-1);
   const [multiCityFocusIndices, setMultiCityFocusIndices] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // New loading state
 
-  // Refs for dropdown positioning
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
   const multiCityRefs = useRef([]);
-
   const [currentImage, setCurrentImage] = useState(0);
   const navigate = useNavigate();
 
@@ -81,7 +74,7 @@ export default function SearchSection() {
           airport.toLowerCase().includes(from.toLowerCase()) && airport !== to
       )
     );
-    setFromFocusIndex(-1); // Reset focus when filtered list changes
+    setFromFocusIndex(-1);
   }, [from, to, departureAirports]);
 
   useEffect(() => {
@@ -91,7 +84,7 @@ export default function SearchSection() {
           airport.toLowerCase().includes(to.toLowerCase()) && airport !== from
       )
     );
-    setToFocusIndex(-1); // Reset focus when filtered list changes
+    setToFocusIndex(-1);
   }, [to, from, arrivalAirports]);
 
   useEffect(() => {
@@ -131,18 +124,23 @@ export default function SearchSection() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Navigate to /search-results and pass all relevant state to FlightData
-    navigate("/search-results", {
-      state: {
-        tripType,
-        from,
-        to,
-        departDate,
-        returnDate,
-        cabinClass,
-        multiCityFlights, // Pass multiCityFlights for multi-city searches
-      },
-    });
+    setIsLoading(true); // Start loading
+
+    setTimeout(() => {
+      // Simulate a 2-3 second delay before navigation
+      navigate("/search-results", {
+        state: {
+          tripType,
+          from,
+          to,
+          departDate,
+          returnDate,
+          cabinClass,
+          multiCityFlights,
+        },
+      });
+      setIsLoading(false); // Stop loading after navigation
+    }, 2500); // 2.5 seconds delay
   };
 
   const isMultiCityValid = multiCityFlights.every(
@@ -239,7 +237,6 @@ export default function SearchSection() {
     setShowToDropdown(false);
   };
 
-  // Handle keyboard navigation for "From" dropdown
   const handleFromKeyDown = (e) => {
     if (!showFromDropdown) return;
 
@@ -257,7 +254,6 @@ export default function SearchSection() {
     }
   };
 
-  // Handle keyboard navigation for "To" dropdown
   const handleToKeyDown = (e) => {
     if (!showToDropdown) return;
 
@@ -275,7 +271,6 @@ export default function SearchSection() {
     }
   };
 
-  // Handle keyboard navigation for multi-city dropdowns
   const handleMultiCityKeyDown = (e, index, type) => {
     const dropdown = multiCityDropdowns[index];
     const focusIndices = multiCityFocusIndices[index];
@@ -353,7 +348,6 @@ export default function SearchSection() {
 
   return (
     <section className="w-full">
-      {/* Background Image */}
       <div className="absolute inset-0 block -z-10">
         <img
           src="/images/Large-Flights-hero-2.jpeg"
@@ -362,15 +356,12 @@ export default function SearchSection() {
         />
       </div>
 
-      {/* Hero Content */}
       <div className="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <h1 className="text-4xl lg:text-6xl font-bold text-white mb-8">
           <b>The best flight offers from anywhere, to everywhere</b>
         </h1>
 
-        {/* Search Form */}
         <div className="bg-[#001533] p-6 rounded-2xl shadow-lg">
-          {/* Radio Buttons */}
           <div className="flex gap-6 text-white mb-4">
             <label className="flex items-center cursor-pointer">
               <input
@@ -404,16 +395,13 @@ export default function SearchSection() {
             </label>
           </div>
 
-          {/* Conditional Forms */}
           {tripType === "multicity" ? (
-            // Multi-City Form
             <form className="space-y-4">
               {multiCityFlights.map((flight, index) => (
                 <div
                   key={flight.id}
                   className="flex flex-wrap md:flex-nowrap gap-4 items-center"
                 >
-                  {/* From */}
                   <div
                     className="flex-1 min-w-[100px] relative"
                     ref={(el) => {
@@ -470,7 +458,6 @@ export default function SearchSection() {
                     )}
                   </div>
 
-                  {/* To */}
                   <div
                     className="flex-1 min-w-[100px] relative"
                     ref={(el) => {
@@ -527,7 +514,6 @@ export default function SearchSection() {
                     )}
                   </div>
 
-                  {/* Depart Date */}
                   <input
                     type="date"
                     min={
@@ -545,7 +531,6 @@ export default function SearchSection() {
                     className="w-full md:w-1/4 p-3 mt-7 rounded-lg bg-white text-black cursor-pointer"
                   />
 
-                  {/* Cross Button */}
                   <button
                     type="button"
                     onClick={() => removeMultiCityFlight(flight.id)}
@@ -582,22 +567,46 @@ export default function SearchSection() {
                 <button
                   onClick={handleSearch}
                   type="submit"
-                  disabled={isSearchDisabled}
+                  disabled={isSearchDisabled || isLoading}
                   className={`mt-5 px-6 py-3 font-semibold rounded-lg transition 
                                         ${
-                                          isSearchDisabled
+                                          isSearchDisabled || isLoading
                                             ? "bg-blue-300 cursor-not-allowed"
                                             : "bg-blue-600 hover:bg-blue-700 text-white"
                                         }`}
                 >
-                  Search
+                  {isLoading ? (
+                    <span className="flex items-center">
+                      <svg
+                        className="animate-spin h-5 w-5 mr-2 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"
+                        ></path>
+                      </svg>
+                      Loading...
+                    </span>
+                  ) : (
+                    "Search"
+                  )}
                 </button>
               </div>
             </form>
           ) : (
-            // Return, One Way
             <form className="flex flex-wrap gap-2 sm:gap-4 items-center w-full">
-              {/* From */}
               <div className="flex-1 min-w-[100px] relative" ref={fromInputRef}>
                 <label className="block text-white font-semibold mb-1">
                   From
@@ -639,7 +648,6 @@ export default function SearchSection() {
                 )}
               </div>
 
-              {/* Swap Button */}
               <div className="flex relative mt-7 justify-center items-center">
                 <button
                   type="button"
@@ -650,7 +658,6 @@ export default function SearchSection() {
                 </button>
               </div>
 
-              {/* To */}
               <div className="flex-1 min-w-[100px] relative" ref={toInputRef}>
                 <label className="block required: text-white font-semibold mb-1">
                   To
@@ -692,7 +699,6 @@ export default function SearchSection() {
                 )}
               </div>
 
-              {/* Depart */}
               <div className="flex-1 min-w-[100px]">
                 <label className="block text-white font-semibold mb-1">
                   Depart
@@ -740,15 +746,41 @@ export default function SearchSection() {
                 <button
                   onClick={handleSearch}
                   type="submit"
-                  disabled={isSearchDisabled}
+                  disabled={isSearchDisabled || isLoading}
                   className={`w-full mt-7 px-6 py-3 font-semibold rounded-lg transition 
                                         ${
-                                          isSearchDisabled
+                                          isSearchDisabled || isLoading
                                             ? "bg-blue-300 cursor-not-allowed"
                                             : "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                                         }`}
                 >
-                  Search
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <svg
+                        className="animate-spin h-5 w-5 mr-2 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"
+                        ></path>
+                      </svg>
+                      Loading...
+                    </span>
+                  ) : (
+                    "Search"
+                  )}
                 </button>
               </div>
             </form>
@@ -759,9 +791,6 @@ export default function SearchSection() {
               <label className="flex items-center cursor-pointer">
                 <input type="checkbox" className="mr-2" /> Add nearby airports
               </label>
-              {/* <label className="flex items-center cursor-pointer">
-                <input type="checkbox" className="mr-2" /> Direct flights only
-              </label> */}
               <label className="flex items-center cursor-pointer">
                 <input type="checkbox" className="mr-2" /> Flexible Tickets
               </label>
@@ -770,7 +799,6 @@ export default function SearchSection() {
         </div>
       </div>
 
-      {/* Remaining sections unchanged */}
       <div className="bg-white">
         <div className="container mx-auto px-8 pt-5 max-w-7xl">
           <nav className="text-sm">
