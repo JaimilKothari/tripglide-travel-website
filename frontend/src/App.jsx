@@ -392,8 +392,8 @@ function App() {
           <Route path="/hotel-card" element={<HotelCard />} />
           <Route path="/hotel-filter" element={<HotelFilter />} />
           <Route path="/hotel-details" element={<HotelDetails />} />
+          <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} />
           <Route path="/hotel-booking" element={<HotelBooking />} />
-          <Route path="/hotel-details/:hotel/:arrival" element={<HotelBooking />} />
         </Routes>
 
       </Router>

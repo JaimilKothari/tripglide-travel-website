@@ -141,7 +141,7 @@ export default function Hotels() {
 
   return (
     <section className="w-full">
-      <Header />
+      
       <div className="absolute inset-0 hidden lg:block -z-10 h-[600px] lg:h-[800px]">
         <img
           src="/images/Hotel/Heroimg.jpg"

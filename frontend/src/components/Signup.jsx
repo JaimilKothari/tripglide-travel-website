@@ -236,8 +236,4 @@ const SignUp = ({ onSignUp, mockUsers }) => {
   );
 };
 
-<<<<<<< HEAD
 export default SignUp;
-=======
-export default SignUp;
->>>>>>> f72a947f85474f7501c14af175b0f7731401aeb9

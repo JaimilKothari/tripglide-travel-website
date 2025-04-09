@@ -24,9 +24,13 @@ export default function Header({ user, handleLogout, allFlights, tripType, retur
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes("/hotels")) setActiveTab("hotels");
-    else if (path.includes("/carhire") || path.includes("/cabs")) setActiveTab("carhire");
-    else setActiveTab("flights");
+    if (path.includes("/hotel") || path.includes("/hotel-search")) {
+      setActiveTab("hotels");
+    } else if (path.includes("/carhire")) {
+      setActiveTab("carhire");
+    } else {
+      setActiveTab("flights");
+    }
   }, [location.pathname]);
 
   useEffect(() => {
