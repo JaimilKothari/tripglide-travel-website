@@ -6,6 +6,9 @@ import Footer from "./Footer";
 import FeaturesSection from "./FeaturesSection";
 import { FaCar, FaCalendarAlt, FaTag } from "react-icons/fa";
 import CarHireFAQ from "./CarHireFAQ";
+import PopularCarDeals from "./PopularCarDeals";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function CarHire() {
   const [pickupDate, setPickupDate] = useState("");
@@ -13,9 +16,22 @@ export default function CarHire() {
   const [pickupTime, setPickupTime] = useState("");
   const [dropoffTime, setDropoffTime] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
+  const [availableLocations, setAvailableLocations] = useState([]);
 
   const today = new Date().toISOString().split("T")[0];
   const [currentTime, setCurrentTime] = useState("");
+
+  // Fetch available cities from Flask API when component loads
+  useEffect(() => {
+    axios
+      .get("http://localhost:5001/location") // Flask API endpoint
+      .then((response) => {
+        setAvailableLocations(response.data.car_city || []); // Set available locations
+      })
+      .catch((error) => {
+        console.error("Error fetching locations:", error);
+      });
+  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -56,17 +72,25 @@ export default function CarHire() {
       },
     ];
 
+    const navigate = useNavigate(); 
+
+    const handleSearch = (e) => {
+      e.preventDefault(); 
+      navigate("/cabs", {
+        state: { pickupLocation, pickupDate, dropoffDate, pickupTime, dropoffTime },
+      });
+    };
 
   return (
-    <section className="relative w-full">
+    <section className="w-full">
       {/* Header */}
-      <Header />
+      {/* <Header /> */}
 
 
-      {/* Background Image - Hidden on Small Screens */}
-      <div className="absolute inset-0 hidden lg:block -z-10">
+      {/* Background Image */}
+      <div className="absolute inset-0 lg:block -z-10">
         <img
-          src="/public/images/carbg.jpg"
+          src="/images/carbg.jpg"
           alt="Car rental background"
           className="w-full h-full object-cover object-center fixed"
         />
@@ -75,7 +99,7 @@ export default function CarHire() {
       {/* Hero Content */}
       <div className="relative max-w-7xl mx-auto px-6 py-16 lg:py-24">
         <h1 className="text-4xl lg:text-6xl font-bold text-black mb-8">
-          Find the best car rental deals
+          <b>Find the best car rental deals</b>
         </h1>
 
         {/* Search Form */}
@@ -88,12 +112,18 @@ export default function CarHire() {
                 Pick-up location
               </label>
               <input
+              list="pickup-locations"
                 type="text"
                 placeholder="City, airport or station"
                 className="w-full p-3 rounded-lg bg-white text-black"
                 value={pickupLocation}
                 onChange={(e) => setPickupLocation(e.target.value)}
               />
+              <datalist id="pickup-locations">
+                {availableLocations.map((location, index) => (
+                  <option key={index} value={location} />
+                ))}
+              </datalist>
             </div>
 
             {/* Pickup Date */}
@@ -164,7 +194,8 @@ export default function CarHire() {
                 Return car to a different location
               </label>
 
-              <button
+              <button 
+                onClick={handleSearch}
                 type="submit"
                 className={`ml-auto px-6 py-3 font-semibold rounded-lg transition ${
                   isFormComplete
@@ -183,15 +214,22 @@ export default function CarHire() {
 
       {/* Features Section */}
       <div className="bg-white">
-        <div className="container mx-auto max-w-7xl px-8 pt-5">
+        <div className="container mx-auto max-w-7xl px-8 pt-5"> 
           <nav className="text-sm">
             <a href="/" className="text-blue-600 hover:underline">Home</a>
             <span className="mx-2 text-gray-400">›</span>
             <span className="text-gray-600">Car hire</span>
-          </nav>
+          </nav>  
         </div>
         <div className="container mx-auto max-w-7xl">
           <FeaturesSection features={carFeatures} />
+        </div>
+      </div>
+
+      {/* Popular Car Deals */}
+      <div className="bg-gray-100">
+        <div className="container mx-auto max-w-7xl px-8 py-12">
+          <PopularCarDeals />
         </div>
       </div>
       
