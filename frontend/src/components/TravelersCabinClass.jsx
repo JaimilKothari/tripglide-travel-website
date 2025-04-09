@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const TravelersCabinClass = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [adults, setAdults] = useState(2);
+  const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [cabinClass, setCabinClass] = useState("Economy");
 

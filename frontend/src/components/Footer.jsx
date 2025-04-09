@@ -1,5 +1,5 @@
 import React from "react";
-import { FaInstagram, FaTwitter, FaMedium } from "react-icons/fa";
+import { FaLinkedin , FaTwitter, FaMedium  } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -30,8 +30,8 @@ export default function Footer() {
               {/* <a href="/signin" className="hover:underline">SignIn</a> */}
               {/* Social Media Icons */}
               <div className="flex justify-center md:justify-start gap-4 mt-1">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#E4405F] transition duration-300">
-                  <FaInstagram size={20} />
+                <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#0A66C2] transition duration-300">
+                  <FaLinkedin size={20} />
                 </a>
                 <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#1DA1F2] transition duration-300">
                   <FaTwitter size={20} />
@@ -58,7 +58,7 @@ export default function Footer() {
               <h3 className="text-base font-bold text-gray-400 mb-2">
                 Discover
               </h3>
-              <a href="/" className="hover:underline">Explore</a>
+              <a href="/hotels" className="hover:underline">Explore</a>
               {/* <a href="https://inboxtechs.com/" target="_blank" className="hover:underline">Company</a> */}
               {/* <a href="#" className="hover:underline">Partners</a> */}
               <a href="/" className="hover:underline">Trips</a>

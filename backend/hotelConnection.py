@@ -40,9 +40,6 @@ try:
         "Images": "Images"
     }, inplace=True)
 
-    # ✅ Replace all NaN values with None for MySQL compatibility
-    hotels_df = hotels_df.replace({pd.NA: None, pd.NaT: None, float('nan'): None})
-
     # ✅ Ensure numeric columns are converted to appropriate types
     numeric_columns = [
         "TravelCode", "UserID", "Rating", "PricePerNight", "Adults",
@@ -54,15 +51,10 @@ try:
     # ✅ Convert date columns to proper format and handle NaT
     date_columns = ["CheckIn", "CheckOut"]
     for col in date_columns:
+        # Specify the exact format to match DD-MM-YYYY
         hotels_df[col] = pd.to_datetime(hotels_df[col], format='%d-%m-%Y', errors='coerce').dt.date
+        # Replace NaT with None for MySQL compatibility
         hotels_df[col] = hotels_df[col].where(hotels_df[col].notna(), None)
-
-    # ✅ Handle string columns to ensure no NaN slips through
-    string_columns = [
-        "Departure", "Arrival", "Hotel", "BedroomType", "Amenities", "Images"
-    ]
-    for col in string_columns:
-        hotels_df[col] = hotels_df[col].fillna('')  # Replace NaN with empty string for strings
 
     # ✅ Prepare SQL insert query
     insert_query = """

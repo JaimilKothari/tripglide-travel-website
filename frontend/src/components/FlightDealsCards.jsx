@@ -1,166 +1,72 @@
 import React, { useState } from 'react';
 import { ChevronRight, Clock, MapPin, Calendar, Plane } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
+
+// Load Stripe with your publishable key
+const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ"); // Replace with your Stripe Publishable Key
 
 const flightDeals = [
   { 
-    id: 1,
-    city: "Agra", 
-    country: "India", 
-    date: "Sat, 5 Apr", 
-    returnDate: "Sun, 6 Apr", 
-    price: 878,
-    airline: "IndiGo",
-    airlineCode: "6E",
-    departureTime: "06:15",
-    arrivalTime: "09:25",
-    duration: "3h 10m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 1, city: "Moscow", country: "Russia", date: "Sat, 15 Apr", returnDate: "Sun, 16 Apr", price: 8788,
+    airline: "IndiGo", airlineCode: "6E", departureTime: "06:15", arrivalTime: "09:25", duration: "3h 10m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/56/f2/3c/56f23c6ea0edbf642fce2682664b51d6.jpg",
-    image: "https://i.pinimg.com/474x/a2/45/13/a245133998244908efecadf2798e5e5f.jpg" 
+    image: "https://i.pinimg.com/474x/29/2d/e2/292de231f2d4bb8572813423294bae60.jpg" 
   },
   { 
-    id: 2,
-    city: "Kuala Lumpur", 
-    country: "Malaysia", 
-    date: "Tue, 18 Mar", 
-    returnDate: "Sat, 22 Mar", 
-    price: 7248,
-    airline: "AirAsia",
-    airlineCode: "AK",
-    departureTime: "09:40",
-    arrivalTime: "15:30",
-    duration: "5h 50m",
-    stops: 1,
-    stopCities: ["Singapore"],
-    cabinClass: "Economy",
+    id: 2, city: "Kuala Lumpur", country: "Malaysia", date: "Tue, 18 May", returnDate: "Sat, 22 May", price: 7248,
+    airline: "AirAsia", airlineCode: "AK", departureTime: "09:40", arrivalTime: "15:30", duration: "5h 50m",
+    stops: 0, stopCities: ["Singapore"], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/4e/28/37/4e28374b3286209b1a7da455983a8f51.jpg",
     image: "https://i.pinimg.com/474x/d4/3e/f3/d43ef32953c8cc10441255eb58a66d34.jpg" 
   },
   { 
-    id: 3,
-    city: "Muscat", 
-    country: "Oman", 
-    date: "Fri, 14 Mar", 
-    returnDate: "Sun, 16 Mar", 
-    price: 9451,
-    airline: "Oman Air",
-    airlineCode: "WY",
-    departureTime: "02:10",
-    arrivalTime: "07:45",
-    duration: "5h 35m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 3, city: "Muscat", country: "Oman", date: "Fri, 14 May", returnDate: "Sun, 16 May", price: 9451,
+    airline: "Oman Air", airlineCode: "WY", departureTime: "02:10", arrivalTime: "07:45", duration: "5h 35m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/ba/2d/6b/ba2d6bce884e16fdcac6b29de17eca17.jpg",
     image: "https://i.pinimg.com/474x/e6/30/66/e6306613b1ecb7afc1d0b9e3e5c41a62.jpg" 
   },
   { 
-    id: 4,
-    city: "Dhaka", 
-    country: "Bangladesh", 
-    date: "Thu, 13 Mar", 
-    returnDate: "Fri, 14 Mar", 
-    price: 9646,
-    airline: "Biman Bangladesh",
-    airlineCode: "BG",
-    departureTime: "13:25",
-    arrivalTime: "22:15",
-    duration: "8h 50m",
-    stops: 1,
-    stopCities: ["Kolkata"],
-    cabinClass: "Economy",
+    id: 4, city: "Dhaka", country: "Bangladesh", date: "Thu, 13 April", returnDate: "Fri, 14 April", price: 9646,
+    airline: "Biman Bangladesh", airlineCode: "BG", departureTime: "13:25", arrivalTime: "22:15", duration: "8h 50m",
+    stops: 0, stopCities: ["Kolkata"], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/1a/d0/30/1ad0301a1e8e2cfc8a465d40dfc119d8.jpg",
     image: "https://i.pinimg.com/474x/6f/64/7c/6f647c4f9940c7b9fed6cd336e537374.jpg" 
   },
   { 
-    id: 5,
-    city: "Colombo", 
-    country: "Sri Lanka", 
-    date: "Mon, 5 May", 
-    returnDate: "Wed, 7 May", 
-    price: 11075,
-    airline: "SriLankan Airlines",
-    airlineCode: "UL",
-    departureTime: "11:05",
-    arrivalTime: "16:25",
-    duration: "5h 20m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 5, city: "Colombo", country: "Sri Lanka", date: "Mon, 5 May", returnDate: "Wed, 7 May", price: 11075,
+    airline: "SriLankan Airlines", airlineCode: "UL", departureTime: "11:05", arrivalTime: "16:25", duration: "5h 20m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/49/b6/4a/49b64a7c09c9732c2ed8e54eb25a136f.jpg",
     image: "https://i.pinimg.com/474x/3a/84/1a/3a841a66007cae4724025e451208ef44.jpg" 
   },
   { 
-    id: 6,
-    city: "Singapore", 
-    country: "Singapore", 
-    date: "Fri, 28 Mar", 
-    returnDate: "Wed, 2 Apr", 
-    price: 12356,
-    airline: "Singapore Airlines",
-    airlineCode: "SQ",
-    departureTime: "03:55",
-    arrivalTime: "12:40",
-    duration: "8h 45m",
-    stops: 1,
-    stopCities: ["Bangkok"],
-    cabinClass: "Economy",
+    id: 6, city: "Singapore", country: "Singapore", date: "Fri, 28 May", returnDate: "Wed, 2 June", price: 12356,
+    airline: "Singapore Airlines", airlineCode: "SQ", departureTime: "03:55", arrivalTime: "12:40", duration: "8h 45m",
+    stops: 0, stopCities: ["Bangkok"], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/91/37/09/913709c8027990ce9831efa1dd44f07c.jpg",
     image: "https://i.pinimg.com/474x/1f/7a/36/1f7a36ee1580c0fc154ba480a16d5ec1.jpg" 
   },
   { 
-    id: 7,
-    city: "Bali", 
-    country: "Indonesia", 
-    date: "Fri, 8 Apr", 
-    returnDate: "Mon, 12 Apr", 
-    price: 15450,
-    airline: "Garuda Indonesia",
-    airlineCode: "GA",
-    departureTime: "21:05",
-    arrivalTime: "06:45",
-    duration: "9h 40m",
-    stops: 1,
-    stopCities: ["Jakarta"],
-    cabinClass: "Economy",
+    id: 7, city: "Bali", country: "Indonesia", date: "Fri, 28 Apr", returnDate: "Mon, 2 May", price: 15450,
+    airline: "Garuda Indonesia", airlineCode: "GA", departureTime: "21:05", arrivalTime: "06:45", duration: "9h 40m",
+    stops: 0, stopCities: ["Jakarta"], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/4d/5c/d1/4d5cd1565e04ee98ec74056275136d1e.jpg",
     image: "https://i.pinimg.com/474x/0b/40/7f/0b407f324f3948b4b5878e834d4839a2.jpg" 
   },
   { 
-    id: 8,
-    city: "Istanbul", 
-    country: "Turkey", 
-    date: "Sat, 10 May", 
-    returnDate: "Thu, 15 May", 
-    price: 19800,
-    airline: "Turkish Airlines",
-    airlineCode: "TK",
-    departureTime: "01:15",
-    arrivalTime: "09:45",
-    duration: "8h 30m",
-    stops: 1,
-    stopCities: ["Dubai"],
-    cabinClass: "Economy",
+    id: 8, city: "Istanbul", country: "Turkey", date: "Sat, 10 May", returnDate: "Thu, 15 May", price: 19800,
+    airline: "Turkish Airlines", airlineCode: "TK", departureTime: "01:15", arrivalTime: "09:45", duration: "8h 30m",
+    stops: 0, stopCities: ["Dubai"], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/6a/99/ee/6a99ee843798375c5f7049316e8d31ed.jpg",
     image: "https://i.pinimg.com/474x/4d/5c/d1/4d5cd1565e04ee98ec74056275136d1e.jpg" 
   },
   { 
-    id: 9,
-    city: "Paris", 
-    country: "France", 
-    date: "Sun, 15 Jun", 
-    returnDate: "Sat, 22 Jun", 
-    price: 34500,
-    airline: "Air France",
-    airlineCode: "AF",
-    departureTime: "10:30",
-    arrivalTime: "19:45",
-    duration: "9h 15m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 9, city: "Paris", country: "France", date: "Sun, 15 Jun", returnDate: "Sat, 22 Jun", price: 34500,
+    airline: "Air France", airlineCode: "AF", departureTime: "10:30", arrivalTime: "19:45", duration: "9h 15m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
     logo: "https://i.pinimg.com/474x/5a/4a/a5/5a4aa5378d51b1c9da7c4e4d776b614c.jpg",
     image: "https://i.pinimg.com/474x/6a/99/ee/6a99ee843798375c5f7049316e8d31ed.jpg"
   }
@@ -169,6 +75,8 @@ const flightDeals = [
 const FlightDealsCards = () => {
   const [showAll, setShowAll] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const visibleDeals = showAll ? flightDeals : flightDeals.slice(0, 6);
 
   const handleDealClick = (deal) => {
@@ -177,6 +85,78 @@ const FlightDealsCards = () => {
 
   const closeDetailView = () => {
     setSelectedDeal(null);
+  };
+
+  const handleBookNow = async (deal) => {
+    setLoading(true);
+    try {
+      // Prepare booking details for sessionStorage
+      const selectedFlight = {
+        id: deal.id,
+        departure: "India", // Assuming departure from India
+        arrival: deal.city,
+        airline: deal.airline,
+        departureTime: deal.departureTime,
+        arrivalTime: deal.arrivalTime,
+        departureDate: deal.date,
+        returnFlight: deal.returnDate ? {
+          departure: deal.city,
+          arrival: "India",
+          airline: deal.airline,
+          departureTime: "TBD", // Placeholder, adjust as needed
+          arrivalTime: "TBD",
+        } : null,
+      };
+      const selectedFare = {
+        type: deal.cabinClass,
+        price: deal.price,
+      };
+      const searchParams = {
+        tripType: deal.returnDate ? "return" : "oneway",
+        from: "India",
+        to: deal.city,
+        departDate: deal.date,
+        returnDate: deal.returnDate || null,
+        multiCityFlights: null,
+      };
+
+      const bookingDetails = { selectedFlight, selectedFare, searchParams };
+      console.log("Setting bookingDetails in sessionStorage:", bookingDetails);
+      sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+
+      // Create Checkout Session
+      const response = await fetch("http://localhost:5000/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: deal.price * 100, // Convert to paise
+          description: `${deal.airline} Flight to ${deal.city} - ${deal.date}${deal.returnDate ? ` - ${deal.returnDate}` : ''}`,
+          flightId: deal.id.toString(),
+          fareType: deal.cabinClass,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorText}`);
+      }
+
+      const { sessionId } = await response.json();
+      console.log("Received sessionId:", sessionId);
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        throw new Error(`Stripe redirect error: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("Error initiating payment:", error.message);
+      alert(`Failed to initiate payment: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -201,7 +181,7 @@ const FlightDealsCards = () => {
                   <p className="text-sm text-gray-800">{deal.date} - {deal.returnDate}</p>
                   <span className="text-gray-700">{deal.stops === 0 ? "Direct" : `${deal.stops} Stop`}</span>
                 </div>
-                <p className="mt-2 text-blue-600">from ₹{deal.price.toLocaleString()}</p>
+                <p className="mt-2 text-blue-600">Get now - ₹{deal.price.toLocaleString()}</p>
               </div>
             </div>
           ))}
@@ -290,8 +270,12 @@ const FlightDealsCards = () => {
                         
                         <div className="text-right">
                           <p className="text-2xl font-bold text-blue-600">₹{selectedDeal.price.toLocaleString()}</p>
-                          <button className="mt-2 cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                            Book Now
+                          <button 
+                            onClick={() => handleBookNow(selectedDeal)}
+                            className="mt-2 cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+                            disabled={loading}
+                          >
+                            {loading ? "Processing..." : "Book Now"}
                           </button>
                         </div>
                       </div>
