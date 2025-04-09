@@ -1,40 +1,40 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 
 const HotelFilter = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     price: [],
     rating: [],
     amenities: [],
-    bedroomType: [], // Added bedroom type filter
+    bedroomType: [],
   });
 
   const priceOptions = [
-    { label: 'Below ₹2000', value: 'below2000' },
-    { label: '₹2000 - ₹5000', value: '2000to5000' },
-    { label: '₹5000 - ₹10000', value: '5000to10000' },
-    { label: 'Above ₹10000', value: 'above10000' },
-    { label: 'All', value: 'all' },
+    { label: "Below ₹2000", value: "below2000" },
+    { label: "₹2000 - ₹5000", value: "2000to5000" },
+    { label: "₹5000 - ₹10000", value: "5000to10000" },
+    { label: "Above ₹10000", value: "above10000" },
+    { label: "All", value: "all" },
   ];
 
   const ratingOptions = [
-    { label: '5 Star', value: '5' },
-    { label: '4 Star', value: '4' },
-    { label: '3 Star', value: '3' },
-    { label: 'Below 3 Star', value: 'below3' },
-    { label: 'All', value: 'all' },
+    { label: "5 Star", value: "5" },
+    { label: "4 Star", value: "4" },
+    { label: "3 Star", value: "3" },
+    { label: "Below 3 Star", value: "below3" },
+    { label: "All", value: "all" },
   ];
 
   const amenityOptions = [
-    'Spa',
-    'Swimming Pool',
-    'Bar',
-    'Restaurant',
-    'Gym',
-    'Free Breakfast',
+    "Spa",
+    "Swimming Pool",
+    "Rooftop Lounge",
+    "Helipad",
+    "Valet Parking",
+    "Limousine Service",
+    "Sauna",
+    "Gym",
+    "Private Butler",
   ];
-
-  
-  
 
   const handleFilterChangeInternal = useCallback((e) => {
     const { name, value, checked } = e.target;
@@ -43,12 +43,11 @@ const HotelFilter = ({ onFilterChange }) => {
         ? [...prev[name], value]
         : prev[name].filter((item) => item !== value);
 
-      // Special handling for "All" in price, rating, and bedroomType
-      if (name === 'price' || name === 'rating' || name === 'bedroomType') {
-        if (value === 'all' && checked) {
-          updatedFilter = ['all']; // If "All" is checked, clear other selections
-        } else if (checked && prev[name].includes('all')) {
-          updatedFilter = updatedFilter.filter((item) => item !== 'all'); // Remove "All" if another option is checked
+      if (name === "price" || name === "rating" || name === "bedroomType") {
+        if (value === "all" && checked) {
+          updatedFilter = ["all"];
+        } else if (checked && prev[name].includes("all")) {
+          updatedFilter = updatedFilter.filter((item) => item !== "all");
         }
       }
 
@@ -81,7 +80,9 @@ const HotelFilter = ({ onFilterChange }) => {
               onChange={handleFilterChangeInternal}
               className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
             />
-            <label htmlFor={`price-${option.value}`} className="text-sm">{option.label}</label>
+            <label htmlFor={`price-${option.value}`} className="text-sm">
+              {option.label}
+            </label>
           </div>
         ))}
       </div>
@@ -100,7 +101,9 @@ const HotelFilter = ({ onFilterChange }) => {
               onChange={handleFilterChangeInternal}
               className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
             />
-            <label htmlFor={`rating-${option.value}`} className="text-sm">{option.label}</label>
+            <label htmlFor={`rating-${option.value}`} className="text-sm">
+              {option.label}
+            </label>
           </div>
         ))}
       </div>
@@ -112,19 +115,22 @@ const HotelFilter = ({ onFilterChange }) => {
           <div key={amenity} className="flex items-center mb-2">
             <input
               type="checkbox"
-              id={`amenity-${amenity.toLowerCase().replace(/\s+/g, '-')}`}
+              id={`amenity-${amenity.toLowerCase().replace(/\s+/g, "-")}`}
               name="amenities"
               value={amenity}
               checked={filters.amenities.includes(amenity)}
               onChange={handleFilterChangeInternal}
               className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
             />
-            <label htmlFor={`amenity-${amenity.toLowerCase().replace(/\s+/g, '-')}`} className="text-sm">{amenity}</label>
+            <label
+              htmlFor={`amenity-${amenity.toLowerCase().replace(/\s+/g, "-")}`}
+              className="text-sm"
+            >
+              {amenity}
+            </label>
           </div>
         ))}
       </div>
-
-      
     </div>
   );
 };

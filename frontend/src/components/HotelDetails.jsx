@@ -77,6 +77,13 @@ const HotelDetails = () => {
     
     const amenities = data.amenities ? data.amenities.split(',').map((am) => am.trim()) : [];
 
+    // Define specific images for each room type
+    const roomImages = {
+      Deluxe: '/images/Hotel/deluxe_room.jpeg', // Deluxe Room
+      Executive: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80', // Executive Room
+      Suite: '/images/Hotel/suite_room.jpeg', // Suite Room
+    };
+
     const handleBookNow = async () => {
       try {
         const bookingData = {
@@ -88,18 +95,15 @@ const HotelDetails = () => {
           children,
           rooms,
           roomType,
-          pricePerNight, // Add pricePerNight for confirmation page
-          arrival: data.arrival, // Include arrival for consistency
+          pricePerNight,
+          arrival: data.arrival,
         };
 
-        // Store booking details in sessionStorage before redirecting to Stripe
         sessionStorage.setItem('hotelBookingDetails', JSON.stringify(bookingData));
 
-        // Call backend to create Stripe Checkout session
         const response = await axios.post('http://localhost:5001/create-checkout-session', bookingData);
         const sessionId = response.data.id;
 
-        // Initialize Stripe with your Publishable Key
         const stripe = window.Stripe('pk_test_51RA20B4D8TqxSjMO2AL0EwDRq7G1h3JF3CvdcasP9nE34rF4w5jNrSFbUPtbsoHsvGf7X2dkIUFZ4ETqGdjAfcjZ00UOI1COTA');
         const { error } = await stripe.redirectToCheckout({ sessionId });
 
@@ -120,7 +124,7 @@ const HotelDetails = () => {
           <div className="flex gap-4">
             <div className="w-1/3">
               <img
-                src="/images/Hotel/placeholder.jpg"
+                src={roomImages[roomType]} // Use specific image based on room type
                 alt={`${data.hotel} ${roomType}`}
                 className="w-full h-40 object-cover rounded-lg"
               />

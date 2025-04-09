@@ -6,7 +6,7 @@ db_config = {
     "host": "127.0.0.1",
     "user": "root",
     "password": "",
-    "database": "main"
+    "database": "tripglide",
 }
 
 try:
@@ -15,8 +15,7 @@ try:
     cursor = conn.cursor()
 
     # Load CSV into DataFrame
-    
-    hotels_df = pd.read_csv(r"D:\xampp\htdocs\Inbox\tripglide\database\Finallll.csv", encoding="ISO-8859-1")
+    hotels_df = pd.read_csv(r"D:\xampp\htdocs\Inbox\tripglide\database\Finallll(1).csv", encoding="ISO-8859-1")
 
     # ✅ Rename columns to match MySQL table structure
     hotels_df.rename(columns={
@@ -37,7 +36,8 @@ try:
         "Days of Stay": "StayingDays",
         "Total Cost": "TotalCost",
         "Check-Out": "CheckOut",
-        "Hotel_ID": "HotelID"
+        "Hotel_ID": "HotelID",
+        "Images": "Images"
     }, inplace=True)
 
     # ✅ Ensure numeric columns are converted to appropriate types
@@ -48,17 +48,20 @@ try:
     for col in numeric_columns:
         hotels_df[col] = pd.to_numeric(hotels_df[col], errors='coerce').fillna(0).astype(int)
 
-    # ✅ Convert date columns to proper format
+    # ✅ Convert date columns to proper format and handle NaT
     date_columns = ["CheckIn", "CheckOut"]
     for col in date_columns:
-        hotels_df[col] = pd.to_datetime(hotels_df[col], errors='coerce').dt.date
+        # Specify the exact format to match DD-MM-YYYY
+        hotels_df[col] = pd.to_datetime(hotels_df[col], format='%d-%m-%Y', errors='coerce').dt.date
+        # Replace NaT with None for MySQL compatibility
+        hotels_df[col] = hotels_df[col].where(hotels_df[col].notna(), None)
 
     # ✅ Prepare SQL insert query
     insert_query = """
     INSERT INTO hotel (TravelCode, UserID, Departure, Arrival, CheckIn, Hotel, Rating, BedroomType, 
                        PricePerNight, Adults, Children, TotalBedrooms, TotalPricePerNight, 
-                       Amenities, StayingDays, TotalCost, CheckOut, HotelID)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                       Amenities, StayingDays, TotalCost, CheckOut, HotelID, Images)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     # ✅ Convert DataFrame to list of tuples for insertion
@@ -77,10 +80,12 @@ try:
 
 except mysql.connector.Error as err:
     print(f"❌ DatabaseError: {err}")
-
+except Exception as e:
+    print(f"❌ General Error: {e}")
 finally:
     # ✅ Close database connection
     if 'cursor' in locals():
         cursor.close()
-    if 'conn' in locals():
+    if 'conn' in locals() and conn.is_connected():
         conn.close()
+        print("✅ Database connection closed")
