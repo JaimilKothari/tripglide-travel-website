@@ -1,239 +1,170 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const SignUp = ({ onSignUp, mockUsers }) => {
+const Signup = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const [formData, setFormData] = useState({
+    identifier: "",
+    password: "",
+    confirm_password: "",
+  });
+  const [error, setError] = useState("");
+  const [identifierType, setIdentifierType] = useState(null);
 
-  // Watch the password field to compare with confirm password
-  const password = watch('password');
+  const API_URL = "http://localhost:5001/api";
 
-  const onSubmit = (data) => {
-    // Load existing users from localStorage
-    const storedUsers = JSON.parse(localStorage.getItem("mockUsers")) || [];
-    console.log("Users before signup:", storedUsers);
+  const isEmail = (str) => /^[\w\.-]+@[\w\.-]+\.\w+$/.test(str);
+  const isPhone = (str) => /^\d{10}$/.test(str);
 
-
-     // Check if the email or username already exists
-  const userExists = storedUsers.some(
-    (user) => user.username === data.username || user.email === data.email
-  );
-
-  if (userExists) {
-    alert("Username or email already exists");
-    return;
-  }
-
-    // Create user data for the mock database with all fields
-    const userData = {
-      email: data.email,
-      username: data.username,
-      password: data.password,
-    };
-
-      // Add new user to the stored users list
-  const updatedUsers = [...storedUsers, userData];
-  console.log("Saving users:", updatedUsers);
-
-  // Save updated users back to localStorage
-  localStorage.setItem("mockUsers", JSON.stringify(updatedUsers));
-
-    // Store complete user data in mockUsers (similar to how SignIn adds Google users)
-    mockUsers.push(userData);
-
-    // Pass user data to onSignUp (only username and email are stored in the state)
-    onSignUp({
-      username: userData.username,
-      email: userData.email,
-    });
-    
-    navigate('/');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value.trim() });
+    if (name === "identifier") {
+      setIdentifierType(isEmail(value) ? "email" : isPhone(value) ? "phone" : null);
+    }
   };
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    const userObject = jwtDecode(credentialResponse.credential);
-    const userData = {
-      username: userObject.name,
-      email: userObject.email,
-      password: 'google-auth', // Same as in SignIn
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { identifier, password, confirm_password } = formData;
 
-    // Check for duplicate email (Google sign-up)
-    const emailExists = mockUsers.some((user) => user.email === userData.email);
-    if (emailExists) {
-      alert('Email already exists');
+    if (!identifier || !password || !confirm_password) {
+      setError("All fields are required");
+      return;
+    }
+    if (!isEmail(identifier) && !isPhone(identifier)) {
+      setError("Invalid email or 10-digit phone number");
+      return;
+    }
+    if (password !== confirm_password) {
+      setError("Passwords do not match");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
       return;
     }
 
-    // Store complete user data in mockUsers
-    mockUsers.push(userData);
+    try {
+      const response = await fetch(`${API_URL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const res = await response.json();
 
-    onSignUp({
-      username: userData.username,
-      email: userData.email,
-    });
-    
-    navigate('/');
+      if (res.success) {
+        alert("Signup successful! Please log in.");
+        navigate("/login");
+      } else {
+        setError(res.error || "Signup failed");
+      }
+    } catch (err) {
+      setError("Server error: " + err.message);
+    }
   };
 
-  const handleGoogleError = () => {
-    console.log('Google Sign Up Failed');
-  };
+  const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+  const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+  const buttonVariants = { hover: { scale: 1.05 }, tap: { scale: 0.95 } };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-    style={{
-      backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW91bnRhaW5zfGVufDB8fDB8fHww')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}
-    >
-      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
-        <button
-          onClick={() => navigate('/')}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        className="bg-white shadow-lg rounded-xl p-6 sm:p-8 w-full max-w-md"
+      >
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-2xl font-bold text-gray-800 mb-6 text-center"
         >
-          ✕
-        </button>
-        <h2 className="text-xl font-semibold text-gray-900">Create account</h2>
-        <p className="mt-1 text-sm text-gray-500">Sign up to access your account</p>
+          Sign Up
+        </motion.h2>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
-          {/* Email Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Please enter a valid email address',
-                },
-              })}
-              placeholder="name@example.com"
-              className={`mt-1 w-full px-3 py-2 border ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              } rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800`}
-            />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-            )}
-          </div>
-
-          {/* Username Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Username</label>
-            <input
-              type="text"
-              {...register('username', {
-                required: 'Username is required',
-                minLength: {
-                  value: 3,
-                  message: 'Username must be at least 3 characters long',
-                },
-              })}
-              placeholder="Enter your username"
-              className={`mt-1 w-full px-3 py-2 border ${
-                errors.username ? 'border-red-500' : 'border-gray-300'
-              } rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800`}
-            />
-            {errors.username && (
-              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
-            )}
-          </div>
-
-          {/* Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters long',
-                },
-              })}
-              placeholder="Enter your password"
-              className={`mt-1 w-full px-3 py-2 border ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
-              } rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800`}
-            />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* Confirm Password Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              {...register('confirmPassword', {
-                required: 'Please confirm your password',
-                validate: (value) =>
-                  value === password || 'Passwords do not match',
-              })}
-              placeholder="Confirm your password"
-              className={`mt-1 w-full px-3 py-2 border ${
-                errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-              } rounded-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800`}
-            />
-            {errors.confirmPassword && (
-              <p className="mt-1 text-sm text-red-500">{errors.confirmPassword.message}</p>
-            )}
-          </div>
-
-          {/* Sign Up Button */}
-          <button
-            type="submit"
-            className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800"
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm text-center"
           >
-            SIGN UP
-          </button>
+            {error}
+          </motion.div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4">
+            <motion.div variants={itemVariants}>
+              <label className="block text-sm font-medium text-gray-700">
+                {identifierType === "email" ? "Email" : identifierType === "phone" ? "Phone" : "Email or Phone"}
+              </label>
+              <input
+                type="text"
+                name="identifier"
+                value={formData.identifier}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                placeholder="Enter your email or phone"
+              />
+              {formData.identifier && (
+                <p className="text-xs text-gray-500 mt-1">
+                  {identifierType === "email"
+                    ? "Valid email format"
+                    : identifierType === "phone"
+                    ? "Valid 10-digit phone"
+                    : "Enter a valid email or 10-digit phone number"}
+                </p>
+              )}
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                placeholder="Enter your password"
+              />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+              <input
+                type="password"
+                name="confirm_password"
+                value={formData.confirm_password}
+                onChange={handleChange}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                placeholder="Confirm your password"
+              />
+            </motion.div>
+            <motion.button
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition glow-button"
+            >
+              Sign Up
+            </motion.button>
+          </motion.div>
         </form>
 
-        {/* Divider */}
-        <div className="mt-4 flex items-center">
-          <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-2 text-sm text-gray-500">OR CONTINUE WITH</span>
-          <div className="flex-1 border-t border-gray-300"></div>
-        </div>
-
-        {/* Google Sign Up */}
-        <div className="mt-4 w-full">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            text="signup_with"
-            width="100%"
-          />
-        </div>
-
-        {/* Sign In Link */}
-        <p className="mt-4 text-sm text-center">
-          Already have an account?{' '}
-          <Link to="/signin" className="text-blue-600 hover:underline">
-            Sign in
-          </Link>
-          {' | '}
-          <Link to="/forgot-password" className="text-blue-600 hover:underline">
-            Forgot password?
-          </Link>
-        </p>
-      </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-4 text-sm text-gray-600 text-center"
+        >
+          Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log In</Link>
+        </motion.p>
+      </motion.div>
     </div>
   );
 };
 
-export default SignUp;
+export default Signup;

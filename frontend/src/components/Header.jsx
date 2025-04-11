@@ -101,7 +101,7 @@ export default function Header({ user, handleLogout, allFlights, tripType, retur
               )}
             </div>
           ) : (
-            <Link to="/signin" className="flex items-center gap-1 p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+            <Link to="/login" className="flex items-center gap-1 p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer">
               <FaUser />
               <span className="hidden sm:inline">Sign In</span>
             </Link>
