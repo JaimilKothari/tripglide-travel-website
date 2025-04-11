@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "./components/Header";
 import SearchSection from "./components/SearchSection";
-// import SignIn from "./components/SignIn";
 import SignUp from "./components/Signup";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
@@ -349,16 +348,24 @@ function App() {
           returnDate={returnDate}
         />
         <Routes>
-          <Route path="/login" element={<Login onLogIn={handleLogin} mockUsers={mockUsers} />} />
-          <Route path="/signup" element={<SignUp onSignUp={handleSignUp} mockUsers={mockUsers} />} />
-          {/* <Route path="/login" element={<Login />} /> */}
+          <Route
+            path="/login"
+            element={<Login onLogIn={handleLogin} mockUsers={mockUsers} />}
+          />
+          <Route
+            path="/signup"
+            element={<SignUp onSignUp={handleSignUp} mockUsers={mockUsers} />}
+          />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="/forgot-password"
             element={<ForgotPassword mockUsers={mockUsers} setMockUsers={setMockUsers} />}
           />
           <Route path="/carhire" element={<CarHire />} />
-          <Route path="/flight-cart" element={<FlightCart />} />
+          <Route
+            path="/flight-cart"
+            element={<FlightCart user={user} />} // Pass user to FlightCart
+          />
           <Route
             path="/search-results"
             element={
@@ -383,12 +390,16 @@ function App() {
           <Route path="/hotel-search" element={<HotelSearch />} />
           <Route
             path="/favorites"
-            element={<Favorite allFlights={allFlights} setAllFlights={setAllFlights} tripType={tripType} returnDate={returnDate} />}
+            element={
+              <Favorite
+                allFlights={allFlights}
+                setAllFlights={setAllFlights}
+                tripType={tripType}
+                returnDate={returnDate}
+              />
+            }
           />
-          <Route
-            path="/booking-confirmation"
-            element={<BookingConfirmation />}
-          />
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>

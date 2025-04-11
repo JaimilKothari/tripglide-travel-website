@@ -7,22 +7,27 @@ from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 from livereload import Server
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173"])  # Match frontend port
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# Configure logging to file for debugging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='server.log'
+)
 logger = logging.getLogger(__name__)
 
-# MySQL Connection
+# MySQL Connection with reconnection logic
 def get_db_connection():
     try:
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",  # Update if you have a password
+            password="",  # Update with your MySQL password if set
             database="tripglide"
         )
         logger.info("Database connection established")
@@ -31,12 +36,88 @@ def get_db_connection():
         logger.error(f"Failed to connect to database: {e}")
         return None
 
+# Initialize global db connection
 db = get_db_connection()
+
+# Check and reconnect database if needed
+def ensure_db_connection():
+    global db
+    if not db or not db.is_connected():
+        logger.warning("Database connection lost, attempting to reconnect")
+        db = get_db_connection()
+    return db
+
+# Initialize database tables
+def initialize_database():
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
+        logger.error("Cannot initialize database: No connection")
+        return
+    cursor = None
+    try:
+        cursor = db.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                user_id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) UNIQUE,
+                phone VARCHAR(10) UNIQUE,
+                password VARCHAR(255),
+                username VARCHAR(100),
+                gender VARCHAR(50),
+                birthday DATE,
+                address TEXT,
+                pincode VARCHAR(10),
+                state VARCHAR(100),
+                phone_verified BOOLEAN DEFAULT FALSE
+            )
+        """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS flight_bookings (
+                booking_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                flight_details TEXT,
+                booking_date DATE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
+            )
+        """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS hotel_bookings (
+                booking_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                hotel_details TEXT,
+                check_in_date DATE,
+                check_out_date DATE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
+            )
+        """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS car_rentals (
+                rental_id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                car_details TEXT,
+                start_date DATE,
+                end_date DATE,
+                FOREIGN KEY (user_id) REFERENCES users(user_id)
+            )
+        """)
+        db.commit()
+        logger.info("Database tables initialized")
+    except mysql.connector.Error as e:
+        logger.error(f"Failed to initialize database tables: {e}")
+        if db:
+            db.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+
+if db:
+    initialize_database()
 
 # Root route
 @app.route('/')
 def index():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database connection failed"}), 500
     return jsonify({"success": True, "message": "TripGlide API running"}), 200
 
@@ -54,8 +135,7 @@ if TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN and TWILIO_VERIFY_SERVICE_SID:
     except Exception as e:
         logger.error(f"Failed to initialize Twilio client: {e}")
 else:
-    logger.error("Twilio credentials missing: SID=%s, Token=%s, Service SID=%s",
-                 TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN[:4] + "..." if TWILIO_AUTH_TOKEN else None, TWILIO_VERIFY_SERVICE_SID)
+    logger.error("Twilio credentials missing")
 
 # Validation Functions
 def is_email(input_str):
@@ -105,8 +185,10 @@ def reset():
 # Signup Route
 @app.route("/api/signup", methods=["POST"])
 def signup():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -125,8 +207,7 @@ def signup():
         cursor = db.cursor(dictionary=True)
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s", (identifier,))
-        if cursor.fetchone():
-            cursor.close()
+        if cursor.fetchall():  # Consume all results
             return jsonify({"success": False, "error": "User already exists"}), 409
 
         cursor.execute(
@@ -134,23 +215,29 @@ def signup():
             (identifier, password, "NewUser", "Unknown")
         )
         db.commit()
-        cursor.close()
         logger.info(f"User signed up: {field}={identifier}")
         return jsonify({"success": True, "message": "Signup successful"}), 201
     except mysql.connector.Error as e:
-        db.rollback()
         logger.error(f"Database error in signup: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        db.rollback()
         logger.error(f"Signup error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Login Route
 @app.route("/api/login", methods=["POST"])
 def login():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         if not data:
@@ -158,7 +245,7 @@ def login():
 
         identifier = data.get("identifier")
         password = data.get("password")
-        logger.debug(f"Login attempt: identifier={identifier}, password={password}")
+        logger.debug(f"Login attempt: identifier={identifier}")
 
         if not identifier or not password:
             return jsonify({"success": False, "error": "Identifier and password required"}), 400
@@ -170,11 +257,10 @@ def login():
         query = f"SELECT * FROM users WHERE {field} = %s AND password = %s"
         cursor.execute(query, (identifier, password))
         user = cursor.fetchone()
+        cursor.fetchall()  # Consume any remaining results
         logger.debug(f"Query: {query}, Result: {user}")
 
         if not user:
-            cursor.close()
-            logger.info(f"Login failed: {field}={identifier} not found or wrong password")
             return jsonify({"success": False, "error": "Invalid credentials"}), 401
 
         identifiers_to_verify = []
@@ -197,7 +283,6 @@ def login():
                     logger.warning(f"Failed to send SMS OTP to {user['phone']}: {e}")
 
             user_data = {k: v for k, v in user.items() if k != "password"}
-            cursor.close()
             logger.info(f"Login pending OTP: {field}={identifier}, sent to {identifiers_to_verify}")
             return jsonify({
                 "success": False,
@@ -207,26 +292,29 @@ def login():
             }), 200
 
         except TwilioRestException as e:
-            cursor.close()
             logger.error(f"Twilio error sending OTP: {e}")
             return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
         except Exception as e:
-            cursor.close()
             logger.error(f"Unexpected error sending OTP: {e}")
-            return jsonify({"success": False, "error": "Failed to send OTP due to server error"}), 500
+            return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
 
     except mysql.connector.Error as e:
         logger.error(f"Database error in login: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Login error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Verify Code Route
 @app.route("/api/verify_code", methods=["POST"])
 def verify_code_route():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -241,23 +329,40 @@ def verify_code_route():
         if verify_code(identifier, code, channel):
             cursor = db.cursor(dictionary=True)
             field = "email" if is_email(identifier) else "phone"
+            if field == "phone":
+                cursor.execute(f"UPDATE users SET phone_verified = TRUE WHERE {field} = %s", (identifier,))
+                db.commit()
             cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
             user = cursor.fetchone()
-            cursor.close()
+            cursor.fetchall()  # Consume any remaining results
             if not user:
                 return jsonify({"success": False, "error": "User not found"}), 404
             logger.info(f"{field} verified for {identifier}")
-            return jsonify({"success": True, "message": "Verification successful", "user": {k: v for k, v in user.items() if k != "password"}}), 200
+            return jsonify({
+                "success": True,
+                "message": "Verification successful",
+                "user": {k: v for k, v in user.items() if k != "password"}
+            }), 200
         return jsonify({"success": False, "error": "Invalid code"}), 400
+    except mysql.connector.Error as e:
+        logger.error(f"Database error in verify_code: {e}")
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Verify code error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
-# Forgot Password - Step 1: Check Identifier
+# Forgot Password Routes
 @app.route("/api/forgot_password", methods=["POST"])
 def forgot_password():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -270,8 +375,7 @@ def forgot_password():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT email, phone, password FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
-        cursor.close()
-
+        cursor.fetchall()  # Consume any remaining results
         if not user:
             return jsonify({"success": False, "error": "No account found with this identifier"}), 404
 
@@ -281,15 +385,22 @@ def forgot_password():
             "phone": user["phone"] or "",
             "requires_password": True
         }), 200
+    except mysql.connector.Error as e:
+        logger.error(f"Database error in forgot_password: {e}")
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Forgot password error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
-# Forgot Password - Step 2: Verify Current Password and Send OTP
 @app.route("/api/reset_password_request", methods=["POST"])
 def reset_password_request():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -305,13 +416,12 @@ def reset_password_request():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT * FROM users WHERE {field} = %s AND password = %s", (identifier, current_password))
         user = cursor.fetchone()
+        cursor.fetchall()  # Consume any remaining results
         if not user:
-            cursor.close()
             return jsonify({"success": False, "error": "Invalid current password"}), 401
 
         channel = 'email' if is_email(identifier) else 'sms'
         send_verification(identifier, channel)
-        cursor.close()
         logger.info(f"Password reset OTP sent to {identifier}")
         return jsonify({
             "success": True,
@@ -322,15 +432,24 @@ def reset_password_request():
     except TwilioRestException as e:
         logger.error(f"Twilio error sending reset OTP: {e}")
         return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
+    except mysql.connector.Error as e:
+        logger.error(f"Database error in reset_password_request: {e}")
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Reset password request error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
-# Forgot Password - Step 3: Verify OTP and Update Password
 @app.route("/api/reset_password_verify", methods=["POST"])
 def reset_password_verify():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -348,7 +467,7 @@ def reset_password_verify():
             db.commit()
             cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
             user = cursor.fetchone()
-            cursor.close()
+            cursor.fetchall()  # Consume any remaining results
             logger.info(f"Password reset successful for {identifier}")
             return jsonify({
                 "success": True,
@@ -357,18 +476,24 @@ def reset_password_verify():
             }), 200
         return jsonify({"success": False, "error": "Invalid OTP"}), 400
     except mysql.connector.Error as e:
-        db.rollback()
         logger.error(f"Database error in reset_password_verify: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Reset password verify error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Profile Route
 @app.route("/api/profile", methods=["GET"])
 def profile():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         identifier = request.args.get("identifier")
         if not identifier:
@@ -378,25 +503,30 @@ def profile():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
-        cursor.close()
-
+        cursor.fetchall()  # Consume any remaining results
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
         user_data = {k: v for k, v in user.items() if k != "password"}
+        logger.info(f"Profile fetched for {field}={identifier}")
         return jsonify({"success": True, "user": user_data}), 200
     except mysql.connector.Error as e:
         logger.error(f"Database error in profile: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Profile error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Update Profile Route
 @app.route("/api/update_profile", methods=["POST"])
 def update_profile():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -407,38 +537,50 @@ def update_profile():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
+        cursor.fetchall()  # Consume any remaining results
         if not user:
-            cursor.close()
             return jsonify({"success": False, "error": "User not found"}), 404
 
-        update_fields = {k: v for k, v in data.items() if k in ["username", "birthday", "gender", "address", "pincode", "state", "email", "phone"]}
+        update_fields = {k: v for k, v in data.items() if k in ["username", "birthday", "gender", "address", "pincode", "state", "email", "phone"] and v is not None}
         if not update_fields:
-            cursor.close()
             return jsonify({"success": False, "error": "No valid fields to update"}), 400
+
+        # Validate birthday format if provided
+        if "birthday" in update_fields and update_fields["birthday"]:
+            try:
+                datetime.strptime(update_fields["birthday"], "%Y-%m-%d")
+            except ValueError:
+                return jsonify({"success": False, "error": "Birthday must be in YYYY-MM-DD format"}), 400
 
         set_clause = ", ".join([f"{k} = %s" for k in update_fields.keys()])
         values = list(update_fields.values()) + [identifier]
         query = f"UPDATE users SET {set_clause} WHERE {field} = %s"
+        logger.debug(f"Update query: {query}, Values: {values}")
         cursor.execute(query, values)
         db.commit()
-        cursor.close()
-
         logger.info(f"Profile updated for {field}={identifier}")
         return jsonify({"success": True, "message": "Profile updated"}), 200
     except mysql.connector.Error as e:
-        db.rollback()
         logger.error(f"Database error in update_profile: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        db.rollback()
         logger.error(f"Update profile error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Change Password Route
 @app.route("/api/change_password", methods=["POST"])
 def change_password():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         data = request.get_json()
         identifier = data.get("identifier")
@@ -454,29 +596,33 @@ def change_password():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s AND password = %s", (identifier, current_password))
         user = cursor.fetchone()
+        cursor.fetchall()  # Consume any remaining results
         if not user:
-            cursor.close()
             return jsonify({"success": False, "error": "Invalid current password"}), 401
 
         cursor.execute(f"UPDATE users SET password = %s WHERE {field} = %s", (new_password, identifier))
         db.commit()
-        cursor.close()
-
         logger.info(f"Password changed for {field}={identifier}")
         return jsonify({"success": True, "message": "Password changed"}), 200
     except mysql.connector.Error as e:
-        db.rollback()
         logger.error(f"Database error in change_password: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
-        db.rollback()
         logger.error(f"Change password error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        if db:
+            db.rollback()
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 # Request Verification Route
 @app.route("/api/request_verification", methods=["POST"])
 def request_verification():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
     try:
         data = request.get_json()
@@ -488,19 +634,22 @@ def request_verification():
 
         channel = 'email' if is_email(identifier) else 'sms'
         send_verification(identifier, channel)
+        logger.info(f"Verification requested for {identifier} via {channel}")
         return jsonify({"success": True, "message": f"Verification sent to {identifier}"}), 200
     except TwilioRestException as e:
         logger.error(f"Twilio error in request_verification: {e}")
-        return jsonify({"success": False, "error": "Verification service error"}), 500
+        return jsonify({"success": False, "error": f"Verification service error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Request verification error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
 
 # Booking History Routes
 @app.route("/api/flight_bookings", methods=["GET"])
 def flight_bookings():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         user_id = request.args.get("user_id")
         if not user_id:
@@ -508,20 +657,25 @@ def flight_bookings():
 
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM flight_bookings WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()
-        cursor.close()
+        bookings = cursor.fetchall()  # Consume all results
+        logger.info(f"Flight bookings fetched for user_id={user_id}")
         return jsonify({"success": True, "bookings": bookings}), 200
     except mysql.connector.Error as e:
         logger.error(f"Database error in flight_bookings: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Flight bookings error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 @app.route("/api/hotel_bookings", methods=["GET"])
 def hotel_bookings():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         user_id = request.args.get("user_id")
         if not user_id:
@@ -529,20 +683,25 @@ def hotel_bookings():
 
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM hotel_bookings WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()
-        cursor.close()
+        bookings = cursor.fetchall()  # Consume all results
+        logger.info(f"Hotel bookings fetched for user_id={user_id}")
         return jsonify({"success": True, "bookings": bookings}), 200
     except mysql.connector.Error as e:
         logger.error(f"Database error in hotel_bookings: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Hotel bookings error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 @app.route("/api/car_rentals", methods=["GET"])
 def car_rentals():
-    if not db:
+    db = ensure_db_connection()
+    if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
+    cursor = None
     try:
         user_id = request.args.get("user_id")
         if not user_id:
@@ -550,15 +709,18 @@ def car_rentals():
 
         cursor = db.cursor(dictionary=True)
         cursor.execute("SELECT * FROM car_rentals WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()
-        cursor.close()
+        bookings = cursor.fetchall()  # Consume all results
+        logger.info(f"Car rentals fetched for user_id={user_id}")
         return jsonify({"success": True, "bookings": bookings}), 200
     except mysql.connector.Error as e:
         logger.error(f"Database error in car_rentals: {e}")
-        return jsonify({"success": False, "error": "Database error"}), 500
+        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
     except Exception as e:
         logger.error(f"Car rentals error: {e}")
-        return jsonify({"success": False, "error": "Server error"}), 500
+        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
+    finally:
+        if cursor:
+            cursor.close()
 
 if __name__ == "__main__":
     server = Server(app.wsgi_app)

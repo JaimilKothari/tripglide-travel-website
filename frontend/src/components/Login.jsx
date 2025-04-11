@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"; // Added useLocation
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
 
-const Login = () => {
+const Login = ({ onLogIn, mockUsers }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get location to check redirectTo
   const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [error, setError] = useState("");
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
@@ -20,7 +21,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    setShowVerificationPopup(false); // Reset popup
+    setShowVerificationPopup(false);
 
     try {
       const response = await fetch(`${API_URL}/login`, {
@@ -66,10 +67,15 @@ const Login = () => {
       console.log("Verify code response:", data);
 
       if (response.ok && data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user || pendingUser));
+        const userData = data.user || pendingUser;
+        localStorage.setItem("user", JSON.stringify(userData));
+        onLogIn(userData);
         setShowVerificationPopup(false);
         setVerificationData({ identifier: "", code: "" });
-        navigate("/dashboard");
+
+        // Check if redirected from FlightCart
+        const redirectTo = location.state?.redirectTo || "/dashboard";
+        navigate(redirectTo, { state: location.state }); // Preserve original state
       } else {
         setVerificationError(data.error || "Invalid code");
       }
@@ -160,7 +166,6 @@ const Login = () => {
         </motion.div>
       </motion.div>
 
-      {/* OTP Verification Popup */}
       {showVerificationPopup && (
         <motion.div
           initial={{ opacity: 0 }}

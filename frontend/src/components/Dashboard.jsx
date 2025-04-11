@@ -30,7 +30,7 @@ const Dashboard = () => {
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
 
-  const API_URL = "http://localhost:5001/api"; // Fixed to match Flask server port
+  const API_URL = "http://localhost:5001/api";
 
   const statesList = [
     "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
@@ -67,9 +67,10 @@ const Dashboard = () => {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "";
+    if (!dateString) return "Not provided";
     const date = new Date(dateString);
-    return date.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    if (isNaN(date.getTime())) return dateString; // Return as-is if invalid
+    return date.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric" });
   };
 
   const getIdentifier = (user) => user.email || user.phone;
@@ -79,12 +80,15 @@ const Dashboard = () => {
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
-      setFormData(parsedUser);
+      setFormData({
+        ...parsedUser,
+        birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
+      });
       setCompletionPercentage(calculateCompletionPercentage(parsedUser));
       fetchProfile(getIdentifier(parsedUser));
       fetchBookingHistory(parsedUser.user_id);
     } else {
-      navigate("/login"); // Redirect to login, not "/"
+      navigate("/login");
     }
     const storedCoTravellers = localStorage.getItem("coTravellers");
     const storedDevices = localStorage.getItem("devices");
@@ -100,11 +104,17 @@ const Dashboard = () => {
 
   const fetchProfile = async (identifier) => {
     try {
-      const response = await fetch(`${API_URL}/profile?identifier=${identifier}`);
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const response = await fetch(`${API_URL}/profile?identifier=${encodeURIComponent(identifier)}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       const res = await response.json();
       if (res.success) {
-        const updatedUser = res.user;
+        const updatedUser = {
+          ...res.user,
+          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split('T')[0] : ""
+        };
         setUser(updatedUser);
         setFormData(updatedUser);
         setCompletionPercentage(calculateCompletionPercentage(updatedUser));
@@ -114,7 +124,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Fetch profile error:", err);
-      setError("Failed to load profile data: " + err.message);
+      setError(`Failed to load profile data: ${err.message}`);
     }
   };
 
@@ -127,7 +137,10 @@ const Dashboard = () => {
       ];
       for (const { url, setter, key } of endpoints) {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
         if (data.success) {
           setter(data[key] || []);
@@ -137,7 +150,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Fetch booking history error:", err);
-      setError("Failed to load booking history: " + err.message);
+      setError(`Failed to load booking history: ${err.message}`);
     }
   };
 
@@ -189,7 +202,10 @@ const Dashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, identifier: getIdentifier(user) }),
       });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       const res = await response.json();
       if (res.success) {
         alert("Profile updated successfully!");
@@ -204,7 +220,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Save profile error:", err);
-      setError("Server error: " + err.message);
+      setError(`Failed to update profile: ${err.message}`);
     }
   };
 
@@ -229,7 +245,10 @@ const Dashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier: getIdentifier(user), currentPassword, newPassword }),
       });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       const res = await response.json();
       if (res.success) {
         alert("Password changed successfully!");
@@ -241,7 +260,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Change password error:", err);
-      setPasswordError("Server error: " + err.message);
+      setPasswordError(`Failed to change password: ${err.message}`);
     }
   };
 
@@ -252,7 +271,10 @@ const Dashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier: phone }),
       });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       const res = await response.json();
       if (res.success) {
         setVerificationData({ identifier: phone, code: "" });
@@ -263,7 +285,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Request verification error:", err);
-      setError("Server error: " + err.message);
+      setError(`Failed to send verification code: ${err.message}`);
     }
   };
 
@@ -274,7 +296,10 @@ const Dashboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(verificationData),
       });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       const res = await response.json();
       if (res.success) {
         alert("Phone verified successfully!");
@@ -286,7 +311,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       console.error("Verify code error:", err);
-      setVerificationError("Server error: " + err.message);
+      setVerificationError(`Failed to verify code: ${err.message}`);
     }
   };
 
@@ -318,7 +343,6 @@ const Dashboard = () => {
   const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
   const buttonVariants = { hover: { scale: 1.05 }, tap: { scale: 0.95 } };
 
-  // UI remains the same; only logic updated above
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
       {/* Mobile Header */}
@@ -427,7 +451,7 @@ const Dashboard = () => {
                       >
                         <span className="text-sm font-medium text-gray-700">{item.label}</span>
                         <span className="text-sm text-gray-600">
-                          {item.name === "birthday" && user[item.name] ? formatDate(user[item.name]) : user[item.name] || "Not provided"}
+                          {item.name === "birthday" ? formatDate(user[item.name]) : user[item.name] || "Not provided"}
                         </span>
                       </motion.div>
                     ))}
@@ -463,112 +487,52 @@ const Dashboard = () => {
                   {historyTab === "Flights" && (
                     <>
                       <h3 className="text-lg font-semibold text-gray-800">Flight Bookings</h3>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Upcoming Flights</h4>
-                        {flightBookings.filter((b) => b.status === "Upcoming").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No upcoming flights.</p>
-                        ) : (
-                          flightBookings.filter((b) => b.status === "Upcoming").map((booking) => (
-                            <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{booking.from_city} to {booking.to_city}</p>
-                                <p className="text-sm text-gray-500">{formatDate(booking.departure_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof booking.cost === "number" ? booking.cost : parseFloat(booking.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Past Flights</h4>
-                        {flightBookings.filter((b) => b.status === "Completed").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No past flights.</p>
-                        ) : (
-                          flightBookings.filter((b) => b.status === "Completed").map((booking) => (
-                            <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{booking.from_city} to {booking.to_city}</p>
-                                <p className="text-sm text-gray-500">{formatDate(booking.departure_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof booking.cost === "number" ? booking.cost : parseFloat(booking.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
+                      {flightBookings.length === 0 ? (
+                        <p className="text-gray-500 text-sm">No flight bookings found.</p>
+                      ) : (
+                        flightBookings.map((booking) => (
+                          <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">{booking.flight_details || "Flight Details"}</p>
+                              <p className="text-sm text-gray-500">{formatDate(booking.booking_date)}</p>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
                     </>
                   )}
                   {historyTab === "Hotels" && (
                     <>
                       <h3 className="text-lg font-semibold text-gray-800">Hotel Bookings</h3>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Upcoming Hotels</h4>
-                        {hotelBookings.filter((b) => b.status === "Upcoming").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No upcoming hotel bookings.</p>
-                        ) : (
-                          hotelBookings.filter((b) => b.status === "Upcoming").map((booking) => (
-                            <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{booking.hotel_name}</p>
-                                <p className="text-sm text-gray-500">{formatDate(booking.check_in_date)} - {formatDate(booking.check_out_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof booking.cost === "number" ? booking.cost : parseFloat(booking.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Past Hotels</h4>
-                        {hotelBookings.filter((b) => b.status === "Completed").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No past hotel bookings.</p>
-                        ) : (
-                          hotelBookings.filter((b) => b.status === "Completed").map((booking) => (
-                            <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{booking.hotel_name}</p>
-                                <p className="text-sm text-gray-500">{formatDate(booking.check_in_date)} - {formatDate(booking.check_out_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof booking.cost === "number" ? booking.cost : parseFloat(booking.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
+                      {hotelBookings.length === 0 ? (
+                        <p className="text-gray-500 text-sm">No hotel bookings found.</p>
+                      ) : (
+                        hotelBookings.map((booking) => (
+                          <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">{booking.hotel_details || "Hotel Details"}</p>
+                              <p className="text-sm text-gray-500">{formatDate(booking.check_in_date)} - {formatDate(booking.check_out_date)}</p>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
                     </>
                   )}
                   {historyTab === "Cars" && (
                     <>
                       <h3 className="text-lg font-semibold text-gray-800">Car Rentals</h3>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Upcoming Rentals</h4>
-                        {carRentals.filter((b) => b.status === "Upcoming").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No upcoming car rentals.</p>
-                        ) : (
-                          carRentals.filter((b) => b.status === "Upcoming").map((rental) => (
-                            <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{rental.car_name}</p>
-                                <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof rental.cost === "number" ? rental.cost : parseFloat(rental.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="text-md font-medium text-gray-700 mb-3">Past Rentals</h4>
-                        {carRentals.filter((b) => b.status === "Completed").length === 0 ? (
-                          <p className="text-gray-500 text-sm">No past car rentals.</p>
-                        ) : (
-                          carRentals.filter((b) => b.status === "Completed").map((rental) => (
-                            <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                              <div>
-                                <p className="text-sm font-medium text-gray-800">{rental.car_name}</p>
-                                <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
-                              </div>
-                              <p className="text-sm text-gray-600">₹{(typeof rental.cost === "number" ? rental.cost : parseFloat(rental.cost || 0)).toFixed(2)}</p>
-                            </motion.div>
-                          ))
-                        )}
-                      </div>
+                      {carRentals.length === 0 ? (
+                        <p className="text-gray-500 text-sm">No car rentals found.</p>
+                      ) : (
+                        carRentals.map((rental) => (
+                          <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">{rental.car_details || "Car Details"}</p>
+                              <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
                     </>
                   )}
                 </motion.div>
@@ -692,6 +656,7 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Edit Profile Popup */}
       <AnimatePresence>
         {showPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -742,7 +707,7 @@ const Dashboard = () => {
                       <input
                         type={item.type || "text"}
                         name={item.name}
-                        value={item.name === "birthday" && formData[item.name] ? formData[item.name].substring(0, 10) : formData[item.name] || ""}
+                        value={formData[item.name] || ""}
                         onChange={handleChange}
                         className="mt-1 block w-full border border-gray-200 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
                       />
@@ -760,6 +725,7 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
+      {/* Change Password Popup */}
       <AnimatePresence>
         {showPasswordPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -809,7 +775,7 @@ const Dashboard = () => {
               </motion.div>
               <div className="flex justify-end mt-6">
                 <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleChangePassword} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                  Update
+                  Save
                 </motion.button>
               </div>
             </motion.div>
@@ -817,6 +783,7 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
+      {/* Verification Popup */}
       <AnimatePresence>
         {showVerificationPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -841,7 +808,7 @@ const Dashboard = () => {
                     value={verificationData.code}
                     onChange={handleVerificationChange}
                     className="w-full border border-gray-200 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
-                    placeholder={`Enter code sent to ${verificationData.identifier}`}
+                    placeholder="Enter OTP"
                   />
                 </motion.div>
               </motion.div>
