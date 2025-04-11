@@ -384,6 +384,9 @@ function App() {
           {/* <Route path="/car-confirmation" element={<CarConfirmation />} /> */}
         <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} /> 
         <Route path="/hotel-booking" element={<HotelBooking />} />
+          <Route path="/favorites" element={<Favorite allFlights={allFlights} />} />
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+
           
         </Routes>
       </Router>
