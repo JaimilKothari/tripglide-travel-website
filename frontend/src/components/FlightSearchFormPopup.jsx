@@ -489,7 +489,7 @@ const FlightSearchFormPopup = ({
               <button
                 type="submit"
                 disabled={isSearchDisabled}
-                className={`mt-5 px-6 py-3 font-semibold rounded-lg transition ${
+                className={`mt-5 px-6 py-3 cursor-pointer font-semibold rounded-lg transition ${
                   isSearchDisabled
                     ? "bg-blue-300 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 text-white"
