@@ -854,11 +854,7 @@ const CabListing = () => {
                     </div>
                     <button 
                       onClick={() => toggleFavorite(car.id)}
-<<<<<<< HEAD
-                      className="text-gray-400 hover:text-red-500 transition-colors"
-=======
                       className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors"
->>>>>>> 2ffd4dcaef5abc45eda35a883b9e96f47e2eaadc
                     >
                       <FaHeart className={car.isFavorite ? 'text-red-500' : ''} size={20} />
                     </button>
