@@ -4,7 +4,28 @@ import { FaTimes, FaCheckCircle, FaTimesCircle, FaSuitcaseRolling, FaChair, FaUt
 import { loadStripe } from "@stripe/stripe-js";
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ"); // Replace with your Stripe Publishable Key
+const stripePromise = loadStripe("pk_test_51R9No7RtOB964nOwbCnB8DQSDfS5G66dozt3WRe0mwu3E5hwlxsObPZHYORqKrmWuVVhpn8EYUsWi075a1WYCshV00IbVFQLYi"); // Replace with your Stripe Publishable Key
+
+// Utility function to calculate duration between two times
+const calculateDuration = (depTime, arrTime) => {
+  if (!depTime || !arrTime) return "N/A";
+
+  const [depHours, depMinutes] = depTime.split(":").map(Number);
+  const [arrHours, arrMinutes] = arrTime.split(":").map(Number);
+
+  const depTotalMinutes = depHours * 60 + depMinutes;
+  let arrTotalMinutes = arrHours * 60 + arrMinutes;
+
+  if (arrTotalMinutes < depTotalMinutes) {
+    arrTotalMinutes += 24 * 60; // Add 24 hours (in minutes)
+  }
+
+  const diffMinutes = arrTotalMinutes - depTotalMinutes;
+  const hours = Math.floor(diffMinutes / 60);
+  const minutes = diffMinutes % 60;
+
+  return `${hours}h ${minutes}m`;
+};
 
 // Utility function to calculate duration between two times
 const calculateDuration = (depTime, arrTime) => {
