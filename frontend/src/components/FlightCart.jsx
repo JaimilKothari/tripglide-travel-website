@@ -7,9 +7,6 @@ import { loadStripe } from "@stripe/stripe-js";
 const stripePromise = loadStripe("pk_test_51RA20B4D8TqxSjMO2AL0EwDRq7G1h3JF3CvdcasP9nE34rF4w5jNrSFbUPtbsoHsvGf7X2dkIUFZ4ETqGdjAfcjZ00UOI1COTA"); // Replace with your Stripe Publishable Key
 
 // Utility function to calculate duration between two times
-// (This function is already defined, so the duplicate is removed)
-
-// Utility function to calculate duration between two times
 const calculateDuration = (depTime, arrTime) => {
   if (!depTime || !arrTime) return "N/A";
 
@@ -30,7 +27,7 @@ const calculateDuration = (depTime, arrTime) => {
   return `${hours}h ${minutes}m`;
 };
 
-const FlightCart = () => {
+const FlightCart = ({ user }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedFlight, searchParams } = location.state || {};
@@ -41,6 +38,7 @@ const FlightCart = () => {
   // Debug logs to inspect the data
   console.log("FlightCart location.state:", location.state);
   console.log("FlightCart selectedFlight.returnFlight:", selectedFlight?.returnFlight);
+  console.log("FlightCart user:", user);
 
   if (!selectedFlight || !selectedFlight.price) {
     return <div className="p-4 text-center">No valid flight selected. Please go back and select a flight.</div>;
@@ -111,6 +109,20 @@ const FlightCart = () => {
     if (!selectedFare) {
       console.error("No fare selected. Please select a fare option.");
       setError("Please select a fare option.");
+      return;
+    }
+
+    // Check if user is logged in
+    const isLoggedIn = user || localStorage.getItem("user");
+    if (!isLoggedIn) {
+      console.log("User not logged in, redirecting to login");
+      navigate("/login", {
+        state: {
+          redirectTo: "/flight-cart",
+          selectedFlight,
+          searchParams,
+        },
+      });
       return;
     }
 

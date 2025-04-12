@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "./components/Header";
 import SearchSection from "./components/SearchSection";
-import SignIn from "./components/SignIn";
 import SignUp from "./components/Signup";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword";
 import CarHire from "./components/Carhire";
 import FeaturesSection from "./components/FeaturesSection";
@@ -332,33 +333,43 @@ function App() {
     setUser({ username: userData.username, email: userData.email });
   };
 
-  const handleSignIn = (userData) => {
+  const handleLogin = (userData) => {
     setUser(userData);
   };
 
-  const handleLogout = () => {
-    setUser(null);
-  };
+  // const handleLogout = () => {
+  //   setUser(null);
+  // };
 
   return (
     <GoogleOAuthProvider clientId="903553660853-d2uiue8osd3cjshdgidtd2hq3pge2sce.apps.googleusercontent.com">
       <Router>
         <Header
           user={user}
-          handleLogout={handleLogout}
+          // handleLogout={handleLogout}
           allFlights={allFlights}
           tripType={tripType}
           returnDate={returnDate}
         />
         <Routes>
-          <Route path="/signin" element={<SignIn onSignIn={handleSignIn} mockUsers={mockUsers} />} />
-          <Route path="/signup" element={<SignUp onSignUp={handleSignUp} mockUsers={mockUsers} />} />
+          <Route
+            path="/login"
+            element={<Login onLogIn={handleLogin} mockUsers={mockUsers} />}
+          />
+          <Route
+            path="/signup"
+            element={<SignUp onSignUp={handleSignUp} mockUsers={mockUsers} />}
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="/forgot-password"
             element={<ForgotPassword mockUsers={mockUsers} setMockUsers={setMockUsers} />}
           />
           <Route path="/carhire" element={<CarHire />} />
-          <Route path="/flight-cart" element={<FlightCart />} />
+          <Route
+            path="/flight-cart"
+            element={<FlightCart user={user} />} // Pass user to FlightCart
+          />
           <Route
             path="/search-results"
             element={
@@ -383,17 +394,16 @@ function App() {
           <Route path="/hotel-search" element={<HotelSearch />} />
           <Route
             path="/favorites"
-            element={<Favorite allFlights={allFlights} setAllFlights={setAllFlights} tripType={tripType} returnDate={returnDate} />}
+            element={
+              <Favorite
+                allFlights={allFlights}
+                setAllFlights={setAllFlights}
+                tripType={tripType}
+                returnDate={returnDate}
+              />
+            }
           />
-          <Route
-            path="/booking-confirmation"
-            element={<BookingConfirmation />}
-          />
-          <Route path="/hotel-card" element={<HotelCard />} />
-          <Route path="/hotel-filter" element={<HotelFilter />} />
-          <Route path="/hotel-details" element={<HotelDetails />} />
-          <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} />
-          <Route path="/hotel-booking" element={<HotelBooking />} />
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
         </Routes>
 
       </Router>
