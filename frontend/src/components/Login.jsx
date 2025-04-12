@@ -142,7 +142,7 @@ const Login = ({ onLogIn, mockUsers }) => {
             />
           </motion.div>
           <motion.div variants={itemVariants} className="text-right">
-            <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
+            <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline cursor-pointer">
               Forgot Password?
             </Link>
           </motion.div>
@@ -151,7 +151,7 @@ const Login = ({ onLogIn, mockUsers }) => {
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="w-full bg-blue-600 text-white py-3 cursor-pointer rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Login
           </motion.button>
@@ -159,7 +159,7 @@ const Login = ({ onLogIn, mockUsers }) => {
         <motion.div variants={itemVariants} className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Don’t have an account?{" "}
-            <Link to="/signup" className="text-blue-600 hover:underline">
+            <Link to="/signup" className="text-blue-600 hover:underline cursor-pointer">
               Sign Up
             </Link>
           </p>
@@ -235,7 +235,7 @@ const Login = ({ onLogIn, mockUsers }) => {
                 whileHover="hover"
                 whileTap="tap"
                 onClick={handleVerifyCode}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                className="bg-blue-600 text-white px-6 py-2 cursor-pointer rounded-lg hover:bg-blue-700 transition"
               >
                 Verify
               </motion.button>

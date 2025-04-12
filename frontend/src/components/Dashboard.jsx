@@ -355,7 +355,7 @@ const Dashboard = () => {
         >
           <FaBars size={24} />
         </motion.button>
-        <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
+        <h1 className="text-xl font-semibold text-gray-800 cursor-pointer">Dashboard</h1>
       </div>
 
       <div className="flex flex-col lg:flex-row flex-1 max-w-7xl mx-auto w-full p-4 gap-6">
@@ -386,7 +386,7 @@ const Dashboard = () => {
                 <motion.button
                   onClick={() => (item.onClick ? item.onClick() : handleSectionChange(item.section))}
                   variants={itemVariants}
-                  className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition-colors ${
+                  className={`w-full flex cursor-pointer items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition-colors ${
                     activeSection === item.section ? "bg-blue-100 text-blue-600 font-semibold" : ""
                   }`}
                   whileHover={{ x: 5 }}
@@ -427,7 +427,7 @@ const Dashboard = () => {
                       whileHover="hover"
                       whileTap="tap"
                       onClick={openEditPopup}
-                      className="mt-4 sm:mt-0 flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                      className="mt-4 sm:mt-0 flex cursor-pointer items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                     >
                       <FaEdit className="mr-2" />
                       Edit Profile
@@ -477,7 +477,7 @@ const Dashboard = () => {
                     <button
                       key={tab}
                       onClick={() => setHistoryTab(tab)}
-                      className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+                      className={`px-4 py-2 cursor-pointer text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
                     >
                       {tab}
                     </button>
@@ -577,7 +577,7 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">•••••••</span>
-                      <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => setShowPasswordPopup(true)} className="text-blue-600 text-sm hover:underline">
+                      <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => setShowPasswordPopup(true)} className="text-blue-600 cursor-pointer text-sm hover:underline">
                         Change
                       </motion.button>
                     </div>
@@ -605,7 +605,7 @@ const Dashboard = () => {
                       onChange={(e) => setNewTraveller({ ...newTraveller, relationship: e.target.value })}
                       className="border border-gray-200 rounded-lg p-3 flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
                     />
-                    <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleAddCoTraveller} className="flex items-center bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition">
+                    <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleAddCoTraveller} className="flex items-center cursor-pointer bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition">
                       <AiOutlinePlus className="mr-2" />
                       Add
                     </motion.button>

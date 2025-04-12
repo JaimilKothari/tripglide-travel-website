@@ -99,7 +99,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
       <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
         <button
           onClick={() => navigate('/')}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          className="absolute cursor-pointer top-4 right-4 text-gray-500 hover:text-gray-700"
         >
           ✕
         </button>
@@ -133,7 +133,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900"
+                className="w-full py-2 cursor-pointer bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900"
               >
                 Next
               </button>
@@ -143,7 +143,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
 
         {step === 2 && (
           <>
-            <h2 className="text-xl font-semibold text-gray-900">Verify Your Account</h2>
+            <h2 className="text-xl font-semibold text-gray-900 cursor-pointer">Verify Your Account</h2>
             <p className="mt-1 text-sm text-gray-500">
               Your details: Email: {userDetails.email || "N/A"}, Phone: {userDetails.phone || "N/A"}
             </p>
@@ -162,7 +162,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">New Password</label>
+                <label className="block text-sm font-medium text-gray-700 cursor-pointer">New Password</label>
                 <input
                   type="password"
                   {...register('newPassword', {
@@ -179,7 +179,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900"
+                className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium cursor-pointer hover:bg-gray-900"
               >
                 Verify and Send OTP
               </button>
@@ -209,7 +209,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
               </div>
               <button
                 type="submit"
-                className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900"
+                className="w-full py-2 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-900 cursor-pointer"
               >
                 Verify OTP
               </button>
@@ -232,7 +232,7 @@ const ForgotPassword = ({ mockUsers, setMockUsers }) => {
         {step === 1 && (
           <p className="mt-4 text-sm text-center">
             Remember your password?{' '}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link to="/login" className="text-blue-600 hover:underline cursor-pointer">
               Sign in
             </Link>
           </p>

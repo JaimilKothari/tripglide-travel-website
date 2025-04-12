@@ -81,7 +81,7 @@ const Signup = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-2xl font-bold text-gray-800 mb-6 text-center"
+          className="text-2xl font-bold text-gray-800 mb-6 text-center cursor-pointer"
         >
           Sign Up
         </motion.h2>
@@ -147,7 +147,7 @@ const Signup = () => {
               whileHover="hover"
               whileTap="tap"
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition glow-button"
+              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition glow-button cursor-pointer"
             >
               Sign Up
             </motion.button>
@@ -160,7 +160,7 @@ const Signup = () => {
           transition={{ delay: 0.5 }}
           className="mt-4 text-sm text-gray-600 text-center"
         >
-          Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log In</Link>
+          Already have an account? <Link to="/login" className="text-blue-500 hover:underline cursor-pointer">Log In</Link>
         </motion.p>
       </motion.div>
     </div>
