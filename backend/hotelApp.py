@@ -167,5 +167,103 @@ def create_checkout_session():
         print(f"Error creating checkout session: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/bookings', methods=['POST'])
+def store_booking():
+    try:
+        data = request.get_json()
+        print(f"Received booking data: {data}")  # Debug
+
+        # Extract all fields
+        booking_number = data.get('booking_number')
+        hotel_name = data.get('hotel_name')
+        arrival = data.get('arrival')
+        check_in_date = data.get('check_in_date')
+        check_out_date = data.get('check_out_date')
+        adults = data.get('adults')
+        children = data.get('children')
+        rooms = data.get('rooms')
+        room_type = data.get('room_type')
+        price_per_night = data.get('price_per_night')
+        total_amount = data.get('total_amount')
+        guest_name = data.get('guest_name')
+        email = data.get('email')
+        phone = data.get('phone')
+        booked_on = data.get('booked_on')
+        payment_method = data.get('payment_method', 'Credit Card')
+
+        # Validate required fields
+        required_fields = {
+            'booking_number': booking_number,
+            'hotel_name': hotel_name,
+            'check_in_date': check_in_date,
+            'check_out_date': check_out_date,
+            'adults': adults,
+            'children': children,
+            'rooms': rooms,
+            'room_type': room_type,
+            'price_per_night': price_per_night,
+            'total_amount': total_amount,
+            'guest_name': guest_name,
+            'email': email,
+            'booked_on': booked_on
+        }
+        missing_fields = [k for k, v in required_fields.items() if v is None or v == '']
+        if missing_fields:
+            error_msg = f"Missing required fields: {', '.join(missing_fields)}"
+            print(error_msg)  # Debug
+            return jsonify({'error': error_msg}), 400
+
+        # Convert numeric fields
+        try:
+            adults = int(adults)
+            children = int(children)
+            rooms = int(rooms)
+            price_per_night = float(price_per_night)
+            total_amount = float(total_amount)
+        except (ValueError, TypeError) as e:
+            print(f"Numeric conversion error: {e}")  # Debug
+            return jsonify({'error': 'Invalid numeric values'}), 400
+
+        # Database connection
+        connection = get_db_connection()
+        if not connection:
+            print("Database connection failed")  # Debug
+            return jsonify({'error': 'Database connection failed'}), 500
+
+        cursor = connection.cursor()
+
+        # Insert query
+        query = """
+        INSERT INTO hotel_bookings (
+            booking_number, hotel_name, arrival, check_in_date, check_out_date,
+            adults, children, rooms, room_type, price_per_night, total_amount,
+            guest_name, email, phone, booked_on, payment_method
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            booking_number, hotel_name, arrival, check_in_date, check_out_date,
+            adults, children, rooms, room_type, price_per_night, total_amount,
+            guest_name, email, phone, booked_on, payment_method
+        )
+
+        try:
+            cursor.execute(query, values)
+            connection.commit()
+            print(f"Booking {booking_number} stored successfully")  # Debug
+        except mysql.connector.Error as e:
+            print(f"Database error: {e}")  # Debug
+            if "Duplicate entry" in str(e):
+                return jsonify({'error': 'Booking number already exists'}), 409
+            return jsonify({'error': f'Database error: {e}'}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        return jsonify({'message': 'Booking stored successfully'}), 201
+
+    except Exception as e:
+        print(f"Unexpected error: {e}")  # Debug
+        return jsonify({'error': f'An error occurred: {e}'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
