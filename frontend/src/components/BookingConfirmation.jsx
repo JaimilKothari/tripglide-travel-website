@@ -134,14 +134,15 @@ const BookingConfirmation = () => {
   // Function to get airline logo URL
   const getAirlineLogo = (airline) => {
     const airlineLogos = {
-      'indigo': 'https://i.pinimg.com/474x/e9/82/55/e98255f2c1040c38dd2314a6288f1850.jpg',
+      indigo: 'https://i.pinimg.com/474x/e9/82/55/e98255f2c1040c38dd2314a6288f1850.jpg',
       'air india': 'https://i.pinimg.com/736x/dd/f1/ce/ddf1ceee59fd228201084a162cbfb48c.jpg',
-      'spicejet': 'https://i.pinimg.com/474x/1f/5c/77/1f5c77cbff120399a8e50b101329a039.jpg',
-      'vistara': 'https://i.pinimg.com/474x/6b/d3/8c/6bd38cd030c054f5ea2c5d16974d7fbb.jpg',
-      'default': '/api/placeholder/40/40'
+      spicejet: 'https://i.pinimg.com/474x/1f/5c/77/1f5c77cbff120399a8e50b101329a039.jpg',
+      vistara: 'https://i.pinimg.com/474x/6b/d3/8c/6bd38cd030c054f5ea2c5d16974d7fbb.jpg',
+      default: '/api/placeholder/40/40',
     };
-    
-    const airlineLower = airline.toLowerCase();
+
+    // Use an empty string as a fallback if airline is undefined or null
+    const airlineLower = (airline || '').toLowerCase();
     return airlineLogos[airlineLower] || airlineLogos.default;
   };
 
@@ -215,7 +216,11 @@ const BookingConfirmation = () => {
                 <div key={index} className="border rounded-lg p-3 mb-3 shadow-sm">
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex items-center">
-                      <img src={getAirlineLogo(leg.airline)} alt={leg.airline} className="h-8 w-8 mr-2" />
+                      <img
+                        src={getAirlineLogo(leg.airline)}
+                        alt={leg.airline || 'Airline Logo'}
+                        className="h-8 w-8 mr-2"
+                      />
                       <span className="font-semibold">{leg.airline}</span>
                     </div>
                     <div className="text-sm text-gray-500">Flight {leg.flightNumber || "N/A"}</div>
