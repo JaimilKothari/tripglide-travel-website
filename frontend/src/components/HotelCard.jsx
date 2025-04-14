@@ -88,7 +88,7 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
         filters.amenities.forEach((amenity) => queryParams.append('amenities', amenity));
       }
 
-      const response = await fetch(`http://localhost:5001/all?${queryParams.toString()}`);
+      const response = await fetch(`http://localhost:5003/all?${queryParams.toString()}`);
       const data = await response.json();
       setHotels(data.all || []);
     } catch (error) {
@@ -185,7 +185,13 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
                 >
                   <div className="w-full md:w-[30%] h-56 md:h-full">
                     <img
-                      src={hotel.images ? (hotel.images.startsWith('http') ? hotel.images : `http://localhost:5001/images/${hotel.images}`) : '/images/Hotel/placeholder.jpg'}
+                      src={
+                        hotel.images
+                          ? hotel.images.startsWith('http')
+                            ? hotel.images
+                            : `http://localhost:5003/images/${hotel.images}`
+                          : '/images/Hotel/placeholder.jpg'
+                      }
                       alt={hotel.hotel}
                       className="w-full h-full object-cover"
                       loading="lazy"

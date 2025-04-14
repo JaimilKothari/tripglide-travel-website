@@ -6,7 +6,28 @@ import { loadStripe } from "@stripe/stripe-js";
 // Load Stripe with your publishable key
 const stripePromise = loadStripe("pk_test_51RBDzAQVbUKIjAtM0sKQOZ3Z3ErNkHUXooqIOCQkMUzNYsl85hKfQhevmDlAB46ebEcGSrvOquL507u2t6OZVu1T00E8wJhZTD"); // Replace with your Stripe Publishable Key
 
-const FlightCart = () => {
+// Utility function to calculate duration between two times
+const calculateDuration = (depTime, arrTime) => {
+  if (!depTime || !arrTime) return "N/A";
+
+  const [depHours, depMinutes] = depTime.split(":").map(Number);
+  const [arrHours, arrMinutes] = arrTime.split(":").map(Number);
+
+  const depTotalMinutes = depHours * 60 + depMinutes;
+  let arrTotalMinutes = arrHours * 60 + arrMinutes;
+
+  if (arrTotalMinutes < depTotalMinutes) {
+    arrTotalMinutes += 24 * 60; // Add 24 hours (in minutes)
+  }
+
+  const diffMinutes = arrTotalMinutes - depTotalMinutes;
+  const hours = Math.floor(diffMinutes / 60);
+  const minutes = diffMinutes % 60;
+
+  return `${hours}h ${minutes}m`;
+};
+
+const FlightCart = ({ user }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedFlight, searchParams } = location.state || {};
@@ -14,14 +35,17 @@ const FlightCart = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Debug logs to inspect the data
   console.log("FlightCart location.state:", location.state);
+  console.log("FlightCart selectedFlight.returnFlight:", selectedFlight?.returnFlight);
+  console.log("FlightCart user:", user);
 
   if (!selectedFlight || !selectedFlight.price) {
     return <div className="p-4 text-center">No valid flight selected. Please go back and select a flight.</div>;
   }
 
   const { tripType, from, to, departDate, returnDate, multiCityFlights } = searchParams || {};
-  const firstLeg = tripType === "multicity" ? selectedFlight.multiCityFlights?.[0] : selectedFlight;
+  const firstLeg = tripType === "multicity" && selectedFlight.multiCityFlights ? selectedFlight.multiCityFlights[0] : selectedFlight;
 
   let flightSummary = "";
   if (tripType === "multicity" && multiCityFlights) {
@@ -88,6 +112,20 @@ const FlightCart = () => {
       return;
     }
 
+    // Check if user is logged in
+    const isLoggedIn = user || localStorage.getItem("user");
+    if (!isLoggedIn) {
+      console.log("User not logged in, redirecting to login");
+      navigate("/login", {
+        state: {
+          redirectTo: "/flight-cart",
+          selectedFlight,
+          searchParams,
+        },
+      });
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -98,7 +136,6 @@ const FlightCart = () => {
         description: `${tripType === "multicity" ? "Multi-city Flight" : tripType === "return" ? "Return Flight" : "One-way Flight"} - ${flightSummary}`,
       });
 
-      // Store booking details in sessionStorage before redirecting to Stripe Checkout
       const bookingDetails = {
         selectedFlight,
         selectedFare,
@@ -106,12 +143,11 @@ const FlightCart = () => {
       };
       sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
 
-      // Create a Checkout Session on the backend
       const response = await fetch("http://localhost:5000/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: selectedFare.price * 100, // Amount in cents
+          amount: selectedFare.price * 100,
           description: `${tripType === "multicity" ? "Multi-city Flight" : tripType === "return" ? "Return Flight" : "One-way Flight"} - ${flightSummary}`,
         }),
       });
@@ -124,7 +160,6 @@ const FlightCart = () => {
       const { sessionId } = await response.json();
       console.log("Received sessionId:", sessionId);
 
-      // Redirect to Stripe Checkout
       const stripe = await stripePromise;
       const { error } = await stripe.redirectToCheckout({ sessionId });
 
@@ -165,7 +200,7 @@ const FlightCart = () => {
           selectedFlight.multiCityFlights.map((leg, index) => (
             <div key={index} className="p-4 border-b">
               <h3 className="text-lg font-semibold">
-                {leg.departure} → {leg.arrival} • {leg.airline} • {leg.departureDate} • Departure at {leg.departureTime} - Arrival at {leg.arrivalTime}
+                {leg.departure} → {leg.arrival} • {leg.airline} • {leg.departureDate || departDate} • Departure at {leg.departureTime || "N/A"} - Arrival at {leg.arrivalTime || "N/A"} • Duration: {calculateDuration(leg.departureTime, leg.arrivalTime)}
               </h3>
             </div>
           ))
@@ -173,19 +208,19 @@ const FlightCart = () => {
           <>
             <div className="p-4 border-b">
               <h3 className="text-lg font-semibold">
-                Outbound: {firstLeg.departure} → {firstLeg.arrival} • {firstLeg.airline} • {departDate} • Departure at {firstLeg.departureTime} - Arrival at {firstLeg.arrivalTime}
+                Outbound: {firstLeg.departure} → {firstLeg.arrival} • {firstLeg.airline} • {departDate} • Departure at {firstLeg.departureTime || "N/A"} - Arrival at {firstLeg.arrivalTime || "N/A"} • Duration: {calculateDuration(firstLeg.departureTime, firstLeg.arrivalTime)}
               </h3>
             </div>
             <div className="p-4 border-b">
               <h3 className="text-lg font-semibold">
-                Return: {selectedFlight.returnFlight.departure} → {selectedFlight.returnFlight.arrival} • {selectedFlight.returnFlight.airline} • {returnDate} • Departure at {selectedFlight.returnFlight.departureTime} - Arrival at {selectedFlight.returnFlight.arrivalTime}
+                Return: {selectedFlight.returnFlight.departure} → {selectedFlight.returnFlight.arrival} • {selectedFlight.returnFlight.airline} • {returnDate} • Departure at {selectedFlight.returnFlight.departureTime || "N/A"} - Arrival at {selectedFlight.returnFlight.arrivalTime || "N/A"} • Duration: {selectedFlight.returnFlight.duration || "N/A"}
               </h3>
             </div>
           </>
         ) : (
           <div className="p-4 border-b">
             <h3 className="text-lg font-semibold">
-              {firstLeg.departure} → {firstLeg.arrival} • {firstLeg.airline} • {departDate} • Departure at {firstLeg.departureTime} - Arrival at {firstLeg.arrivalTime}
+              {firstLeg.departure} → {firstLeg.arrival} • {firstLeg.airline} • {departDate} • Departure at {firstLeg.departureTime || "N/A"} - Arrival at {firstLeg.arrivalTime || "N/A"} • Duration: {calculateDuration(firstLeg.departureTime, firstLeg.arrivalTime)}
             </h3>
           </div>
         )}

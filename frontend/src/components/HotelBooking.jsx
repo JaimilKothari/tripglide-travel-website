@@ -17,62 +17,112 @@ const HotelBooking = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [bookingNumber, setBookingNumber] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
 
   // Generate random booking number
   useEffect(() => {
     const generateBookingNumber = () => {
-      return Math.floor(10000000 + Math.random() * 90000000).toString();
+      return Math.floor(1000000000 + Math.random() * 9000000000).toString(); // 10 digits for uniqueness
     };
     setBookingNumber(generateBookingNumber());
   }, []);
 
-  // Retrieve booking details and user details from sessionStorage and localStorage
+  // Retrieve and send booking details
   useEffect(() => {
-    // Try to get from sessionStorage first
     let storedDetails = sessionStorage.getItem("hotelBookingDetails");
     let storedUserDetails = sessionStorage.getItem("stripeUserDetails");
 
-    // If not in sessionStorage, try localStorage as a backup
     if (!storedDetails) {
       storedDetails = localStorage.getItem("hotelBookingDetails");
-      if (storedDetails) {
-        sessionStorage.setItem("hotelBookingDetails", storedDetails);
-      }
+      if (storedDetails) sessionStorage.setItem("hotelBookingDetails", storedDetails);
     }
 
     if (!storedUserDetails) {
       storedUserDetails = localStorage.getItem("stripeUserDetails");
-      if (storedUserDetails) {
-        sessionStorage.setItem("stripeUserDetails", storedUserDetails);
-      }
+      if (storedUserDetails) sessionStorage.setItem("stripeUserDetails", storedUserDetails);
     }
 
-    // Set defaults for user details if not found
     let parsedUserDetails = null;
     if (storedUserDetails) {
-      parsedUserDetails = JSON.parse(storedUserDetails);
+      try {
+        parsedUserDetails = JSON.parse(storedUserDetails);
+      } catch (e) {
+        console.error("Error parsing stripeUserDetails:", e);
+      }
     }
 
-    // Set default user info if not available
-    setUserDetails(
-      parsedUserDetails || {
-        name: "Moksha",
-        email: "mokshabhavsar2004@gmail.com",
-        phone: "Not provided",
-      }
-    );
+    const defaultUserDetails = {
+      name: "Jaimil Kothari",
+      email: "jaimilkothari2003@gmail.com",
+      phone: "Not provided",
+    };
+    setUserDetails(parsedUserDetails || defaultUserDetails);
 
     if (storedDetails) {
-      const parsedDetails = JSON.parse(storedDetails);
-      setBookingDetails(parsedDetails);
-      // Save to localStorage for persistence across refreshes
-      localStorage.setItem("hotelBookingDetails", storedDetails);
+      try {
+        const parsedDetails = JSON.parse(storedDetails);
+        setBookingDetails(parsedDetails);
+        localStorage.setItem("hotelBookingDetails", storedDetails);
+
+        const sendBookingToBackend = async () => {
+          const bookingSent = sessionStorage.getItem("bookingSent");
+          if (bookingSent === bookingNumber) {
+            console.log(`Booking ${bookingNumber} already sent, skipping...`);
+            return;
+          }
+
+          const bookingData = {
+            booking_number: bookingNumber,
+            hotel_name: parsedDetails.hotelName,
+            arrival: parsedDetails.arrival,
+            check_in_date: parsedDetails.checkInDate,
+            check_out_date: parsedDetails.checkOutDate,
+            adults: parsedDetails.adults,
+            children: parsedDetails.children,
+            rooms: parsedDetails.rooms,
+            room_type: parsedDetails.roomType,
+            price_per_night: parsedDetails.pricePerNight,
+            total_amount: parsedDetails.totalAmount,
+            guest_name: parsedUserDetails?.name || defaultUserDetails.name,
+            email: parsedUserDetails?.email || defaultUserDetails.email,
+            phone: parsedUserDetails?.phone || defaultUserDetails.phone,
+            booked_on: new Date().toISOString().split('T')[0],
+            payment_method: "Credit Card",
+          };
+
+          console.log("Sending booking:", bookingData);  // Debug
+
+          try {
+            const response = await fetch('http://localhost:5003/api/bookings', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(bookingData),
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+              throw new Error(result.error || 'Failed to store booking');
+            }
+            console.log(`Booking ${bookingNumber} stored:`, result.message);
+            sessionStorage.setItem("bookingSent", bookingNumber); // Tie to specific booking
+          } catch (err) {
+            console.error(`Error sending booking ${bookingNumber}:`, err);
+            setError(err.message);
+          }
+        };
+
+        if (bookingNumber) sendBookingToBackend();
+      } catch (e) {
+        console.error("Error parsing hotelBookingDetails:", e);
+        setError("Invalid booking details");
+      }
+    } else {
+      console.warn("No booking details found");
     }
 
     setIsLoaded(true);
-  }, []);
+  }, [bookingNumber]);
 
-  // Handle case where booking details are missing
   if (!isLoaded) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -100,6 +150,23 @@ const HotelBooking = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md text-center">
+          <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
+          <p>{error}</p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Go to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const { hotelName, arrival, checkInDate, checkOutDate, adults, children, rooms, roomType, totalAmount, pricePerNight } =
     bookingDetails;
 
@@ -108,7 +175,6 @@ const HotelBooking = () => {
   const checkOut = new Date(checkOutDate);
   const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
 
-  // Format date for display
   const formatDate = (dateString) => {
     const options = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString("en-US", options);
@@ -116,9 +182,7 @@ const HotelBooking = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 pb-12">
-      {/* Main Booking Confirmation Card */}
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full mb-6">
-        {/* Header Section */}
         <div className="border-b pb-4 mb-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
@@ -138,7 +202,6 @@ const HotelBooking = () => {
           </p>
         </div>
 
-        {/* Customer Information Section */}
         <div className="border-b pb-4 mb-4">
           <h3 className="text-lg font-semibold mb-3">Customer Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -171,6 +234,105 @@ const HotelBooking = () => {
                   {new Date().toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" })}
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-b pb-4 mb-4">
+          <h3 className="text-lg font-semibold mb-3">Hotel Summary</h3>
+          <div className="mb-4">
+            <h4 className="font-semibold flex items-center mb-2">
+              <FaHotel className="mr-2 text-blue-500" />
+              Hotel Details
+            </h4>
+            <div className="border rounded-lg p-3 mb-3 shadow-sm">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center">
+                  <FaHotel className="text-blue-500 mr-2" />
+                  <span className="font-semibold">{hotelName}</span>
+                </div>
+                <div className="text-sm text-gray-500">{arrival}</div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div>
+                  <p className="text-sm text-gray-500">Check-In</p>
+                  <p className="font-semibold">{formatDate(checkInDate)}</p>
+                  <p className="text-sm flex items-center">02:00 PM</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Check-Out</p>
+                  <p className="font-semibold">{formatDate(checkOutDate)}</p>
+                  <p className="text-sm flex items-center">11:00 AM</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Room Type</p>
+                  <p className="font-semibold">{roomType}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Guests & Rooms</p>
+                  <p className="font-semibold">
+                    {adults + children} Guests, {rooms} Room{rooms > 1 ? "s" : ""}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Nights</p>
+                  <p className="font-semibold">{nights} Night{nights > 1 ? "s" : ""}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-b pb-4 mb-4">
+          <h3 className="text-lg font-semibold mb-3">Guest & Booking Information</h3>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guest Name</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Number</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Preference</th>
+                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Special Request</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails?.name || "Jaimil Kothari"}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{bookingNumber}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{roomType}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-2 p-2 bg-gray-50 rounded text-xs flex items-start">
+            <FaExclamationCircle className="text-gray-500 mr-2 mt-0.5 flex-shrink-0" />
+            <p className="text-gray-600">
+              All special requests and room preferences are not guaranteed. Please contact the hotel to reconfirm that they have received this request and confirmed it.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-b pb-4 mb-4">
+          <h3 className="text-lg font-semibold mb-3">Payment Details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-gray-500 text-sm">Room Rate</p>
+              <p className="font-semibold">₹{pricePerNight.toLocaleString()} per night</p>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm">Total Amount</p>
+              <p className="font-semibold text-green-600">₹{totalAmount.toLocaleString()}</p>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm">Summary</p>
+              <p className="font-semibold">
+                {rooms} {roomType} Room{rooms > 1 ? "s" : ""} for {nights} Night{nights > 1 ? "s" : ""}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm">Payment Method</p>
+              <p className="font-semibold">Credit Card</p>
             </div>
           </div>
         </div>
@@ -291,12 +453,10 @@ const HotelBooking = () => {
         </div>
       </div>
 
-      {/* Additional Offer Section (Optional) */}
       <div>
         <h2 className="text-2xl font-bold mb-5">--- Complete your trip ---</h2>
       </div>
 
-      {/* Car Hire Card */}
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full">
         <div className="flex flex-col items-center mb-4">
           <div className="bg-blue-100 rounded-full p-4 mb-4">

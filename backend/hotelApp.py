@@ -4,7 +4,14 @@ from flask_cors import CORS
 import stripe
 
 app = Flask(__name__)
-CORS(app)
+# Apply CORS to all routes
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:5173"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Stripe configuration
 stripe.api_key = 'sk_test_51RBDzAQVbUKIjAtM6UPjWghbzD1KfUtRfU4CezBB2BfzXAiDzVhevRZ5gzvDTTwnppMqs8ODDcaTgVI6DSLn3Vgm00CGD9930m'
@@ -39,8 +46,10 @@ def fetch_data(query, params=None):
         cursor.close()
         connection.close()
 
-@app.route('/arrival', methods=['GET'])
+@app.route('/arrival', methods=['GET', 'OPTIONS'])
 def get_locations():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
     query = "SELECT DISTINCT Arrival FROM hotel ORDER BY Arrival ASC"
     location_data, error = fetch_data(query)
     if error:
@@ -120,7 +129,6 @@ def get_all():
             "images": hotel.get("Images", None)
         })
 
-    # Remove duplicates based on "hotel" name only
     seen_hotels = set()
     unique_hotels = []
     for hotel in formatted_hotels:
@@ -130,8 +138,10 @@ def get_all():
 
     return jsonify({"all": unique_hotels})
 
-@app.route('/create-checkout-session', methods=['POST'])
+@app.route('/create-checkout-session', methods=['POST', 'OPTIONS'])
 def create_checkout_session():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
     try:
         data = request.get_json()
         hotel_name = data['hotelName']
@@ -142,7 +152,6 @@ def create_checkout_session():
         children = data['children']
         rooms = data['rooms']
         room_type = data['roomType']
-
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[
@@ -162,10 +171,105 @@ def create_checkout_session():
             success_url='http://localhost:5173/hotel-booking',
             cancel_url='http://localhost:3000/cancel',
         )
+        print(f"Stripe session created: {session.id}")
         return jsonify({'id': session.id})
     except Exception as e:
         print(f"Error creating checkout session: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/bookings', methods=['POST', 'OPTIONS'])
+def store_booking():
+    if request.method == 'OPTIONS':
+        print("Handling OPTIONS preflight request")
+        return jsonify({}), 200
+    try:
+        data = request.get_json()
+        print(f"Received booking data: {data}")
+
+        booking_number = data.get('booking_number')
+        hotel_name = data.get('hotel_name')
+        arrival = data.get('arrival')
+        check_in_date = data.get('check_in_date')
+        check_out_date = data.get('check_out_date')
+        adults = data.get('adults')
+        children = data.get('children')
+        rooms = data.get('rooms')
+        room_type = data.get('room_type')
+        price_per_night = data.get('price_per_night')
+        total_amount = data.get('total_amount')
+        guest_name = data.get('guest_name')
+        email = data.get('email')
+        phone = data.get('phone')
+        booked_on = data.get('booked_on')
+        payment_method = data.get('payment_method', 'Credit Card')
+
+        required_fields = {
+            'booking_number': booking_number,
+            'hotel_name': hotel_name,
+            'check_in_date': check_in_date,
+            'check_out_date': check_out_date,
+            'adults': adults,
+            'children': children,
+            'rooms': rooms,
+            'room_type': room_type,
+            'price_per_night': price_per_night,
+            'total_amount': total_amount,
+            'guest_name': guest_name,
+            'email': email,
+            'booked_on': booked_on
+        }
+        missing_fields = [k for k, v in required_fields.items() if v is None or v == '']
+        if missing_fields:
+            error_msg = f"Missing required fields: {', '.join(missing_fields)}"
+            print(error_msg)
+            return jsonify({'error': error_msg}), 400
+
+        try:
+            adults = int(adults)
+            children = int(children)
+            rooms = int(rooms)
+            price_per_night = float(price_per_night)
+            total_amount = float(total_amount)
+        except (ValueError, TypeError) as e:
+            print(f"Numeric conversion error: {e}")
+            return jsonify({'error': 'Invalid numeric values'}), 400
+
+        connection = get_db_connection()
+        if not connection:
+            print("Database connection failed")
+            return jsonify({'error': 'Database connection failed'}), 500
+
+        cursor = connection.cursor()
+        query = """
+        INSERT INTO hotel_bookings (
+            booking_number, hotel_name, arrival, check_in_date, check_out_date,
+            adults, children, rooms, room_type, price_per_night, total_amount,
+            guest_name, email, phone, booked_on, payment_method
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (
+            booking_number, hotel_name, arrival, check_in_date, check_out_date,
+            adults, children, rooms, room_type, price_per_night, total_amount,
+            guest_name, email, phone, booked_on, payment_method
+        )
+
+        try:
+            cursor.execute(query, values)
+            connection.commit()
+            print(f"Booking {booking_number} stored successfully")
+        except mysql.connector.Error as e:
+            print(f"Database error: {e}")
+            if "Duplicate entry" in str(e):
+                return jsonify({'error': 'Booking number already exists'}), 409
+            return jsonify({'error': f'Database error: {e}'}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        return jsonify({'message': 'Booking stored successfully'}), 201
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({'error': f'An error occurred: {e}'}), 500
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5003)

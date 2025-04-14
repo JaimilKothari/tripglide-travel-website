@@ -568,7 +568,7 @@ export default function SearchSection() {
                   onClick={handleSearch}
                   type="submit"
                   disabled={isSearchDisabled || isLoading}
-                  className={`mt-5 px-6 py-3 font-semibold rounded-lg transition 
+                  className={`mt-5 px-6 py-3 cursor-pointer font-semibold rounded-lg transition 
                                         ${
                                           isSearchDisabled || isLoading
                                             ? "bg-blue-300 cursor-not-allowed"

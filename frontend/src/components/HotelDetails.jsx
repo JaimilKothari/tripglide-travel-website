@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const HotelDetails = () => {
   const { hotel, arrival } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { checkInDate, checkOutDate, adults, children, rooms } = location.state || {};
 
   const [hotelData, setHotelData] = useState({ Deluxe: null, Executive: null, Suite: null });
@@ -18,7 +19,7 @@ const HotelDetails = () => {
         const roomTypes = ['Deluxe', 'Executive', 'Suite'];
         const responses = await Promise.all(
           roomTypes.map((type) =>
-            axios.get('http://localhost:5001/all', {
+            axios.get('http://localhost:5003/all', {
               params: {
                 hotel: decodeURIComponent(hotel),
                 arrival: decodeURIComponent(arrival),
@@ -49,6 +50,25 @@ const HotelDetails = () => {
 
     fetchHotelData();
   }, [hotel, arrival]);
+
+  // Function to initiate Stripe checkout
+  const initiateStripeCheckout = async (bookingData) => {
+    try {
+      const response = await axios.post('http://localhost:5003/create-checkout-session', bookingData);
+      const sessionId = response.data.id;
+
+      const stripe = window.Stripe('pk_test_51RA20B4D8TqxSjMO2AL0EwDRq7G1h3JF3CvdcasP9nE34rF4w5jNrSFbUPtbsoHsvGf7X2dkIUFZ4ETqGdjAfcjZ00UOI1COTA');
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        console.error('Stripe redirect error:', error);
+        alert('Failed to redirect to payment page. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error initiating checkout:', err);
+      alert('Failed to initiate payment. Please try again.');
+    }
+  };
 
   if (loading) {
     return <div className="text-center py-8">Loading hotel details...</div>;
@@ -84,37 +104,41 @@ const HotelDetails = () => {
       Suite: '/images/Hotel/suite_romm.jpg', // Suite Room
     };
 
-    const handleBookNow = async () => {
-      try {
-        const bookingData = {
-          hotelName: data.hotel,
-          totalAmount: totalAmount,
-          checkInDate,
-          checkOutDate,
-          adults,
-          children,
-          rooms,
-          roomType,
-          pricePerNight,
-          arrival: data.arrival,
-        };
+    const handleBookNow = () => {
+      const bookingData = {
+        hotelName: data.hotel,
+        totalAmount: totalAmount,
+        checkInDate,
+        checkOutDate,
+        adults,
+        children,
+        rooms,
+        roomType,
+        pricePerNight,
+        arrival: data.arrival,
+      };
 
-        sessionStorage.setItem('hotelBookingDetails', JSON.stringify(bookingData));
-
-        const response = await axios.post('http://localhost:5001/create-checkout-session', bookingData);
-        const sessionId = response.data.id;
-
-        const stripe = window.Stripe('pk_test_51RBDzAQVbUKIjAtM0sKQOZ3Z3ErNkHUXooqIOCQkMUzNYsl85hKfQhevmDlAB46ebEcGSrvOquL507u2t6OZVu1T00E8wJhZTD');
-        const { error } = await stripe.redirectToCheckout({ sessionId });
-
-        if (error) {
-          console.error('Stripe redirect error:', error);
-          alert('Failed to redirect to payment page. Please try again.');
-        }
-      } catch (err) {
-        console.error('Error initiating checkout:', err);
-        alert('Failed to initiate payment. Please try again.');
+      // Check if user is logged in
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        // Not logged in, navigate to login with booking data
+        navigate('/login', {
+          state: {
+            redirectTo: `/hotels/${encodeURIComponent(hotel)}/${encodeURIComponent(arrival)}`,
+            bookingData,
+            checkInDate,
+            checkOutDate,
+            adults,
+            children,
+            rooms,
+          },
+        });
+        return;
       }
+
+      // User is logged in, proceed to Stripe checkout
+      sessionStorage.setItem('hotelBookingDetails', JSON.stringify(bookingData));
+      initiateStripeCheckout(bookingData);
     };
 
     return (

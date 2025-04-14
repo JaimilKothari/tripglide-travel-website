@@ -45,7 +45,7 @@ export default function Hotels() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/arrival")
+      .get("http://localhost:5003/arrival")
       .then((response) => {
         // Ensure destinations is always an array
         const locations = Array.isArray(response.data.locations) ? response.data.locations : [];
