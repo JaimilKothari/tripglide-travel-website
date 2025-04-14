@@ -308,7 +308,13 @@ function App() {
     const savedMockUsers = localStorage.getItem("mockUsers");
     return savedMockUsers
       ? JSON.parse(savedMockUsers)
-      : [{ username: "testuser", email: "test@example.com", password: "Password123" }];
+      : [
+          {
+            username: "testuser",
+            email: "test@example.com",
+            password: "Password123",
+          },
+        ];
   });
 
   const [allFlights, setAllFlights] = useState(initialFlightData);
@@ -328,7 +334,10 @@ function App() {
   }, [mockUsers]);
 
   const handleSignUp = (userData) => {
-    const completeUserData = { ...userData, password: userData.password || "google-auth" };
+    const completeUserData = {
+      ...userData,
+      password: userData.password || "google-auth",
+    };
     setMockUsers((prev) => [...prev, completeUserData]);
     setUser({ username: userData.username, email: userData.email });
   };
@@ -363,7 +372,12 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route
             path="/forgot-password"
-            element={<ForgotPassword mockUsers={mockUsers} setMockUsers={setMockUsers} />}
+            element={
+              <ForgotPassword
+                mockUsers={mockUsers}
+                setMockUsers={setMockUsers}
+              />
+            }
           />
           <Route path="/carhire" element={<CarHire />} />
           <Route
@@ -392,6 +406,15 @@ function App() {
           <Route path="/country-facts" element={<CountryFacts />} />
           <Route path="/hotels" element={<Hotels />} />
           <Route path="/hotel-search" element={<HotelSearch />} />
+          <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} />
+          <Route path="/hotel-card" element={<HotelCard />} />
+          <Route path="/hotel-filter" element={<HotelFilter />} />
+          <Route path="/hotel-booking" element={<HotelBooking />} />
+          <Route
+            path="/hotel-booking-confirmation"
+            element={<BookingConfirmation />} />
+
+
           <Route
             path="/favorites"
             element={
@@ -403,9 +426,11 @@ function App() {
               />
             }
           />
-          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+          <Route
+            path="/booking-confirmation"
+            element={<BookingConfirmation />}
+          />
         </Routes>
-
       </Router>
     </GoogleOAuthProvider>
   );

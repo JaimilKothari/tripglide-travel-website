@@ -55,7 +55,7 @@ function HotelSearch() {
 
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:5001/all", {
+      const response = await axios.get("http://localhost:5003/all", {
         params: { arrival: dest },
       });
       setHotels(response.data.all || []);
