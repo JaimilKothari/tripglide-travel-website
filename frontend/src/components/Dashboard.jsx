@@ -30,7 +30,8 @@ const Dashboard = () => {
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
 
-  const API_URL = "http://localhost:5001/api";
+  const API_URL_LOGIN = "http://localhost:5001/api";
+  const API_URL_FLIGHT = "http://localhost:5000/api";
 
   const statesList = [
     "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
@@ -69,7 +70,7 @@ const Dashboard = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "Not provided";
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString; // Return as-is if invalid
+    if (isNaN(date.getTime())) return dateString;
     return date.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric" });
   };
 
@@ -104,7 +105,7 @@ const Dashboard = () => {
 
   const fetchProfile = async (identifier) => {
     try {
-      const response = await fetch(`${API_URL}/profile?identifier=${encodeURIComponent(identifier)}`);
+      const response = await fetch(`${API_URL_LOGIN}/profile?identifier=${encodeURIComponent(identifier)}`);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
@@ -131,9 +132,9 @@ const Dashboard = () => {
   const fetchBookingHistory = async (user_id) => {
     try {
       const endpoints = [
-        { url: `${API_URL}/flight_bookings?user_id=${user_id}`, setter: setFlightBookings, key: "bookings" },
-        { url: `${API_URL}/hotel_bookings?user_id=${user_id}`, setter: setHotelBookings, key: "bookings" },
-        { url: `${API_URL}/car_rentals?user_id=${user_id}`, setter: setCarRentals, key: "bookings" },
+        { url: `${API_URL_FLIGHT}/flight_bookings?user_id=${user_id}`, setter: setFlightBookings, key: "bookings" },
+        { url: `${API_URL_LOGIN}/hotel_bookings?user_id=${user_id}`, setter: setHotelBookings, key: "bookings" },
+        { url: `${API_URL_LOGIN}/car_rentals?user_id=${user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
         const response = await fetch(url);
@@ -195,9 +196,8 @@ const Dashboard = () => {
       setError("Pincode must be 6 digits");
       return;
     }
-
     try {
-      const response = await fetch(`${API_URL}/update_profile`, {
+      const response = await fetch(`${API_URL_LOGIN}/update_profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, identifier: getIdentifier(user) }),
@@ -238,9 +238,8 @@ const Dashboard = () => {
       setPasswordError("New password must be at least 6 characters");
       return;
     }
-
     try {
-      const response = await fetch(`${API_URL}/change_password`, {
+      const response = await fetch(`${API_URL_LOGIN}/change_password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier: getIdentifier(user), currentPassword, newPassword }),
@@ -266,7 +265,7 @@ const Dashboard = () => {
 
   const handleRequestVerification = async (phone) => {
     try {
-      const response = await fetch(`${API_URL}/request_verification`, {
+      const response = await fetch(`${API_URL_LOGIN}/request_verification`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier: phone }),
@@ -291,7 +290,7 @@ const Dashboard = () => {
 
   const handleVerifyCode = async () => {
     try {
-      const response = await fetch(`${API_URL}/verify_code`, {
+      const response = await fetch(`${API_URL_LOGIN}/verify_code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(verificationData),
@@ -345,7 +344,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
-      {/* Mobile Header */}
       <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-md border-b border-gray-200">
         <motion.button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -386,7 +384,7 @@ const Dashboard = () => {
                 <motion.button
                   onClick={() => (item.onClick ? item.onClick() : handleSectionChange(item.section))}
                   variants={itemVariants}
-                  className={`w-full flex cursor-pointer items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition-colors ${
+                  className={`w-full flex cursor-pointer items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition ${
                     activeSection === item.section ? "bg-blue-100 text-blue-600 font-semibold" : ""
                   }`}
                   whileHover={{ x: 5 }}
@@ -491,10 +489,48 @@ const Dashboard = () => {
                         <p className="text-gray-500 text-sm">No flight bookings found.</p>
                       ) : (
                         flightBookings.map((booking) => (
-                          <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                            <div>
-                              <p className="text-sm font-medium text-gray-800">{booking.flight_details || "Flight Details"}</p>
-                              <p className="text-sm text-gray-500">{formatDate(booking.booking_date)}</p>
+                          <motion.div key={booking.booking_id} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="text-sm font-medium text-gray-800">
+                                {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
+                              </p>
+                              <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                                {booking.status}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              <div>
+                                <p className="text-xs text-gray-500">Booking Number</p>
+                                <p className="text-sm font-semibold">{booking.booking_number}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Flight Number</p>
+                                <p className="text-sm font-semibold">{booking.flight_number || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Departure</p>
+                                <p className="text-sm">{formatDate(booking.departure_date)} • {booking.departure_time}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Arrival</p>
+                                <p className="text-sm">{formatDate(booking.arrival_date)} • {booking.arrival_time}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Duration</p>
+                                <p className="text-sm">{booking.duration}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Total Price</p>
+                                <p className="text-sm font-semibold">₹{Number(booking.total_price).toLocaleString()}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Trip Type</p>
+                                <p className="text-sm">{booking.trip_type}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Booked On</p>
+                                <p className="text-sm">{formatDate(booking.booked_on)}</p>
+                              </div>
                             </div>
                           </motion.div>
                         ))
@@ -510,7 +546,7 @@ const Dashboard = () => {
                         hotelBookings.map((booking) => (
                           <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
                             <div>
-                              <p className="text-sm font-medium text-gray-800">{booking.hotel_details || "Hotel Details"}</p>
+                              <p className="text-sm font-medium text-gray-800">{booking.hotel_name || "Hotel Details"}</p>
                               <p className="text-sm text-gray-500">{formatDate(booking.check_in_date)} - {formatDate(booking.check_out_date)}</p>
                             </div>
                           </motion.div>
@@ -527,7 +563,7 @@ const Dashboard = () => {
                         carRentals.map((rental) => (
                           <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
                             <div>
-                              <p className="text-sm font-medium text-gray-800">{rental.car_details || "Car Details"}</p>
+                              <p className="text-sm font-medium text-gray-800">{rental.car_name || "Car Details"}</p>
                               <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
                             </div>
                           </motion.div>
@@ -559,7 +595,7 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">{user.phone || "Not provided"}</span>
-                      {user.phone && (user.phone_verified ? <FaCheckCircle className="text-green-500" /> : (
+                      {user.phone && (user.otp_verified ? <FaCheckCircle className="text-green-500" /> : (
                         <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleRequestVerification(user.phone)} className="text-blue-600 text-sm hover:underline">
                           Verify
                         </motion.button>
@@ -656,7 +692,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Edit Profile Popup */}
       <AnimatePresence>
         {showPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -725,7 +760,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Change Password Popup */}
       <AnimatePresence>
         {showPasswordPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -783,7 +817,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Verification Popup */}
       <AnimatePresence>
         {showVerificationPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

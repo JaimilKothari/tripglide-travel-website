@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import mysql.connector
 import re
@@ -47,7 +47,7 @@ def ensure_db_connection():
         db = get_db_connection()
     return db
 
-# Initialize database tables
+# Initialize database tables to match provided schema
 def initialize_database():
     db = ensure_db_connection()
     if not db or not db.is_connected():
@@ -58,46 +58,62 @@ def initialize_database():
         cursor = db.cursor()
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
-                user_id INT AUTO_INCREMENT PRIMARY KEY,
-                email VARCHAR(255) UNIQUE,
-                phone VARCHAR(10) UNIQUE,
-                password VARCHAR(255),
-                username VARCHAR(100),
-                gender VARCHAR(50),
-                birthday DATE,
-                address TEXT,
-                pincode VARCHAR(10),
-                state VARCHAR(100),
-                phone_verified BOOLEAN DEFAULT FALSE
+                user_id INT NOT NULL AUTO_INCREMENT,
+                username VARCHAR(50) NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                birthday DATE DEFAULT NULL,
+                gender VARCHAR(10) NOT NULL,
+                phone VARCHAR(15) DEFAULT NULL,
+                address VARCHAR(255) DEFAULT NULL,
+                state VARCHAR(50) DEFAULT NULL,
+                pincode VARCHAR(6) DEFAULT NULL,
+                otp VARCHAR(6) DEFAULT NULL,
+                otp_verified TINYINT(1) DEFAULT 0,
+                PRIMARY KEY (user_id),
+                UNIQUE KEY email (email)
             )
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS flight_bookings (
-                booking_id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT,
-                flight_details TEXT,
-                booking_date DATE,
-                FOREIGN KEY (user_id) REFERENCES users(user_id)
+                booking_id INT NOT NULL AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                from_city VARCHAR(100) NOT NULL,
+                to_city VARCHAR(100) NOT NULL,
+                departure_date DATETIME NOT NULL,
+                cost DECIMAL(10,2) NOT NULL,
+                status ENUM('Upcoming','Completed','Cancelled') DEFAULT 'Upcoming',
+                PRIMARY KEY (booking_id),
+                KEY user_id (user_id),
+                CONSTRAINT flight_bookings_ibfk_1 FOREIGN KEY (user_id) REFERENCES users(user_id)
             )
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS hotel_bookings (
-                booking_id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT,
-                hotel_details TEXT,
-                check_in_date DATE,
-                check_out_date DATE,
-                FOREIGN KEY (user_id) REFERENCES users(user_id)
+                booking_id INT NOT NULL AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                hotel_name VARCHAR(100) NOT NULL,
+                check_in_date DATETIME NOT NULL,
+                check_out_date DATETIME NOT NULL,
+                cost DECIMAL(10,2) NOT NULL,
+                status ENUM('Upcoming','Completed','Cancelled') DEFAULT 'Upcoming',
+                PRIMARY KEY (booking_id),
+                KEY user_id (user_id),
+                CONSTRAINT hotel_bookings_ibfk_1 FOREIGN KEY (user_id) REFERENCES users(user_id)
             )
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS car_rentals (
-                rental_id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT,
-                car_details TEXT,
-                start_date DATE,
-                end_date DATE,
-                FOREIGN KEY (user_id) REFERENCES users(user_id)
+                rental_id INT NOT NULL AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                car_name VARCHAR(100) NOT NULL,
+                start_date DATETIME NOT NULL,
+                end_date DATETIME NOT NULL,
+                cost DECIMAL(10,2) NOT NULL,
+                status ENUM('Upcoming','Completed','Cancelled') DEFAULT 'Upcoming',
+                PRIMARY KEY (rental_id),
+                KEY user_id (user_id),
+                CONSTRAINT car_rentals_ibfk_1 FOREIGN KEY (user_id) REFERENCES users(user_id)
             )
         """)
         db.commit()
@@ -112,6 +128,11 @@ def initialize_database():
 
 if db:
     initialize_database()
+
+# Serve favicon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Root route
 @app.route('/')
@@ -153,7 +174,7 @@ def send_verification(identifier, channel='sms'):
         logger.error("Twilio client not initialized")
         raise Exception("Twilio client not initialized")
     try:
-        verification = twilio_client.verify.v2.services(TWILIO_VERIFY_SERVICE_SID) \
+        verification = twilio_client.verify.services(TWILIO_VERIFY_SERVICE_SID) \
             .verifications \
             .create(to=identifier if channel == 'email' else f"+91{identifier}", channel=channel)
         logger.info(f"Verification sent to {identifier} via {channel}: {verification.sid}")
@@ -167,7 +188,7 @@ def verify_code(identifier, code, channel='sms'):
         logger.error("Twilio client not initialized for verification")
         raise Exception("Twilio client not initialized")
     try:
-        verification_check = twilio_client.verify.v2.services(TWILIO_VERIFY_SERVICE_SID) \
+        verification_check = twilio_client.verify.services(TWILIO_VERIFY_SERVICE_SID) \
             .verification_checks \
             .create(to=identifier if channel == 'email' else f"+91{identifier}", code=code)
         logger.info(f"Verification check for {identifier}: {verification_check.status}")
@@ -183,8 +204,10 @@ def reset():
     return jsonify({"success": True, "message": "Server state reset"}), 200
 
 # Signup Route
-@app.route("/api/signup", methods=["POST"])
+@app.route("/api/signup", methods=["GET", "POST"])
 def signup():
+    if request.method == "GET":
+        return jsonify({"success": False, "error": "Method not allowed, use POST"}), 405
     db = ensure_db_connection()
     if not db or not db.is_connected():
         return jsonify({"success": False, "error": "Database unavailable"}), 500
@@ -207,12 +230,12 @@ def signup():
         cursor = db.cursor(dictionary=True)
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s", (identifier,))
-        if cursor.fetchall():  # Consume all results
+        if cursor.fetchall():
             return jsonify({"success": False, "error": "User already exists"}), 409
 
         cursor.execute(
-            f"INSERT INTO users ({field}, password, username, gender) VALUES (%s, %s, %s, %s)",
-            (identifier, password, "NewUser", "Unknown")
+            f"INSERT INTO users ({field}, password, username, gender, otp_verified) VALUES (%s, %s, %s, %s, %s)",
+            (identifier, password, "NewUser", "Unknown", 0)
         )
         db.commit()
         logger.info(f"User signed up: {field}={identifier}")
@@ -257,7 +280,7 @@ def login():
         query = f"SELECT * FROM users WHERE {field} = %s AND password = %s"
         cursor.execute(query, (identifier, password))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         logger.debug(f"Query: {query}, Result: {user}")
 
         if not user:
@@ -290,14 +313,12 @@ def login():
                 "identifiers": identifiers_to_verify,
                 "user": user_data
             }), 200
-
         except TwilioRestException as e:
             logger.error(f"Twilio error sending OTP: {e}")
-            return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
+            return jsonify({"success": False, "error": "Failed to send OTP, please try again later"}), 503
         except Exception as e:
             logger.error(f"Unexpected error sending OTP: {e}")
-            return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
-
+            return jsonify({"success": False, "error": "Failed to send OTP, please try again later"}), 503
     except mysql.connector.Error as e:
         logger.error(f"Database error in login: {e}")
         return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
@@ -329,12 +350,11 @@ def verify_code_route():
         if verify_code(identifier, code, channel):
             cursor = db.cursor(dictionary=True)
             field = "email" if is_email(identifier) else "phone"
-            if field == "phone":
-                cursor.execute(f"UPDATE users SET phone_verified = TRUE WHERE {field} = %s", (identifier,))
-                db.commit()
+            cursor.execute(f"UPDATE users SET otp_verified = 1 WHERE {field} = %s", (identifier,))
+            db.commit()
             cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
             user = cursor.fetchone()
-            cursor.fetchall()  # Consume any remaining results
+            cursor.fetchall()
             if not user:
                 return jsonify({"success": False, "error": "User not found"}), 404
             logger.info(f"{field} verified for {identifier}")
@@ -375,7 +395,7 @@ def forgot_password():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT email, phone, password FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         if not user:
             return jsonify({"success": False, "error": "No account found with this identifier"}), 404
 
@@ -416,7 +436,7 @@ def reset_password_request():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT * FROM users WHERE {field} = %s AND password = %s", (identifier, current_password))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         if not user:
             return jsonify({"success": False, "error": "Invalid current password"}), 401
 
@@ -431,7 +451,7 @@ def reset_password_request():
         }), 200
     except TwilioRestException as e:
         logger.error(f"Twilio error sending reset OTP: {e}")
-        return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 500
+        return jsonify({"success": False, "error": f"Failed to send OTP: {str(e)}"}), 503
     except mysql.connector.Error as e:
         logger.error(f"Database error in reset_password_request: {e}")
         if db:
@@ -467,7 +487,7 @@ def reset_password_verify():
             db.commit()
             cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
             user = cursor.fetchone()
-            cursor.fetchall()  # Consume any remaining results
+            cursor.fetchall()
             logger.info(f"Password reset successful for {identifier}")
             return jsonify({
                 "success": True,
@@ -503,7 +523,7 @@ def profile():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT * FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
@@ -537,7 +557,7 @@ def update_profile():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s", (identifier,))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 404
 
@@ -545,7 +565,6 @@ def update_profile():
         if not update_fields:
             return jsonify({"success": False, "error": "No valid fields to update"}), 400
 
-        # Validate birthday format if provided
         if "birthday" in update_fields and update_fields["birthday"]:
             try:
                 datetime.strptime(update_fields["birthday"], "%Y-%m-%d")
@@ -596,7 +615,7 @@ def change_password():
         field = "email" if is_email(identifier) else "phone"
         cursor.execute(f"SELECT user_id FROM users WHERE {field} = %s AND password = %s", (identifier, current_password))
         user = cursor.fetchone()
-        cursor.fetchall()  # Consume any remaining results
+        cursor.fetchall()
         if not user:
             return jsonify({"success": False, "error": "Invalid current password"}), 401
 
@@ -638,89 +657,10 @@ def request_verification():
         return jsonify({"success": True, "message": f"Verification sent to {identifier}"}), 200
     except TwilioRestException as e:
         logger.error(f"Twilio error in request_verification: {e}")
-        return jsonify({"success": False, "error": f"Verification service error: {str(e)}"}), 500
+        return jsonify({"success": False, "error": f"Verification service error: {str(e)}"}), 503
     except Exception as e:
         logger.error(f"Request verification error: {e}")
         return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
-
-# Booking History Routes
-@app.route("/api/flight_bookings", methods=["GET"])
-def flight_bookings():
-    db = ensure_db_connection()
-    if not db or not db.is_connected():
-        return jsonify({"success": False, "error": "Database unavailable"}), 500
-    cursor = None
-    try:
-        user_id = request.args.get("user_id")
-        if not user_id:
-            return jsonify({"success": False, "error": "User ID required"}), 400
-
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM flight_bookings WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()  # Consume all results
-        logger.info(f"Flight bookings fetched for user_id={user_id}")
-        return jsonify({"success": True, "bookings": bookings}), 200
-    except mysql.connector.Error as e:
-        logger.error(f"Database error in flight_bookings: {e}")
-        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
-    except Exception as e:
-        logger.error(f"Flight bookings error: {e}")
-        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
-    finally:
-        if cursor:
-            cursor.close()
-
-@app.route("/api/hotel_bookings", methods=["GET"])
-def hotel_bookings():
-    db = ensure_db_connection()
-    if not db or not db.is_connected():
-        return jsonify({"success": False, "error": "Database unavailable"}), 500
-    cursor = None
-    try:
-        user_id = request.args.get("user_id")
-        if not user_id:
-            return jsonify({"success": False, "error": "User ID required"}), 400
-
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM hotel_bookings WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()  # Consume all results
-        logger.info(f"Hotel bookings fetched for user_id={user_id}")
-        return jsonify({"success": True, "bookings": bookings}), 200
-    except mysql.connector.Error as e:
-        logger.error(f"Database error in hotel_bookings: {e}")
-        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
-    except Exception as e:
-        logger.error(f"Hotel bookings error: {e}")
-        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
-    finally:
-        if cursor:
-            cursor.close()
-
-@app.route("/api/car_rentals", methods=["GET"])
-def car_rentals():
-    db = ensure_db_connection()
-    if not db or not db.is_connected():
-        return jsonify({"success": False, "error": "Database unavailable"}), 500
-    cursor = None
-    try:
-        user_id = request.args.get("user_id")
-        if not user_id:
-            return jsonify({"success": False, "error": "User ID required"}), 400
-
-        cursor = db.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM car_rentals WHERE user_id = %s", (user_id,))
-        bookings = cursor.fetchall()  # Consume all results
-        logger.info(f"Car rentals fetched for user_id={user_id}")
-        return jsonify({"success": True, "bookings": bookings}), 200
-    except mysql.connector.Error as e:
-        logger.error(f"Database error in car_rentals: {e}")
-        return jsonify({"success": False, "error": f"Database error: {str(e)}"}), 500
-    except Exception as e:
-        logger.error(f"Car rentals error: {e}")
-        return jsonify({"success": False, "error": f"Server error: {str(e)}"}), 500
-    finally:
-        if cursor:
-            cursor.close()
 
 if __name__ == "__main__":
     server = Server(app.wsgi_app)

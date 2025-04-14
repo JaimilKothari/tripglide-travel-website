@@ -4,7 +4,7 @@ import { FaTimes, FaCheckCircle, FaTimesCircle, FaSuitcaseRolling, FaChair, FaUt
 import { loadStripe } from "@stripe/stripe-js";
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ"); // Replace with your Stripe Publishable Key
+const stripePromise = loadStripe("pk_test_51R9No7RtOB964nOwbCnB8DQSDfS5G66dozt3WRe0mwu3E5hwlxsObPZHYORqKrmWuVVhpn8EYUsWi075a1WYCshV00IbVFQLYi"); // Replace with your Stripe Publishable Key
 
 // Utility function to calculate duration between two times
 const calculateDuration = (depTime, arrTime) => {
@@ -143,7 +143,7 @@ const FlightCart = ({ user }) => {
       };
       sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
 
-      const response = await fetch("http://localhost:5000/create-checkout-session", {
+      const response = await fetch("http://localhost:5002/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -14,25 +14,25 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 
-// Utility function to calculate duration between two times (for fallback)
+// Utility function to calculate duration
 const calculateDuration = (depTime, arrTime) => {
   if (!depTime || !arrTime) return "N/A";
-
-  const [depHours, depMinutes] = depTime.split(":").map(Number);
-  const [arrHours, arrMinutes] = arrTime.split(":").map(Number);
-
-  const depTotalMinutes = depHours * 60 + depMinutes;
-  let arrTotalMinutes = arrHours * 60 + arrMinutes;
-
-  if (arrTotalMinutes < depTotalMinutes) {
-    arrTotalMinutes += 24 * 60; // Add 24 hours if crossing midnight
+  try {
+    const [depHours, depMinutes] = depTime.split(":").map(Number);
+    const [arrHours, arrMinutes] = arrTime.split(":").map(Number);
+    const depTotalMinutes = depHours * 60 + depMinutes;
+    let arrTotalMinutes = arrHours * 60 + arrMinutes;
+    if (arrTotalMinutes < depTotalMinutes) {
+      arrTotalMinutes += 24 * 60;
+    }
+    const diffMinutes = arrTotalMinutes - depTotalMinutes;
+    const hours = Math.floor(diffMinutes / 60);
+    const minutes = diffMinutes % 60;
+    return `${hours}h ${minutes}m`;
+  } catch (e) {
+    console.error("Duration calculation error:", e);
+    return "N/A";
   }
-
-  const diffMinutes = arrTotalMinutes - depTotalMinutes;
-  const hours = Math.floor(diffMinutes / 60);
-  const minutes = diffMinutes % 60;
-
-  return `${hours}h ${minutes}m`;
 };
 
 const BookingConfirmation = () => {
@@ -40,62 +40,182 @@ const BookingConfirmation = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [bookingNumber, setBookingNumber] = useState("");
+  const [ticketNumber, setTicketNumber] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState("");
+  const [hasFetchedProfile, setHasFetchedProfile] = useState(false);
 
-  const API_URL = "http://localhost:5001/api";
+  const API_URL = "http://localhost:5000/api";
 
-  // Generate random booking number
+  // Generate booking and ticket numbers
   useEffect(() => {
     const generateBookingNumber = () => {
       return Math.floor(10000000 + Math.random() * 90000000).toString();
     };
+    const generateTicketNumber = () => {
+      return Math.floor(100000000000 + Math.random() * 900000000000).toString();
+    };
     setBookingNumber(generateBookingNumber());
+    setTicketNumber(generateTicketNumber());
   }, []);
 
-  // Fetch user details from localStorage (set by Dashboard) or backend
+  // Save booking to backend
+  const saveBooking = async (bookingData, userDetails, bookingNumber) => {
+    try {
+      const { selectedFlight, selectedFare, searchParams } = bookingData;
+      const { tripType, from, to, departDate } = searchParams;
+      const firstLeg = tripType === "multicity" && selectedFlight?.multiCityFlights ? selectedFlight.multiCityFlights[0] : selectedFlight;
+
+      const formatDateForMySQL = (dateString) => {
+        if (!dateString) return null;
+        try {
+          const date = new Date(dateString);
+          if (isNaN(date.getTime())) throw new Error("Invalid date");
+          return date.toISOString().split('T')[0];
+        } catch (e) {
+          console.error("Date format error:", e);
+          return null;
+        }
+      };
+
+      const formatTimeForMySQL = (timeString) => {
+        if (!timeString) return null;
+        try {
+          const match = timeString.match(/(\d{1,2}):(\d{2})/);
+          if (!match) throw new Error("Invalid time format");
+          return `${match[1].padStart(2, '0')}:${match[2]}`;
+        } catch (e) {
+          console.error("Time format error:", e);
+          return null;
+        }
+      };
+
+      const payload = {
+        booking_number: bookingNumber,
+        traveler_name: userDetails.name || "Guest",
+        email: userDetails.email !== "Not provided" ? userDetails.email : null,
+        phone: userDetails.phone !== "Not provided" ? userDetails.phone : null,
+        booked_on: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        airline: firstLeg?.airline || "Unknown Airline",
+        flight_number: firstLeg?.flightNumber || null,
+        departure_airport: firstLeg?.departure || from,
+        departure_time: formatTimeForMySQL(firstLeg?.departureTime),
+        departure_date: formatDateForMySQL(firstLeg?.departureDate || departDate),
+        arrival_airport: firstLeg?.arrival || to,
+        arrival_time: formatTimeForMySQL(firstLeg?.arrivalTime),
+        arrival_date: formatDateForMySQL(firstLeg?.arrivalDate || departDate),
+        duration: firstLeg?.duration || calculateDuration(firstLeg?.departureTime, firstLeg?.arrivalTime),
+        stops: firstLeg?.stops || 0,
+        fare_type: selectedFare?.type || "Standard",
+        total_price: selectedFare?.price || 0,
+        trip_type: tripType === "oneway" ? "One Way" : tripType === "return" ? "Return" : "Multi-city",
+        payment_method: "Credit Card",
+        ticket_number: ticketNumber,
+        meal_preference: "Any meal",
+        special_request: "",
+        status: "Upcoming",
+      };
+
+      console.log("Sending payload to /save_booking_confirmation:", payload);
+
+      const response = await fetch(`${API_URL}/save_booking_confirmation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload),
+        mode: "cors",
+        credentials: "same-origin"
+      });
+
+      if (!response.ok) {
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { error: "UnknownError", message: response.statusText || "Failed to parse response" };
+        }
+        const errorName = errorData.error || `HTTPError_${response.status}`;
+        const message = errorData.message || response.statusText || "Failed to save booking";
+        throw new Error(`${errorName}: ${message}`);
+      }
+
+      const res = await response.json();
+      console.log("Booking saved:", res.message);
+      return res;
+    } catch (err) {
+      console.error(`Save booking error [${err.name}]: ${err.message}`);
+      if (err.name === "TypeError" && err.message.includes("Failed to fetch")) {
+        console.error("Possible CORS or network issue. Check server status and CORS configuration.");
+      }
+      setError(`Failed to save booking: ${err.message}`);
+      throw err; // Re-throw for caller to handle
+    }
+  };
+
+  // Fetch user details and load booking details
   useEffect(() => {
+    console.log("useEffect ran for data loading");
     const fetchUserDetails = async () => {
+      if (hasFetchedProfile) {
+        console.log("Skipping profile fetch; already attempted");
+        return;
+      }
+
       let storedUser = localStorage.getItem("user");
       let identifier;
 
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUserDetails({
-          name: parsedUser.username || "Guest",
-          email: parsedUser.email || "Not provided",
-          phone: parsedUser.phone || "Not provided",
-        });
-        identifier = parsedUser.email || parsedUser.phone;
-      } else {
-        // Fallback to stripeUserDetails if no user in localStorage
-        let storedStripeUser = localStorage.getItem("stripeUserDetails");
-        if (storedStripeUser) {
-          const parsedStripeUser = JSON.parse(storedStripeUser);
+      try {
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
           setUserDetails({
-            name: parsedStripeUser.name || "Guest",
-            email: parsedStripeUser.email || "Not provided",
-            phone: parsedStripeUser.phone || "Not provided",
+            name: parsedUser.username || "Guest",
+            email: parsedUser.email || "Not provided",
+            phone: parsedUser.phone || "Not provided",
           });
-          identifier = parsedStripeUser.email || parsedStripeUser.phone;
+          identifier = parsedUser.email || parsedUser.phone;
         } else {
-          setUserDetails({
-            name: "Guest",
-            email: "Not provided",
-            phone: "Not provided",
-          });
-          setError("No user data found. Please log in.");
-          return;
+          let storedStripeUser = localStorage.getItem("stripeUserDetails");
+          if (storedStripeUser) {
+            const parsedStripeUser = JSON.parse(storedStripeUser);
+            setUserDetails({
+              name: parsedStripeUser.name || "Guest",
+              email: parsedStripeUser.email || "Not provided",
+              phone: parsedStripeUser.phone || "Not provided",
+            });
+            identifier = parsedStripeUser.email || parsedStripeUser.phone;
+          } else {
+            setUserDetails({
+              name: "Guest",
+              email: "Not provided",
+              phone: "Not provided",
+            });
+            setError("No user data found. Please log in.");
+            return;
+          }
         }
-      }
 
-      // Optionally sync with backend if identifier exists
-      if (identifier) {
-        try {
-          const response = await fetch(`${API_URL}/profile?identifier=${encodeURIComponent(identifier)}`);
+        if (identifier) {
+          console.log(`Fetching profile for identifier: ${identifier}`);
+          const response = await fetch(`${API_URL}/profile?identifier=${encodeURIComponent(identifier)}`, {
+            signal: AbortSignal.timeout(5000),
+          });
           if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Failed to fetch profile");
+            let errorData;
+            try {
+              errorData = await response.json();
+            } catch {
+              errorData = {};
+            }
+            const errorName = errorData.error || `HTTPError_${response.status}`;
+            const message = errorData.message || response.statusText || "Failed to fetch profile";
+            if (response.status === 404) {
+              console.warn(`Profile not found for ${identifier}`);
+              setHasFetchedProfile(true);
+              return;
+            }
+            throw new Error(`${errorName}: ${message}`);
           }
           const res = await response.json();
           if (res.success) {
@@ -105,38 +225,59 @@ const BookingConfirmation = () => {
               phone: res.user.phone || "Not provided",
             };
             setUserDetails(updatedUser);
-            localStorage.setItem("user", JSON.stringify(res.user)); // Sync localStorage
+            localStorage.setItem("user", JSON.stringify(res.user));
           }
-        } catch (err) {
-          console.error("Fetch user error:", err);
-          setError(`Failed to sync user data: ${err.message}`);
         }
+      } catch (err) {
+        console.error(`Fetch user error [${err.name}]: ${err.message}`);
+        setError(`Failed to sync user data: ${err.message}`);
+      } finally {
+        setHasFetchedProfile(true);
       }
     };
 
-    const loadBookingDetails = () => {
-      let storedDetails = sessionStorage.getItem("bookingDetails");
-      if (!storedDetails) {
-        storedDetails = localStorage.getItem("bookingDetails");
-        if (storedDetails) sessionStorage.setItem("bookingDetails", storedDetails);
-      }
-
-      if (storedDetails) {
-        const parsedDetails = JSON.parse(storedDetails);
-        if (parsedDetails.isFlightDeal) {
-          parsedDetails.searchParams.tripType = "oneway";
-          parsedDetails.selectedFlight.returnFlight = null;
+    const loadBookingDetails = async () => {
+      try {
+        let storedDetails = sessionStorage.getItem("bookingDetails");
+        if (!storedDetails) {
+          storedDetails = localStorage.getItem("bookingDetails");
+          if (storedDetails) sessionStorage.setItem("bookingDetails", storedDetails);
         }
-        setBookingDetails(parsedDetails);
-        localStorage.setItem("bookingDetails", JSON.stringify(parsedDetails));
-        console.log("BookingConfirmation bookingDetails:", parsedDetails);
+
+        if (storedDetails) {
+          const parsedDetails = JSON.parse(storedDetails);
+          if (parsedDetails.isFlightDeal) {
+            parsedDetails.searchParams.tripType = "oneway";
+            parsedDetails.selectedFlight.returnFlight = null;
+          }
+          setBookingDetails(parsedDetails);
+          localStorage.setItem("bookingDetails", JSON.stringify(parsedDetails));
+          console.log("BookingConfirmation bookingDetails:", parsedDetails);
+
+          if (!parsedDetails.isSaved && userDetails) {
+            await saveBooking(parsedDetails, userDetails, bookingNumber);
+            parsedDetails.isSaved = true;
+            setBookingDetails({ ...parsedDetails });
+            localStorage.setItem("bookingDetails", JSON.stringify(parsedDetails));
+            sessionStorage.setItem("bookingDetails", JSON.stringify(parsedDetails));
+          }
+        } else {
+          throw new Error("NoBookingDetailsError: No booking details found");
+        }
+      } catch (err) {
+        console.error(`Load booking error [${err.name}]: ${err.message}`);
+        setError(`Failed to load booking: ${err.message}`);
       }
     };
 
-    fetchUserDetails();
-    loadBookingDetails();
-    setIsLoaded(true);
-  }, []);
+    const loadData = async () => {
+      await fetchUserDetails();
+      await loadBookingDetails();
+      setIsLoaded(true);
+    };
+
+    loadData();
+  }, [bookingNumber]);
 
   if (!isLoaded) {
     return (
@@ -181,16 +322,17 @@ const BookingConfirmation = () => {
     flightSummary = `${from} → ${to} • ${departDate}`;
   }
 
-  // Format date for non-FlightDealsCards bookings (DD Mon)
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    const options = { month: "short", day: "numeric" };
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", options); // e.g., "Apr 15"
-  };
-
-  const generateTicketNumber = () => {
-    return Math.floor(100000000000 + Math.random() * 900000000000).toString();
+    try {
+      const options = { month: "short", day: "numeric" };
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) throw new Error("Invalid date");
+      return date.toLocaleDateString("en-US", options);
+    } catch (e) {
+      console.error("Date format error:", e);
+      return "N/A";
+    }
   };
 
   const getAirlineLogo = (flight) => {
@@ -393,7 +535,7 @@ const BookingConfirmation = () => {
                       </span>
                     </div>
                     <div className="text-sm text-gray-500">
-                      Flight {selectedFlight.returnFlight?.flightNumber || "987"}
+                      Flight {selectedFlight.returnFlight?.flightNumber || "N/A"}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -527,7 +669,7 @@ const BookingConfirmation = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 <tr>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails?.name}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{generateTicketNumber()}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{ticketNumber}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">Any meal</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">—</td>
                 </tr>
