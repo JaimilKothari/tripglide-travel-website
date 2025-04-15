@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FaCheckCircle,
   FaHotel,
@@ -13,6 +13,7 @@ import {
 
 const HotelBooking = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [bookingDetails, setBookingDetails] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [bookingNumber, setBookingNumber] = useState("");
@@ -27,101 +28,105 @@ const HotelBooking = () => {
     setBookingNumber(generateBookingNumber());
   }, []);
 
-  // Retrieve and send booking details
+  // Retrieve user and booking details
   useEffect(() => {
-    let storedDetails = sessionStorage.getItem("hotelBookingDetails");
-    let storedUserDetails = sessionStorage.getItem("stripeUserDetails");
+    // Fetch user from localStorage (from Dashboard.jsx)
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      console.warn("No user found in localStorage, redirecting to login");
+      navigate("/login");
+      return;
+    }
 
+    let parsedUser;
+    try {
+      parsedUser = JSON.parse(storedUser);
+      setUserDetails({
+        name: parsedUser.username || "Guest",
+        email: parsedUser.email || "No email provided",
+        phone: parsedUser.phone || "Not provided",
+      });
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+      setError("Failed to load user data");
+      setIsLoaded(true);
+      return;
+    }
+
+    // Retrieve booking details
+    let storedDetails = sessionStorage.getItem("hotelBookingDetails");
     if (!storedDetails) {
       storedDetails = localStorage.getItem("hotelBookingDetails");
       if (storedDetails) sessionStorage.setItem("hotelBookingDetails", storedDetails);
     }
 
-    if (!storedUserDetails) {
-      storedUserDetails = localStorage.getItem("stripeUserDetails");
-      if (storedUserDetails) sessionStorage.setItem("stripeUserDetails", storedUserDetails);
+    if (!storedDetails) {
+      console.warn("No booking details found");
+      setError("No booking details found");
+      setIsLoaded(true);
+      return;
     }
 
-    let parsedUserDetails = null;
-    if (storedUserDetails) {
-      try {
-        parsedUserDetails = JSON.parse(storedUserDetails);
-      } catch (e) {
-        console.error("Error parsing stripeUserDetails:", e);
-      }
-    }
+    try {
+      const parsedDetails = JSON.parse(storedDetails);
+      setBookingDetails(parsedDetails);
+      localStorage.setItem("hotelBookingDetails", storedDetails);
 
-    const defaultUserDetails = {
-      name: "Jaimil Kothari",
-      email: "jaimilkothari2003@gmail.com",
-      phone: "Not provided",
-    };
-    setUserDetails(parsedUserDetails || defaultUserDetails);
+      const sendBookingToBackend = async () => {
+        const bookingSent = sessionStorage.getItem("bookingSent");
+        if (bookingSent === bookingNumber) {
+          console.log(`Booking ${bookingNumber} already sent, skipping...`);
+          return;
+        }
 
-    if (storedDetails) {
-      try {
-        const parsedDetails = JSON.parse(storedDetails);
-        setBookingDetails(parsedDetails);
-        localStorage.setItem("hotelBookingDetails", storedDetails);
-
-        const sendBookingToBackend = async () => {
-          const bookingSent = sessionStorage.getItem("bookingSent");
-          if (bookingSent === bookingNumber) {
-            console.log(`Booking ${bookingNumber} already sent, skipping...`);
-            return;
-          }
-
-          const bookingData = {
-            booking_number: bookingNumber,
-            hotel_name: parsedDetails.hotelName,
-            arrival: parsedDetails.arrival,
-            check_in_date: parsedDetails.checkInDate,
-            check_out_date: parsedDetails.checkOutDate,
-            adults: parsedDetails.adults,
-            children: parsedDetails.children,
-            rooms: parsedDetails.rooms,
-            room_type: parsedDetails.roomType,
-            price_per_night: parsedDetails.pricePerNight,
-            total_amount: parsedDetails.totalAmount,
-            guest_name: parsedUserDetails?.name || defaultUserDetails.name,
-            email: parsedUserDetails?.email || defaultUserDetails.email,
-            phone: parsedUserDetails?.phone || defaultUserDetails.phone,
-            booked_on: new Date().toISOString().split('T')[0],
-            payment_method: "Credit Card",
-          };
-
-          console.log("Sending booking:", bookingData);  // Debug
-
-          try {
-            const response = await fetch('http://localhost:5003/api/bookings', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(bookingData),
-            });
-
-            const result = await response.json();
-            if (!response.ok) {
-              throw new Error(result.error || 'Failed to store booking');
-            }
-            console.log(`Booking ${bookingNumber} stored:`, result.message);
-            sessionStorage.setItem("bookingSent", bookingNumber); // Tie to specific booking
-          } catch (err) {
-            console.error(`Error sending booking ${bookingNumber}:`, err);
-            setError(err.message);
-          }
+        const bookingData = {
+          booking_number: bookingNumber,
+          hotel_name: parsedDetails.hotelName,
+          arrival: parsedDetails.arrival,
+          check_in_date: parsedDetails.checkInDate,
+          check_out_date: parsedDetails.checkOutDate,
+          adults: parsedDetails.adults,
+          children: parsedDetails.children,
+          rooms: parsedDetails.rooms,
+          room_type: parsedDetails.roomType,
+          price_per_night: parsedDetails.pricePerNight,
+          total_amount: parsedDetails.totalAmount,
+          guest_name: parsedUser.username || "Guest",
+          email: parsedUser.email || "No email provided",
+          phone: parsedUser.phone || "Not provided",
+          booked_on: new Date().toISOString().split('T')[0],
+          payment_method: "Credit Card",
         };
 
-        if (bookingNumber) sendBookingToBackend();
-      } catch (e) {
-        console.error("Error parsing hotelBookingDetails:", e);
-        setError("Invalid booking details");
-      }
-    } else {
-      console.warn("No booking details found");
+        console.log("Sending booking:", bookingData);
+
+        try {
+          const response = await fetch('http://localhost:5003/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingData),
+          });
+
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to store booking');
+          }
+          console.log(`Booking ${bookingNumber} stored:`, result.message);
+          sessionStorage.setItem("bookingSent", bookingNumber);
+        } catch (err) {
+          console.error(`Error sending booking ${bookingNumber}:`, err);
+          setError(err.message);
+        }
+      };
+
+      if (bookingNumber) sendBookingToBackend();
+    } catch (e) {
+      console.error("Error parsing hotelBookingDetails:", e);
+      setError("Invalid booking details");
     }
 
     setIsLoaded(true);
-  }, [bookingNumber]);
+  }, [bookingNumber, navigate]);
 
   if (!isLoaded) {
     return (
@@ -133,29 +138,12 @@ const HotelBooking = () => {
     );
   }
 
-  if (isLoaded && !bookingDetails) {
+  if (isLoaded && (!bookingDetails || error)) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md text-center">
           <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p>No booking details found. Please complete the booking process.</p>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Go to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md text-center">
-          <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p>{error}</p>
+          <p>{error || "No booking details found. Please complete the booking process."}</p>
           <button
             onClick={() => navigate("/")}
             className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -209,21 +197,21 @@ const HotelBooking = () => {
               <FaUser className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Guest</p>
-                <p className="font-semibold">{userDetails?.name || "Jaimil Kothari"}</p>
+                <p className="font-semibold">{userDetails.name}</p>
               </div>
             </div>
             <div className="flex items-center">
               <FaPhone className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Phone</p>
-                <p className="font-semibold">{userDetails?.phone || "Not provided"}</p>
+                <p className="font-semibold">{userDetails.phone}</p>
               </div>
             </div>
             <div className="flex items-center">
               <FaEnvelope className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Email</p>
-                <p className="font-semibold">{userDetails?.email || "jaimilkothari2003@gmail.com"}</p>
+                <p className="font-semibold">{userDetails.email}</p>
               </div>
             </div>
             <div className="flex items-center">
@@ -297,7 +285,7 @@ const HotelBooking = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 <tr>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails?.name || "Jaimil Kothari"}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails.name}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">{bookingNumber}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">{roomType}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">—</td>
@@ -337,109 +325,6 @@ const HotelBooking = () => {
           </div>
         </div>
 
-        {/* Hotel Summary Section */}
-        <div className="border-b pb-4 mb-4">
-          <h3 className="text-lg font-semibold mb-3">Hotel Summary</h3>
-          <div className="mb-4">
-            <h4 className="font-semibold flex items-center mb-2">
-              <FaHotel className="mr-2 text-blue-500" />
-              Hotel Details
-            </h4>
-            <div className="border rounded-lg p-3 mb-3 shadow-sm">
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center">
-                  <FaHotel className="text-blue-500 mr-2" />
-                  <span className="font-semibold">{hotelName}</span>
-                </div>
-                <div className="text-sm text-gray-500">{arrival}</div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <div>
-                  <p className="text-sm text-gray-500">Check-In</p>
-                  <p className="font-semibold">{formatDate(checkInDate)}</p>
-                  <p className="text-sm flex items-center">02:00 PM</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Check-Out</p>
-                  <p className="font-semibold">{formatDate(checkOutDate)}</p>
-                  <p className="text-sm flex items-center">11:00 AM</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Room Type</p>
-                  <p className="font-semibold">{roomType}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Guests & Rooms</p>
-                  <p className="font-semibold">
-                    {adults + children} Guests, {rooms} Room{rooms > 1 ? "s" : ""}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Nights</p>
-                  <p className="font-semibold">{nights} Night{nights > 1 ? "s" : ""}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Guest Information Section */}
-        <div className="border-b pb-4 mb-4">
-          <h3 className="text-lg font-semibold mb-3">Guest & Booking Information</h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guest Name</th>
-                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Number</th>
-                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Preference</th>
-                  <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Special Request</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails?.name || "Jaimil Kothari"}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{bookingNumber}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{roomType}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">—</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-2 p-2 bg-gray-50 rounded text-xs flex items-start">
-            <FaExclamationCircle className="text-gray-500 mr-2 mt-0.5 flex-shrink-0" />
-            <p className="text-gray-600">
-              All special requests and room preferences are not guaranteed. Please contact the hotel to reconfirm that they have received this request and confirmed it.
-            </p>
-          </div>
-        </div>
-
-        {/* Payment Details Section */}
-        <div className="border-b pb-4 mb-4">
-          <h3 className="text-lg font-semibold mb-3">Payment Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-gray-500 text-sm">Room Rate</p>
-              <p className="font-semibold">₹{pricePerNight.toLocaleString()} per night</p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Total Amount</p>
-              <p className="font-semibold text-green-600">₹{totalAmount.toLocaleString()}</p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Summary</p>
-              <p className="font-semibold">
-                {rooms} {roomType} Room{rooms > 1 ? "s" : ""} for {nights} Night{nights > 1 ? "s" : ""}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Payment Method</p>
-              <p className="font-semibold">Credit Card</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
         <div className="text-center">
           <p className="text-gray-600 mb-4">
             Thank you for your booking! A confirmation email has been sent to your registered email address.

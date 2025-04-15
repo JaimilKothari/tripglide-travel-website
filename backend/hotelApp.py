@@ -177,6 +177,8 @@ def create_checkout_session():
         print(f"Error creating checkout session: {e}")
         return jsonify({'error': str(e)}), 500
 
+
+
 @app.route('/api/bookings', methods=['POST', 'OPTIONS'])
 def store_booking():
     if request.method == 'OPTIONS':

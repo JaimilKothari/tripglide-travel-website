@@ -1,5 +1,6 @@
 backend/venv/
 backend/.env
 .vscode/*backend/server.log
-backend/server.logbackend/.env
+backend/server.log
+backend/.env
 .env
