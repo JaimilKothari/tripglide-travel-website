@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [hotelBookings, setHotelBookings] = useState([]);
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_URL_LOGIN = "http://localhost:5001/api";
   const API_URL_FLIGHT = "http://localhost:5000/api";
@@ -79,15 +80,19 @@ const Dashboard = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setFormData({
-        ...parsedUser,
-        birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
-      });
-      setCompletionPercentage(calculateCompletionPercentage(parsedUser));
-      fetchProfile(getIdentifier(parsedUser));
-      fetchBookingHistory(parsedUser.user_id);
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setFormData({
+          ...parsedUser,
+          birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
+        });
+        setCompletionPercentage(calculateCompletionPercentage(parsedUser));
+        fetchProfile(getIdentifier(parsedUser));
+        fetchBookingHistory(parsedUser);
+      } catch {
+        navigate("/login");
+      }
     } else {
       navigate("/login");
     }
@@ -129,29 +134,43 @@ const Dashboard = () => {
     }
   };
 
-  const fetchBookingHistory = async (user_id) => {
+  const fetchBookingHistory = async (user) => {
+    setIsLoading(true);
     try {
+      const identifier = getIdentifier(user);
+      if (!identifier) {
+        setError("User email or phone is required to fetch bookings");
+        return;
+      }
       const endpoints = [
-        { url: `${API_URL_FLIGHT}/flight_bookings?user_id=${user_id}`, setter: setFlightBookings, key: "bookings" },
-        { url: `${API_URL_LOGIN}/hotel_bookings?user_id=${user_id}`, setter: setHotelBookings, key: "bookings" },
-        { url: `${API_URL_LOGIN}/car_rentals?user_id=${user_id}`, setter: setCarRentals, key: "bookings" },
+        { url: `${API_URL_FLIGHT}/flight_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setFlightBookings, key: "bookings" },
+        { url: `${API_URL_LOGIN}/hotel_bookings?user_id=${user.user_id}`, setter: setHotelBookings, key: "bookings" },
+        { url: `${API_URL_LOGIN}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
-        const response = await fetch(url);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.success) {
-          setter(data[key] || []);
-        } else {
-          setError(data.error || `Failed to load ${key}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        try {
+          const response = await fetch(url, { signal: controller.signal });
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.success) {
+            setter(data[key] || []);
+          } else {
+            setError(data.error || `Failed to load ${key}`);
+          }
+        } finally {
+          clearTimeout(timeoutId);
         }
       }
     } catch (err) {
       console.error("Fetch booking history error:", err);
       setError(`Failed to load booking history: ${err.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -470,26 +489,29 @@ const Dashboard = () => {
                     {error}
                   </motion.div>
                 )}
-                <div className="flex border-b border-gray-200 mb-6">
-                  {["Flights", "Hotels", "Cars"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setHistoryTab(tab)}
-                      className={`px-4 py-2 cursor-pointer text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
+                {isLoading && <p className="text-gray-500 text-sm mb-4">Loading bookings...</p>}
+                {!isLoading && (
+                  <div className="flex border-b border-gray-200 mb-6">
+                    {["Flights", "Hotels", "Cars"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setHistoryTab(tab)}
+                        className={`px-4 py-2 cursor-pointer text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-                  {historyTab === "Flights" && (
+                  {historyTab === "Flights" && !isLoading && (
                     <>
                       <h3 className="text-lg font-semibold text-gray-800">Flight Bookings</h3>
                       {flightBookings.length === 0 ? (
                         <p className="text-gray-500 text-sm">No flight bookings found.</p>
                       ) : (
                         flightBookings.map((booking) => (
-                          <motion.div key={booking.booking_id} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
+                          <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
                             <div className="flex justify-between items-center mb-2">
                               <p className="text-sm font-medium text-gray-800">
                                 {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
@@ -502,6 +524,14 @@ const Dashboard = () => {
                               <div>
                                 <p className="text-xs text-gray-500">Booking Number</p>
                                 <p className="text-sm font-semibold">{booking.booking_number}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Traveler</p>
+                                <p className="text-sm">{booking.traveler_name}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Email</p>
+                                <p className="text-sm">{booking.email || "N/A"}</p>
                               </div>
                               <div>
                                 <p className="text-xs text-gray-500">Flight Number</p>
@@ -517,7 +547,7 @@ const Dashboard = () => {
                               </div>
                               <div>
                                 <p className="text-xs text-gray-500">Duration</p>
-                                <p className="text-sm">{booking.duration}</p>
+                                <p className="text-sm">{booking.duration || "N/A"}</p>
                               </div>
                               <div>
                                 <p className="text-xs text-gray-500">Total Price</p>
@@ -530,6 +560,10 @@ const Dashboard = () => {
                               <div>
                                 <p className="text-xs text-gray-500">Booked On</p>
                                 <p className="text-sm">{formatDate(booking.booked_on)}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Created At</p>
+                                <p className="text-sm">{formatDate(booking.created_at)}</p>
                               </div>
                             </div>
                           </motion.div>

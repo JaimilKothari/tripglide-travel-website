@@ -240,63 +240,73 @@ def get_profile():
         connection.close()
         logger.info("Database connection closed for /api/profile")
 
-# API: Fetch flight bookings by user_id
+# API: Fetch flight bookings by email or phone
 @app.route('/api/flight_bookings', methods=['GET', 'OPTIONS'])
 @cross_origin()
 def get_flight_bookings():
     if request.method == 'OPTIONS':
         logger.info("Handling OPTIONS for /api/flight_bookings")
         return jsonify({}), 200
+
     logger.info("Received GET request for /api/flight_bookings")
     connection = get_db_connection()
     if connection is None:
         logger.error("Failed to connect to database for /api/flight_bookings")
         return jsonify({"error": "DatabaseConnectionError", "message": "Failed to connect to database"}), 500
+
     cursor = connection.cursor(dictionary=True)
     try:
-        user_id = request.args.get('user_id')
-        if not user_id:
-            logger.warning("Missing user_id in /api/flight_bookings request")
-            return jsonify({"error": "ValidationError", "message": "User ID is required"}), 400
-        try:
-            user_id = int(user_id)  # Ensure user_id is an integer
-        except ValueError:
-            logger.warning(f"Invalid user_id format: {user_id}")
-            return jsonify({"error": "ValidationError", "message": "User ID must be an integer"}), 400
+        # Get the identifier (email or phone) from the request
+        identifier = request.args.get('identifier')
+        if not identifier:
+            logger.warning("Missing identifier in /api/flight_bookings request")
+            return jsonify({"error": "ValidationError", "message": "Identifier (email or phone) is required"}), 400
 
-        # Verify user exists
-        cursor.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
-        if not cursor.fetchone():
-            logger.info(f"No user found for user_id={user_id}")
-            return jsonify({"success": True, "bookings": []}), 200
-
+        # Query to fetch flight bookings by email or phone
         query = """
-            SELECT fb.*
-            FROM flight_bookings fb
-            JOIN users u ON (fb.email = u.email OR fb.phone = u.phone)
-            WHERE u.user_id = %s
-            ORDER BY fb.booked_on DESC
+            SELECT *
+            FROM flight_bookings
+            WHERE email = %s OR CAST(phone AS CHAR) = %s
+            ORDER BY booked_on DESC
         """
-        cursor.execute(query, (user_id,))
+        logger.debug(f"Executing query with identifier: {identifier}")
+        cursor.execute(query, (identifier, identifier))
         bookings = cursor.fetchall()
+        logger.debug(f"Fetched {len(bookings)} bookings")
+
+        # Process bookings to handle datetime, timedelta, and NULLs
         for booking in bookings:
             for key, value in booking.items():
-                if isinstance(value, datetime):
-                    booking[key] = value.strftime("%Y-%m-%d %H:%M:%S")
-                elif value is None:
-                    booking[key] = ""  # Handle NULL values
-        logger.info(f"Returning {len(bookings)} flight bookings for user_id={user_id}")
+                try:
+                    if isinstance(value, datetime):
+                        booking[key] = value.strftime("%Y-%m-%d %H:%M:%S")
+                    elif isinstance(value, timedelta):
+                        # Convert timedelta to HH:MM:SS
+                        total_seconds = int(value.total_seconds())
+                        hours, remainder = divmod(total_seconds, 3600)
+                        minutes, seconds = divmod(remainder, 60)
+                        booking[key] = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+                    elif value is None:
+                        booking[key] = ""
+                except Exception as e:
+                    logger.warning(f"Error processing field {key} in booking {booking.get('booking_number', 'unknown')}: {str(e)}")
+                    booking[key] = ""
+
+        logger.info(f"Returning {len(bookings)} flight bookings for identifier={identifier}")
         return jsonify({"success": True, "bookings": bookings})
     except mysql.connector.Error as e:
-        logger.error(f"Database query error in /api/flight_bookings: {str(e)}")
+        logger.error(f"Database query error in /api/flight_bookings: {str(e)}\n{traceback.format_exc()}")
         return jsonify({"error": "DatabaseQueryError", "message": str(e)}), 500
     except Exception as e:
         logger.error(f"Unexpected error in /api/flight_bookings: {str(e)}\n{traceback.format_exc()}")
         return jsonify({"error": "UnexpectedError", "message": str(e)}), 500
     finally:
-        cursor.close()
-        connection.close()
-        logger.info("Database connection closed for /api/flight_bookings")
+        try:
+            cursor.close()
+            connection.close()
+            logger.info("Database connection closed for /api/flight_bookings")
+        except Exception as e:
+            logger.error(f"Error closing database connection: {str(e)}")
 
 if __name__ == '__main__':
     logger.info("Starting Flask server on port 5000")
