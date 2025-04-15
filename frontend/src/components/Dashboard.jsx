@@ -30,6 +30,8 @@ const Dashboard = () => {
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({ message: "", type: "", visible: false });
+  const [cancellingBookings, setCancellingBookings] = useState(new Set());
 
   const API_URL_LOGIN = "http://localhost:5001/api";
   const API_URL_FLIGHT = "http://localhost:5000/api";
@@ -76,6 +78,11 @@ const Dashboard = () => {
   };
 
   const getIdentifier = (user) => user.email || user.phone;
+
+  const showToast = (message, type) => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => setToast({ message: "", type: "", visible: false }), 3000);
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -148,22 +155,38 @@ const Dashboard = () => {
         { url: `${API_URL_LOGIN}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
-        try {
-          const response = await fetch(url, { signal: controller.signal });
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        let attempts = 2;
+        while (attempts > 0) {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000);
+          try {
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || errorData.error || `Failed to load ${key} (Status: ${response.status})`);
+            }
+            const data = await response.json();
+            if (data.success) {
+              setter(data[key] || []);
+              break;
+            } else {
+              throw new Error(data.error || `Failed to load ${key}`);
+            }
+          } catch (err) {
+            clearTimeout(timeoutId);
+            if (err.name === 'AbortError') {
+              throw new Error(`Request timed out for ${key}`);
+            }
+            attempts--;
+            if (attempts === 0) {
+              console.error(`Failed to fetch ${key} after retries:`, err);
+              setError(`Unable to load ${key}: ${err.message}`);
+            }
+            if (attempts > 0) {
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            }
           }
-          const data = await response.json();
-          if (data.success) {
-            setter(data[key] || []);
-          } else {
-            setError(data.error || `Failed to load ${key}`);
-          }
-        } finally {
-          clearTimeout(timeoutId);
         }
       }
     } catch (err) {
@@ -171,6 +194,47 @@ const Dashboard = () => {
       setError(`Failed to load booking history: ${err.message}`);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleCancelFlight = async (bookingNumber) => {
+    if (!window.confirm("Are you sure you want to cancel this flight booking?")) return;
+    setCancellingBookings((prev) => new Set([...prev, bookingNumber]));
+    try {
+      const response = await fetch(`${API_URL_FLIGHT}/cancel_flight_booking`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ booking_number: bookingNumber }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || errorData.error || `Failed to cancel booking (Status: ${response.status})`);
+      }
+      const data = await response.json();
+      if (data.success) {
+        showToast("Flight booking cancelled successfully", "success");
+        setFlightBookings((prev) => {
+          const updated = prev.map((b) =>
+            b.booking_number === bookingNumber ? { ...b, status: "Cancelled" } : b
+          );
+          // Sort: Upcoming, Completed, Cancelled
+          return updated.sort((a, b) => {
+            const order = { Upcoming: 1, Completed: 2, Cancelled: 3 };
+            return order[a.status] - order[b.status] || new Date(b.booked_on) - new Date(a.booked_on);
+          });
+        });
+      } else {
+        throw new Error(data.error || "Failed to cancel booking");
+      }
+    } catch (err) {
+      console.error("Cancel flight error:", err);
+      showToast(`Failed to cancel booking: ${err.message}`, "error");
+    } finally {
+      setCancellingBookings((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(bookingNumber);
+        return newSet;
+      });
     }
   };
 
@@ -227,7 +291,7 @@ const Dashboard = () => {
       }
       const res = await response.json();
       if (res.success) {
-        alert("Profile updated successfully!");
+        showToast("Profile updated successfully!", "success");
         localStorage.setItem("user", JSON.stringify(formData));
         setUser(formData);
         setCompletionPercentage(calculateCompletionPercentage(formData));
@@ -269,7 +333,7 @@ const Dashboard = () => {
       }
       const res = await response.json();
       if (res.success) {
-        alert("Password changed successfully!");
+        showToast("Password changed successfully!", "success");
         setShowPasswordPopup(false);
         setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
         setPasswordError("");
@@ -320,7 +384,7 @@ const Dashboard = () => {
       }
       const res = await response.json();
       if (res.success) {
-        alert("Phone verified successfully!");
+        showToast("Phone verified successfully!", "success");
         setShowVerificationPopup(false);
         setVerificationData({ identifier: "", code: "" });
         fetchProfile(getIdentifier(user));
@@ -363,6 +427,22 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
+      <AnimatePresence>
+        {toast.visible && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.3 }}
+            className={`fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white text-sm z-50 ${
+              toast.type === "success" ? "bg-green-600" : "bg-red-600"
+            }`}
+          >
+            {toast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-md border-b border-gray-200">
         <motion.button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -417,7 +497,7 @@ const Dashboard = () => {
         </motion.nav>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <div className="lg:hidden fixed inset-0 backdrop-brightness-30 z-40" onClick={() => setIsMobileMenuOpen(false)}></div>
         )}
 
         <div className="flex-1 w-full lg:ml-0 mt-4 lg:mt-0 overflow-y-auto">
@@ -510,15 +590,47 @@ const Dashboard = () => {
                       {flightBookings.length === 0 ? (
                         <p className="text-gray-500 text-sm">No flight bookings found.</p>
                       ) : (
-                        flightBookings.map((booking) => (
-                          <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
+                        flightBookings.map((booking, index) => (
+                          <motion.div
+                            key={booking.booking_number}
+                            variants={itemVariants}
+                            className={`border rounded-lg p-4 mb-4 shadow-sm ${
+                              booking.status === "Cancelled" ? "bg-gray-100 opacity-75 border-gray-300" : "bg-white"
+                            }`}
+                            layout
+                            transition={{ duration: 0.5 }}
+                          >
                             <div className="flex justify-between items-center mb-2">
                               <p className="text-sm font-medium text-gray-800">
                                 {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
                               </p>
-                              <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
-                                {booking.status}
-                              </span>
+                              <div className="flex items-center space-x-2">
+                                <span
+                                  className={`text-xs px-2 py-1 rounded ${
+                                    booking.status === "Upcoming"
+                                      ? "bg-green-100 text-green-800"
+                                      : booking.status === "Completed"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
+                                  {booking.status}
+                                </span>
+                                {booking.status === "Upcoming" && !cancellingBookings.has(booking.booking_number) && (
+                                  <motion.button
+                                    variants={buttonVariants}
+                                    whileHover="hover"
+                                    whileTap="tap"
+                                    onClick={() => handleCancelFlight(booking.booking_number)}
+                                    className="text-sm text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition"
+                                  >
+                                    Cancel Flight
+                                  </motion.button>
+                                )}
+                                {cancellingBookings.has(booking.booking_number) && (
+                                  <p className="text-sm text-gray-500">Cancelling...</p>
+                                )}
+                              </div>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               <div>
@@ -728,7 +840,7 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
             <motion.div
               className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg relative"
               initial={{ scale: 0.9 }}
@@ -796,7 +908,7 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPasswordPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
             <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
@@ -853,7 +965,7 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showVerificationPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
             <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Verify Phone</h2>

@@ -70,7 +70,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
           >
             <FaHeart />
           </div>
-          <a
+          {/* <a
             href="https://dashboard.stripe.com/test/guests/gcus_1R9jv32RiOcrGJvia7h7puky"
             className="p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer"
             title="Stripe Dashboard"
@@ -78,7 +78,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
             rel="noopener noreferrer"
           >
             <FaChartBar />
-          </a>
+          </a> */}
           {user ? (
             <div
               className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-600"

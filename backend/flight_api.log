@@ -8,3 +8,633 @@
 2025-04-15 11:52:24,500 [INFO] Starting Flask server on port 5000
 2025-04-15 11:52:24,542 [WARNING]  * Debugger is active!
 2025-04-15 11:52:24,542 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 11:57:38,182 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:57:38,285 [INFO] package: mysql.connector.plugins
+2025-04-15 11:57:38,293 [INFO] plugin_name: mysql_native_password
+2025-04-15 11:57:38,296 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 11:57:38,301 [INFO] Database connection established
+2025-04-15 11:57:38,305 [INFO] Returning 1 flight bookings for identifier=peacefulfeistel3@imcourageous.com
+2025-04-15 11:57:38,305 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:57:38,311 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:38] "GET /api/flight_bookings?identifier=peacefulfeistel3@imcourageous.com HTTP/1.1" 200 -
+2025-04-15 11:57:38,430 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:57:38,433 [INFO] Database connection established
+2025-04-15 11:57:38,451 [INFO] Returning 1 flight bookings for identifier=peacefulfeistel3@imcourageous.com
+2025-04-15 11:57:38,455 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:57:38,460 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:38] "GET /api/flight_bookings?identifier=peacefulfeistel3@imcourageous.com HTTP/1.1" 200 -
+2025-04-15 11:57:43,840 [INFO] Received GET request for /get_flights
+2025-04-15 11:57:43,847 [INFO] Database connection established
+2025-04-15 11:57:44,744 [INFO] Returning airports data
+2025-04-15 11:57:44,744 [INFO] Database connection closed for /get_flights
+2025-04-15 11:57:44,744 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:44] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 11:57:44,752 [INFO] Received GET request for /get_flights
+2025-04-15 11:57:44,760 [INFO] Database connection established
+2025-04-15 11:57:45,579 [INFO] Returning airports data
+2025-04-15 11:57:45,581 [INFO] Database connection closed for /get_flights
+2025-04-15 11:57:45,581 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:45] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 11:57:45,971 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:57:45,978 [INFO] Database connection established
+2025-04-15 11:57:45,983 [INFO] Returning 1 flight bookings for identifier=peacefulfeistel3@imcourageous.com
+2025-04-15 11:57:45,985 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:57:45,988 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:45] "GET /api/flight_bookings?identifier=peacefulfeistel3@imcourageous.com HTTP/1.1" 200 -
+2025-04-15 11:57:46,306 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:57:46,313 [INFO] Database connection established
+2025-04-15 11:57:46,324 [INFO] Returning 1 flight bookings for identifier=peacefulfeistel3@imcourageous.com
+2025-04-15 11:57:46,324 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:57:46,331 [INFO] 127.0.0.1 - - [15/Apr/2025 11:57:46] "GET /api/flight_bookings?identifier=peacefulfeistel3@imcourageous.com HTTP/1.1" 200 -
+2025-04-15 11:59:43,899 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\_strptime.py', reloading
+2025-04-15 11:59:44,590 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 11:59:45,336 [INFO] Starting Flask server on port 5000
+2025-04-15 11:59:45,377 [WARNING]  * Debugger is active!
+2025-04-15 11:59:45,385 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 11:59:58,183 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:59:58,250 [INFO] package: mysql.connector.plugins
+2025-04-15 11:59:58,250 [INFO] plugin_name: mysql_native_password
+2025-04-15 11:59:58,258 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 11:59:58,258 [INFO] Database connection established
+2025-04-15 11:59:58,266 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 11:59:58,266 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:59:58,266 [INFO] 127.0.0.1 - - [15/Apr/2025 11:59:58] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 11:59:58,433 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 11:59:58,441 [INFO] Database connection established
+2025-04-15 11:59:58,441 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 11:59:58,449 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 11:59:58,449 [INFO] 127.0.0.1 - - [15/Apr/2025 11:59:58] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 12:14:06,508 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 12:14:06,517 [INFO] Database connection established
+2025-04-15 12:14:06,521 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 12:14:06,525 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 12:14:06,526 [INFO] 127.0.0.1 - - [15/Apr/2025 12:14:06] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 12:14:06,778 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 12:14:06,783 [INFO] Database connection established
+2025-04-15 12:14:06,787 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 12:14:06,787 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 12:14:06,787 [INFO] 127.0.0.1 - - [15/Apr/2025 12:14:06] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:27:23,593 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\encodings\\cp1125.py', reloading
+2025-04-15 13:27:24,250 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:27:25,298 [INFO] Starting Flask server on port 5000
+2025-04-15 13:27:25,360 [WARNING]  * Debugger is active!
+2025-04-15 13:27:25,371 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:27:28,265 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\encodings\\hz.py', reloading
+2025-04-15 13:27:28,597 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:27:29,213 [INFO] Starting Flask server on port 5000
+2025-04-15 13:27:29,240 [WARNING]  * Debugger is active!
+2025-04-15 13:27:29,247 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:27:33,878 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\encodings\\cp424.py', reloading
+2025-04-15 13:27:33,960 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\distutils\\fancy_getopt.py', reloading
+2025-04-15 13:27:34,550 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:27:35,532 [INFO] Starting Flask server on port 5000
+2025-04-15 13:27:35,559 [WARNING]  * Debugger is active!
+2025-04-15 13:27:35,564 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:27:41,114 [INFO]  * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\\Lib\\encodings\\shift_jisx0213.py', reloading
+2025-04-15 13:27:41,811 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:27:42,868 [INFO] Starting Flask server on port 5000
+2025-04-15 13:27:42,928 [WARNING]  * Debugger is active!
+2025-04-15 13:27:42,946 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:36:35,082 [INFO] Received GET request for /get_flights
+2025-04-15 13:36:35,197 [INFO] package: mysql.connector.plugins
+2025-04-15 13:36:35,198 [INFO] plugin_name: mysql_native_password
+2025-04-15 13:36:35,206 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 13:36:35,213 [INFO] Database connection established
+2025-04-15 13:36:36,328 [INFO] Returning airports data
+2025-04-15 13:36:36,330 [INFO] Database connection closed for /get_flights
+2025-04-15 13:36:36,331 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:36] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:36:36,336 [INFO] Received GET request for /get_flights
+2025-04-15 13:36:36,343 [INFO] Database connection established
+2025-04-15 13:36:37,204 [INFO] Returning airports data
+2025-04-15 13:36:37,206 [INFO] Database connection closed for /get_flights
+2025-04-15 13:36:37,207 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:37] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:36:42,102 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:42] "[33mGET / HTTP/1.1[0m" 404 -
+2025-04-15 13:36:42,315 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:42] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-15 13:36:48,451 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:36:48,464 [INFO] Database connection established
+2025-04-15 13:36:48,479 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:36:48,485 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:36:48,490 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:48] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:36:48,698 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:36:48,703 [INFO] Database connection established
+2025-04-15 13:36:48,709 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:36:48,715 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:36:48,716 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:48] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:36:57,310 [INFO] Received GET request for /get_flights
+2025-04-15 13:36:57,317 [INFO] Database connection established
+2025-04-15 13:36:58,232 [INFO] Returning airports data
+2025-04-15 13:36:58,249 [INFO] Database connection closed for /get_flights
+2025-04-15 13:36:58,251 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:58] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:36:58,257 [INFO] Received GET request for /get_flights
+2025-04-15 13:36:58,268 [INFO] Database connection established
+2025-04-15 13:36:59,046 [INFO] Returning airports data
+2025-04-15 13:36:59,050 [INFO] Database connection closed for /get_flights
+2025-04-15 13:36:59,053 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:59] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:36:59,817 [INFO] Received GET request for /api/profile
+2025-04-15 13:36:59,825 [INFO] Database connection established
+2025-04-15 13:36:59,830 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:36:59,832 [INFO] Database connection closed for /api/profile
+2025-04-15 13:36:59,834 [INFO] 127.0.0.1 - - [15/Apr/2025 13:36:59] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:37:00,142 [INFO] Received GET request for /api/profile
+2025-04-15 13:37:00,152 [INFO] Database connection established
+2025-04-15 13:37:00,160 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:37:00,162 [INFO] Database connection closed for /api/profile
+2025-04-15 13:37:00,171 [INFO] 127.0.0.1 - - [15/Apr/2025 13:37:00] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:37:00,488 [INFO] Received GET request for /api/profile
+2025-04-15 13:37:00,499 [INFO] Database connection established
+2025-04-15 13:37:00,509 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:37:00,513 [INFO] Database connection closed for /api/profile
+2025-04-15 13:37:00,517 [INFO] 127.0.0.1 - - [15/Apr/2025 13:37:00] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:37:09,438 [INFO] Received GET request for /api/profile
+2025-04-15 13:37:09,444 [INFO] Database connection established
+2025-04-15 13:37:09,448 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:37:09,449 [INFO] Database connection closed for /api/profile
+2025-04-15 13:37:09,452 [INFO] 127.0.0.1 - - [15/Apr/2025 13:37:09] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:37:09,685 [INFO] Received GET request for /api/profile
+2025-04-15 13:37:09,691 [INFO] Database connection established
+2025-04-15 13:37:09,695 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:37:09,696 [INFO] Database connection closed for /api/profile
+2025-04-15 13:37:09,698 [INFO] 127.0.0.1 - - [15/Apr/2025 13:37:09] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:37:09,846 [INFO] Received GET request for /api/profile
+2025-04-15 13:37:09,851 [INFO] Database connection established
+2025-04-15 13:37:09,855 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 13:37:09,856 [INFO] Database connection closed for /api/profile
+2025-04-15 13:37:09,860 [INFO] 127.0.0.1 - - [15/Apr/2025 13:37:09] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:44:17,488 [INFO] Received GET request for /get_flights
+2025-04-15 13:44:17,499 [INFO] Database connection established
+2025-04-15 13:44:18,378 [INFO] Returning airports data
+2025-04-15 13:44:18,379 [INFO] Database connection closed for /get_flights
+2025-04-15 13:44:18,381 [INFO] 127.0.0.1 - - [15/Apr/2025 13:44:18] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:44:18,393 [INFO] Received GET request for /get_flights
+2025-04-15 13:44:18,404 [INFO] Database connection established
+2025-04-15 13:44:19,180 [INFO] Returning airports data
+2025-04-15 13:44:19,182 [INFO] Database connection closed for /get_flights
+2025-04-15 13:44:19,183 [INFO] 127.0.0.1 - - [15/Apr/2025 13:44:19] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:44:19,684 [INFO] 127.0.0.1 - - [15/Apr/2025 13:44:19] "[33mGET / HTTP/1.1[0m" 404 -
+2025-04-15 13:44:29,755 [INFO] Received GET request for /api/profile
+2025-04-15 13:44:29,761 [INFO] Database connection established
+2025-04-15 13:44:29,762 [WARNING] Missing identifier in /api/profile request
+2025-04-15 13:44:29,763 [INFO] Database connection closed for /api/profile
+2025-04-15 13:44:29,766 [INFO] 127.0.0.1 - - [15/Apr/2025 13:44:29] "[31m[1mGET /api/profile HTTP/1.1[0m" 400 -
+2025-04-15 13:45:02,897 [INFO]  * Detected change in 'C:\\Users\\varun shah\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\site-packages\\werkzeug\\datastructures\\structures.py', reloading
+2025-04-15 13:45:03,308 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:45:13,438 [INFO] Starting Flask server on port 5000
+2025-04-15 13:45:14,197 [WARNING]  * Debugger is active!
+2025-04-15 13:45:14,214 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:46:23,723 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:46:23,725 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:46:23,726 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:46:23,844 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:46:24,623 [INFO] Starting Flask server on port 5000
+2025-04-15 13:46:24,694 [WARNING]  * Debugger is active!
+2025-04-15 13:46:24,713 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 13:46:30,276 [INFO] 127.0.0.1 - - [15/Apr/2025 13:46:30] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:46:30,529 [INFO] 127.0.0.1 - - [15/Apr/2025 13:46:30] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:46:30,591 [INFO] 127.0.0.1 - - [15/Apr/2025 13:46:30] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:47:35,475 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:47:35,581 [INFO] package: mysql.connector.plugins
+2025-04-15 13:47:35,582 [INFO] plugin_name: mysql_native_password
+2025-04-15 13:47:35,589 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 13:47:35,594 [INFO] Database connection established
+2025-04-15 13:47:35,605 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:47:35,611 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:47:35,613 [INFO] 127.0.0.1 - - [15/Apr/2025 13:47:35] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:47:35,732 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:47:35,742 [INFO] Database connection established
+2025-04-15 13:47:35,752 [INFO] Returning 7 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:47:35,757 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:47:35,760 [INFO] 127.0.0.1 - - [15/Apr/2025 13:47:35] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:47:42,191 [INFO] Received GET request for /get_flights
+2025-04-15 13:47:42,197 [INFO] Database connection established
+2025-04-15 13:47:42,973 [INFO] Returning airports data
+2025-04-15 13:47:42,976 [INFO] Database connection closed for /get_flights
+2025-04-15 13:47:42,978 [INFO] 127.0.0.1 - - [15/Apr/2025 13:47:42] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:47:42,988 [INFO] Received GET request for /get_flights
+2025-04-15 13:47:42,998 [INFO] Database connection established
+2025-04-15 13:47:43,691 [INFO] Returning airports data
+2025-04-15 13:47:43,694 [INFO] Database connection closed for /get_flights
+2025-04-15 13:47:43,695 [INFO] 127.0.0.1 - - [15/Apr/2025 13:47:43] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 13:48:59,841 [INFO] 127.0.0.1 - - [15/Apr/2025 13:48:59] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:49:00,095 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:00] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:49:00,159 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:00] "[33mGET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1[0m" 404 -
+2025-04-15 13:49:00,402 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:00] "OPTIONS /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 13:49:00,476 [INFO] Received POST request for /save_booking_confirmation
+2025-04-15 13:49:00,481 [INFO] Database connection established
+2025-04-15 13:49:00,495 [INFO] Booking saved successfully: 49867997
+2025-04-15 13:49:00,496 [INFO] Database connection closed for /save_booking_confirmation
+2025-04-15 13:49:00,497 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:00] "POST /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 13:49:28,055 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:49:28,062 [INFO] Database connection established
+2025-04-15 13:49:28,070 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:49:28,072 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:49:28,074 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:28] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:49:28,383 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 13:49:28,386 [INFO] Database connection established
+2025-04-15 13:49:28,389 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 13:49:28,390 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 13:49:28,392 [INFO] 127.0.0.1 - - [15/Apr/2025 13:49:28] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 13:49:45,101 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:49:45,102 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:49:45,103 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 13:49:46,164 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 13:49:46,852 [INFO] Starting Flask server on port 5000
+2025-04-15 13:49:46,880 [WARNING]  * Debugger is active!
+2025-04-15 13:49:46,885 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 14:02:58,514 [INFO] Received GET request for /api/profile
+2025-04-15 14:02:58,607 [INFO] package: mysql.connector.plugins
+2025-04-15 14:02:58,608 [INFO] plugin_name: mysql_native_password
+2025-04-15 14:02:58,614 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 14:02:58,619 [INFO] Database connection established
+2025-04-15 14:02:58,625 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:02:58,627 [INFO] Database connection closed for /api/profile
+2025-04-15 14:02:58,632 [INFO] 127.0.0.1 - - [15/Apr/2025 14:02:58] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:02:58,756 [INFO] Received GET request for /api/profile
+2025-04-15 14:02:58,764 [INFO] Database connection established
+2025-04-15 14:02:58,769 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:02:58,772 [INFO] Database connection closed for /api/profile
+2025-04-15 14:02:58,774 [INFO] 127.0.0.1 - - [15/Apr/2025 14:02:58] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:02:58,943 [INFO] Received GET request for /api/profile
+2025-04-15 14:02:58,949 [INFO] Database connection established
+2025-04-15 14:02:58,953 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:02:58,955 [INFO] Database connection closed for /api/profile
+2025-04-15 14:02:58,957 [INFO] 127.0.0.1 - - [15/Apr/2025 14:02:58] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:04:34,756 [INFO] Received GET request for /get_flights
+2025-04-15 14:04:34,761 [INFO] Database connection established
+2025-04-15 14:04:35,574 [INFO] Returning airports data
+2025-04-15 14:04:35,576 [INFO] Database connection closed for /get_flights
+2025-04-15 14:04:35,577 [INFO] 127.0.0.1 - - [15/Apr/2025 14:04:35] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:04:35,587 [INFO] Received GET request for /get_flights
+2025-04-15 14:04:35,597 [INFO] Database connection established
+2025-04-15 14:04:36,369 [INFO] Returning airports data
+2025-04-15 14:04:36,371 [INFO] Database connection closed for /get_flights
+2025-04-15 14:04:36,373 [INFO] 127.0.0.1 - - [15/Apr/2025 14:04:36] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:04:49,354 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:04:49,365 [INFO] Database connection established
+2025-04-15 14:04:49,377 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:04:49,384 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:04:49,388 [INFO] 127.0.0.1 - - [15/Apr/2025 14:04:49] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:04:49,613 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:04:49,623 [INFO] Database connection established
+2025-04-15 14:04:49,633 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:04:49,636 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:04:49,639 [INFO] 127.0.0.1 - - [15/Apr/2025 14:04:49] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:05:13,103 [INFO] Received GET request for /api/profile
+2025-04-15 14:05:13,111 [INFO] Database connection established
+2025-04-15 14:05:13,117 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:05:13,118 [INFO] Database connection closed for /api/profile
+2025-04-15 14:05:13,121 [INFO] 127.0.0.1 - - [15/Apr/2025 14:05:13] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:05:13,431 [INFO] Received GET request for /api/profile
+2025-04-15 14:05:13,439 [INFO] Database connection established
+2025-04-15 14:05:13,446 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:05:13,448 [INFO] Database connection closed for /api/profile
+2025-04-15 14:05:13,452 [INFO] 127.0.0.1 - - [15/Apr/2025 14:05:13] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:05:13,760 [INFO] Received GET request for /api/profile
+2025-04-15 14:05:13,766 [INFO] Database connection established
+2025-04-15 14:05:13,770 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 14:05:13,773 [INFO] Database connection closed for /api/profile
+2025-04-15 14:05:13,776 [INFO] 127.0.0.1 - - [15/Apr/2025 14:05:13] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:12:21,763 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:12:21,769 [INFO] Database connection established
+2025-04-15 14:12:21,779 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:12:21,785 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:12:21,788 [INFO] 127.0.0.1 - - [15/Apr/2025 14:12:21] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:12:22,018 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:12:22,025 [INFO] Database connection established
+2025-04-15 14:12:22,033 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:12:22,039 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:12:22,043 [INFO] 127.0.0.1 - - [15/Apr/2025 14:12:22] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:17,082 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:17,082 [INFO] Database connection established
+2025-04-15 14:16:17,082 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:17,088 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:17,090 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:17] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:18,758 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:18,762 [INFO] Database connection established
+2025-04-15 14:16:18,767 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:18,770 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:18,771 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:18] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:22,067 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:22,067 [INFO] Database connection established
+2025-04-15 14:16:22,067 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:22,067 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:22,074 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:22] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:23,758 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:23,766 [INFO] Database connection established
+2025-04-15 14:16:23,772 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:23,776 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:23,779 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:23] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:27,086 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:27,088 [INFO] Database connection established
+2025-04-15 14:16:27,101 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:27,106 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:27,109 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:27] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:29,750 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:29,759 [INFO] Database connection established
+2025-04-15 14:16:29,767 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:29,769 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:29,771 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:29] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:32,072 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:32,076 [INFO] Database connection established
+2025-04-15 14:16:32,085 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:32,088 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:32,090 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:32] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:48,760 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:48,765 [INFO] Database connection established
+2025-04-15 14:16:48,771 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:48,773 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:48,774 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:48] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:16:52,115 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 14:16:52,115 [INFO] Database connection established
+2025-04-15 14:16:52,129 [INFO] Returning 8 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 14:16:52,131 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 14:16:52,133 [INFO] 127.0.0.1 - - [15/Apr/2025 14:16:52] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 14:45:21,602 [INFO] Received GET request for /get_flights
+2025-04-15 14:45:21,620 [INFO] Database connection established
+2025-04-15 14:45:22,631 [INFO] Returning airports data
+2025-04-15 14:45:22,633 [INFO] Database connection closed for /get_flights
+2025-04-15 14:45:22,635 [INFO] 127.0.0.1 - - [15/Apr/2025 14:45:22] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:45:22,644 [INFO] Received GET request for /get_flights
+2025-04-15 14:45:22,654 [INFO] Database connection established
+2025-04-15 14:45:23,637 [INFO] Returning airports data
+2025-04-15 14:45:23,638 [INFO] Database connection closed for /get_flights
+2025-04-15 14:45:23,641 [INFO] 127.0.0.1 - - [15/Apr/2025 14:45:23] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:45:28,297 [INFO] 127.0.0.1 - - [15/Apr/2025 14:45:28] "[33mGET / HTTP/1.1[0m" 404 -
+2025-04-15 14:45:36,202 [INFO] Received GET request for /get_flights
+2025-04-15 14:45:36,207 [INFO] Database connection established
+2025-04-15 14:45:37,082 [INFO] Returning airports data
+2025-04-15 14:45:37,084 [INFO] Database connection closed for /get_flights
+2025-04-15 14:45:37,086 [INFO] 127.0.0.1 - - [15/Apr/2025 14:45:37] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:47:28,895 [INFO] Received GET request for /get_flights
+2025-04-15 14:47:28,902 [INFO] Database connection established
+2025-04-15 14:47:29,755 [INFO] Returning airports data
+2025-04-15 14:47:29,757 [INFO] Database connection closed for /get_flights
+2025-04-15 14:47:29,761 [INFO] 127.0.0.1 - - [15/Apr/2025 14:47:29] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 14:50:29,848 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 14:50:31,026 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 14:50:40,464 [INFO] Starting Flask server on port 5000
+2025-04-15 14:50:41,252 [WARNING]  * Debugger is active!
+2025-04-15 14:50:41,268 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 15:44:05,729 [INFO] Received GET request for /get_flights
+2025-04-15 15:44:05,891 [INFO] package: mysql.connector.plugins
+2025-04-15 15:44:05,892 [INFO] plugin_name: mysql_native_password
+2025-04-15 15:44:05,898 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 15:44:05,901 [INFO] Database connection established
+2025-04-15 15:44:06,830 [INFO] Returning airports data
+2025-04-15 15:44:06,831 [INFO] Database connection closed for /get_flights
+2025-04-15 15:44:06,833 [INFO] 127.0.0.1 - - [15/Apr/2025 15:44:06] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 15:44:06,844 [INFO] Received GET request for /get_flights
+2025-04-15 15:44:06,863 [INFO] Database connection established
+2025-04-15 15:44:07,642 [INFO] Returning airports data
+2025-04-15 15:44:07,643 [INFO] Database connection closed for /get_flights
+2025-04-15 15:44:07,645 [INFO] 127.0.0.1 - - [15/Apr/2025 15:44:07] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 15:51:28,220 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 15:51:28,514 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 15:51:28,975 [INFO] Starting Flask server on port 5000
+2025-04-15 15:51:28,997 [WARNING]  * Debugger is active!
+2025-04-15 15:51:29,003 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 16:44:43,489 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\login.py', reloading
+2025-04-15 16:44:43,660 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 16:44:44,177 [INFO] Starting Flask server on port 5000
+2025-04-15 16:44:44,198 [WARNING]  * Debugger is active!
+2025-04-15 16:44:44,202 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 16:48:14,996 [INFO] Received GET request for /get_flights
+2025-04-15 16:48:15,113 [INFO] package: mysql.connector.plugins
+2025-04-15 16:48:15,114 [INFO] plugin_name: mysql_native_password
+2025-04-15 16:48:15,120 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 16:48:15,130 [INFO] Database connection established
+2025-04-15 16:48:16,044 [INFO] Returning airports data
+2025-04-15 16:48:16,046 [INFO] Database connection closed for /get_flights
+2025-04-15 16:48:16,047 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:16] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 16:48:16,053 [INFO] Received GET request for /get_flights
+2025-04-15 16:48:16,063 [INFO] Database connection established
+2025-04-15 16:48:16,943 [INFO] Returning airports data
+2025-04-15 16:48:16,945 [INFO] Database connection closed for /get_flights
+2025-04-15 16:48:16,946 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:16] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 16:48:54,716 [INFO] Received GET request for /api/profile
+2025-04-15 16:48:54,726 [INFO] Database connection established
+2025-04-15 16:48:54,736 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:48:54,738 [INFO] Database connection closed for /api/profile
+2025-04-15 16:48:54,742 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:54] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:48:54,974 [INFO] Received GET request for /api/profile
+2025-04-15 16:48:54,982 [INFO] Database connection established
+2025-04-15 16:48:54,986 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:48:54,987 [INFO] Database connection closed for /api/profile
+2025-04-15 16:48:54,990 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:54] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:48:55,063 [INFO] Received GET request for /api/profile
+2025-04-15 16:48:55,075 [INFO] Database connection established
+2025-04-15 16:48:55,082 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:48:55,084 [INFO] Database connection closed for /api/profile
+2025-04-15 16:48:55,087 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:55] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:48:55,305 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:55] "OPTIONS /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 16:48:55,425 [INFO] Received POST request for /save_booking_confirmation
+2025-04-15 16:48:55,433 [INFO] Database connection established
+2025-04-15 16:48:55,445 [INFO] Booking saved successfully: 80242959
+2025-04-15 16:48:55,446 [INFO] Database connection closed for /save_booking_confirmation
+2025-04-15 16:48:55,449 [INFO] 127.0.0.1 - - [15/Apr/2025 16:48:55] "POST /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 16:49:03,884 [INFO] Received GET request for /api/profile
+2025-04-15 16:49:03,896 [INFO] Database connection established
+2025-04-15 16:49:03,903 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:49:03,905 [INFO] Database connection closed for /api/profile
+2025-04-15 16:49:03,906 [INFO] 127.0.0.1 - - [15/Apr/2025 16:49:03] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:49:04,220 [INFO] Received GET request for /api/profile
+2025-04-15 16:49:04,228 [INFO] Database connection established
+2025-04-15 16:49:04,234 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:49:04,235 [INFO] Database connection closed for /api/profile
+2025-04-15 16:49:04,238 [INFO] 127.0.0.1 - - [15/Apr/2025 16:49:04] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:49:04,559 [INFO] Received GET request for /api/profile
+2025-04-15 16:49:04,563 [INFO] Database connection established
+2025-04-15 16:49:04,565 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:49:04,566 [INFO] Database connection closed for /api/profile
+2025-04-15 16:49:04,567 [INFO] 127.0.0.1 - - [15/Apr/2025 16:49:04] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:50:37,426 [INFO] Received GET request for /api/profile
+2025-04-15 16:50:37,432 [INFO] Database connection established
+2025-04-15 16:50:37,436 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:50:37,440 [INFO] Database connection closed for /api/profile
+2025-04-15 16:50:37,442 [INFO] 127.0.0.1 - - [15/Apr/2025 16:50:37] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:50:37,678 [INFO] Received GET request for /api/profile
+2025-04-15 16:50:37,683 [INFO] Database connection established
+2025-04-15 16:50:37,686 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:50:37,687 [INFO] Database connection closed for /api/profile
+2025-04-15 16:50:37,688 [INFO] 127.0.0.1 - - [15/Apr/2025 16:50:37] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:50:37,762 [INFO] Received GET request for /api/profile
+2025-04-15 16:50:37,768 [INFO] Database connection established
+2025-04-15 16:50:37,772 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:50:37,773 [INFO] Database connection closed for /api/profile
+2025-04-15 16:50:37,775 [INFO] 127.0.0.1 - - [15/Apr/2025 16:50:37] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:51:36,536 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 16:51:37,148 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 16:51:37,951 [INFO] Starting Flask server on port 5000
+2025-04-15 16:51:37,979 [WARNING]  * Debugger is active!
+2025-04-15 16:51:37,983 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 16:51:44,070 [INFO] Received GET request for /api/profile
+2025-04-15 16:51:44,153 [INFO] package: mysql.connector.plugins
+2025-04-15 16:51:44,154 [INFO] plugin_name: mysql_native_password
+2025-04-15 16:51:44,155 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 16:51:44,155 [INFO] Database connection established
+2025-04-15 16:51:44,162 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:51:44,163 [INFO] Database connection closed for /api/profile
+2025-04-15 16:51:44,165 [INFO] 127.0.0.1 - - [15/Apr/2025 16:51:44] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:51:44,323 [INFO] Received GET request for /api/profile
+2025-04-15 16:51:44,323 [INFO] Database connection established
+2025-04-15 16:51:44,338 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:51:44,340 [INFO] Database connection closed for /api/profile
+2025-04-15 16:51:44,341 [INFO] 127.0.0.1 - - [15/Apr/2025 16:51:44] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 16:51:44,474 [INFO] Received GET request for /api/profile
+2025-04-15 16:51:44,480 [INFO] Database connection established
+2025-04-15 16:51:44,483 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 16:51:44,484 [INFO] Database connection closed for /api/profile
+2025-04-15 16:51:44,486 [INFO] 127.0.0.1 - - [15/Apr/2025 16:51:44] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:05:35,075 [INFO] Received GET request for /api/profile
+2025-04-15 17:05:35,083 [INFO] Database connection established
+2025-04-15 17:05:35,089 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:05:35,092 [INFO] Database connection closed for /api/profile
+2025-04-15 17:05:35,094 [INFO] 127.0.0.1 - - [15/Apr/2025 17:05:35] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:05:35,327 [INFO] Received GET request for /api/profile
+2025-04-15 17:05:35,339 [INFO] Database connection established
+2025-04-15 17:05:35,346 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:05:35,349 [INFO] Database connection closed for /api/profile
+2025-04-15 17:05:35,352 [INFO] 127.0.0.1 - - [15/Apr/2025 17:05:35] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:05:35,418 [INFO] Received GET request for /api/profile
+2025-04-15 17:05:35,426 [INFO] Database connection established
+2025-04-15 17:05:35,431 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:05:35,433 [INFO] Database connection closed for /api/profile
+2025-04-15 17:05:35,436 [INFO] 127.0.0.1 - - [15/Apr/2025 17:05:35] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:28:05,009 [INFO] Received GET request for /api/profile
+2025-04-15 17:28:05,021 [INFO] Database connection established
+2025-04-15 17:28:05,026 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:28:05,026 [INFO] Database connection closed for /api/profile
+2025-04-15 17:28:05,034 [INFO] 127.0.0.1 - - [15/Apr/2025 17:28:05] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:28:05,257 [INFO] Received GET request for /api/profile
+2025-04-15 17:28:05,274 [INFO] Database connection established
+2025-04-15 17:28:05,282 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:28:05,282 [INFO] Database connection closed for /api/profile
+2025-04-15 17:28:05,290 [INFO] 127.0.0.1 - - [15/Apr/2025 17:28:05] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:28:05,357 [INFO] Received GET request for /api/profile
+2025-04-15 17:28:05,365 [INFO] Database connection established
+2025-04-15 17:28:05,376 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 17:28:05,382 [INFO] Database connection closed for /api/profile
+2025-04-15 17:28:05,383 [INFO] 127.0.0.1 - - [15/Apr/2025 17:28:05] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:28:49,334 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 17:28:49,342 [INFO] Database connection established
+2025-04-15 17:28:49,368 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 17:28:49,376 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 17:28:49,376 [INFO] 127.0.0.1 - - [15/Apr/2025 17:28:49] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:28:49,695 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 17:28:49,712 [INFO] Database connection established
+2025-04-15 17:28:49,726 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 17:28:49,734 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 17:28:49,737 [INFO] 127.0.0.1 - - [15/Apr/2025 17:28:49] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:36:38,700 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 17:36:38,707 [INFO] Database connection established
+2025-04-15 17:36:38,709 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 17:36:38,712 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 17:36:38,712 [INFO] 127.0.0.1 - - [15/Apr/2025 17:36:38] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:36:38,954 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 17:36:38,954 [INFO] Database connection established
+2025-04-15 17:36:38,962 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 17:36:38,962 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 17:36:38,962 [INFO] 127.0.0.1 - - [15/Apr/2025 17:36:38] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 17:52:37,605 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 17:52:38,044 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 17:52:38,661 [INFO] Starting Flask server on port 5000
+2025-04-15 17:52:38,694 [WARNING]  * Debugger is active!
+2025-04-15 17:52:38,702 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 18:09:52,470 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 18:09:52,472 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 18:09:52,474 [INFO]  * Detected change in 'C:\\xampp\\htdocs\\Internship\\tripglide\\backend\\flight.py', reloading
+2025-04-15 18:09:53,149 [INFO]  * Restarting with watchdog (windowsapi)
+2025-04-15 18:09:54,040 [INFO] Starting Flask server on port 5000
+2025-04-15 18:09:54,082 [WARNING]  * Debugger is active!
+2025-04-15 18:09:54,090 [INFO]  * Debugger PIN: 119-398-109
+2025-04-15 18:11:19,040 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:11:19,126 [INFO] package: mysql.connector.plugins
+2025-04-15 18:11:19,126 [INFO] plugin_name: mysql_native_password
+2025-04-15 18:11:19,131 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 18:11:19,139 [INFO] Database connection established
+2025-04-15 18:11:19,142 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:11:19,148 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:11:19,150 [INFO] 127.0.0.1 - - [15/Apr/2025 18:11:19] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:11:26,171 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:11:26,188 [INFO] Database connection established
+2025-04-15 18:11:26,204 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:11:26,208 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:11:26,212 [INFO] 127.0.0.1 - - [15/Apr/2025 18:11:26] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:11:26,527 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:11:26,527 [INFO] Database connection established
+2025-04-15 18:11:26,540 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:11:26,545 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:11:26,552 [INFO] 127.0.0.1 - - [15/Apr/2025 18:11:26] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:11:43,665 [INFO] 127.0.0.1 - - [15/Apr/2025 18:11:43] "OPTIONS /api/cancel_flight_booking HTTP/1.1" 200 -
+2025-04-15 18:11:43,923 [INFO] Received POST request for /api/cancel_flight_booking
+2025-04-15 18:11:43,930 [INFO] Database connection established
+2025-04-15 18:11:43,946 [INFO] Booking cancelled successfully: 80242959
+2025-04-15 18:11:43,946 [INFO] Database connection closed for /api/cancel_flight_booking
+2025-04-15 18:11:43,954 [INFO] 127.0.0.1 - - [15/Apr/2025 18:11:43] "POST /api/cancel_flight_booking HTTP/1.1" 200 -
+2025-04-15 18:12:22,135 [INFO] 127.0.0.1 - - [15/Apr/2025 18:12:22] "OPTIONS /api/cancel_flight_booking HTTP/1.1" 200 -
+2025-04-15 18:12:22,459 [INFO] Received POST request for /api/cancel_flight_booking
+2025-04-15 18:12:22,465 [INFO] Database connection established
+2025-04-15 18:12:22,481 [INFO] Booking cancelled successfully: 49867997
+2025-04-15 18:12:22,481 [INFO] Database connection closed for /api/cancel_flight_booking
+2025-04-15 18:12:22,481 [INFO] 127.0.0.1 - - [15/Apr/2025 18:12:22] "POST /api/cancel_flight_booking HTTP/1.1" 200 -
+2025-04-15 18:20:52,243 [INFO] Received GET request for /get_flights
+2025-04-15 18:20:52,248 [INFO] Database connection established
+2025-04-15 18:20:52,828 [INFO] Returning airports data
+2025-04-15 18:20:52,830 [INFO] Database connection closed for /get_flights
+2025-04-15 18:20:52,831 [INFO] 127.0.0.1 - - [15/Apr/2025 18:20:52] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 18:20:52,836 [INFO] Received GET request for /get_flights
+2025-04-15 18:20:52,843 [INFO] Database connection established
+2025-04-15 18:20:53,328 [INFO] Returning airports data
+2025-04-15 18:20:53,336 [INFO] Database connection closed for /get_flights
+2025-04-15 18:20:53,337 [INFO] 127.0.0.1 - - [15/Apr/2025 18:20:53] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 18:20:56,981 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:20:56,988 [INFO] Database connection established
+2025-04-15 18:20:57,000 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:20:57,004 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:20:57,004 [INFO] 127.0.0.1 - - [15/Apr/2025 18:20:57] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:20:57,253 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:20:57,260 [INFO] Database connection established
+2025-04-15 18:20:57,266 [INFO] Returning 9 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:20:57,270 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:20:57,270 [INFO] 127.0.0.1 - - [15/Apr/2025 18:20:57] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:21:03,040 [INFO] Received GET request for /get_flights
+2025-04-15 18:21:03,040 [INFO] Database connection established
+2025-04-15 18:21:03,551 [INFO] Returning airports data
+2025-04-15 18:21:03,551 [INFO] Database connection closed for /get_flights
+2025-04-15 18:21:03,551 [INFO] 127.0.0.1 - - [15/Apr/2025 18:21:03] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 18:21:03,559 [INFO] Received GET request for /get_flights
+2025-04-15 18:21:03,561 [INFO] Database connection established
+2025-04-15 18:21:04,047 [INFO] Returning airports data
+2025-04-15 18:21:04,053 [INFO] Database connection closed for /get_flights
+2025-04-15 18:21:04,053 [INFO] 127.0.0.1 - - [15/Apr/2025 18:21:04] "GET /get_flights HTTP/1.1" 200 -
+2025-04-15 18:22:14,940 [INFO] Received GET request for /api/profile
+2025-04-15 18:22:14,944 [INFO] Database connection established
+2025-04-15 18:22:14,944 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 18:22:14,944 [INFO] Database connection closed for /api/profile
+2025-04-15 18:22:14,951 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:14] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:22:15,200 [INFO] Received GET request for /api/profile
+2025-04-15 18:22:15,209 [INFO] Database connection established
+2025-04-15 18:22:15,209 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 18:22:15,209 [INFO] Database connection closed for /api/profile
+2025-04-15 18:22:15,209 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:15] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:22:15,266 [INFO] Received GET request for /api/profile
+2025-04-15 18:22:15,275 [INFO] Database connection established
+2025-04-15 18:22:15,275 [INFO] Returning user profile for quizzicalbassi1@freethecookies.com
+2025-04-15 18:22:15,275 [INFO] Database connection closed for /api/profile
+2025-04-15 18:22:15,275 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:15] "GET /api/profile?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:22:15,529 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:15] "OPTIONS /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 18:22:15,600 [INFO] Received POST request for /save_booking_confirmation
+2025-04-15 18:22:15,608 [INFO] Database connection established
+2025-04-15 18:22:15,620 [INFO] Booking saved successfully: 92431290
+2025-04-15 18:22:15,620 [INFO] Database connection closed for /save_booking_confirmation
+2025-04-15 18:22:15,620 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:15] "POST /api/save_booking_confirmation HTTP/1.1" 200 -
+2025-04-15 18:22:59,272 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:22:59,277 [INFO] Database connection established
+2025-04-15 18:22:59,283 [INFO] Returning 10 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:22:59,285 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:22:59,288 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:59] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:22:59,601 [INFO] Received GET request for /api/flight_bookings
+2025-04-15 18:22:59,609 [INFO] Database connection established
+2025-04-15 18:22:59,617 [INFO] Returning 10 flight bookings for identifier=quizzicalbassi1@freethecookies.com
+2025-04-15 18:22:59,623 [INFO] Database connection closed for /api/flight_bookings
+2025-04-15 18:22:59,626 [INFO] 127.0.0.1 - - [15/Apr/2025 18:22:59] "GET /api/flight_bookings?identifier=quizzicalbassi1@freethecookies.com HTTP/1.1" 200 -
+2025-04-15 18:24:40,651 [INFO] 127.0.0.1 - - [15/Apr/2025 18:24:40] "OPTIONS /api/cancel_flight_booking HTTP/1.1" 200 -
+2025-04-15 18:24:40,919 [INFO] Received POST request for /api/cancel_flight_booking
+2025-04-15 18:24:40,923 [INFO] Database connection established
+2025-04-15 18:24:40,939 [INFO] Booking cancelled successfully: 92431290
+2025-04-15 18:24:40,939 [INFO] Database connection closed for /api/cancel_flight_booking
+2025-04-15 18:24:40,943 [INFO] 127.0.0.1 - - [15/Apr/2025 18:24:40] "POST /api/cancel_flight_booking HTTP/1.1" 200 -
