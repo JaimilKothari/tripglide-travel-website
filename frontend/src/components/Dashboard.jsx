@@ -29,8 +29,9 @@ const Dashboard = () => {
   const [hotelBookings, setHotelBookings] = useState([]);
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const API_URL = "http://localhost:5001/api";
+  const API_URL = "http://localhost:5003/api"; // Updated to match your backend port
 
   const statesList = [
     "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
@@ -69,7 +70,7 @@ const Dashboard = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "Not provided";
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return dateString; // Return as-is if invalid
+    if (isNaN(date.getTime())) return dateString;
     return date.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric" });
   };
 
@@ -78,15 +79,19 @@ const Dashboard = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setFormData({
-        ...parsedUser,
-        birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
-      });
-      setCompletionPercentage(calculateCompletionPercentage(parsedUser));
-      fetchProfile(getIdentifier(parsedUser));
-      fetchBookingHistory(parsedUser.user_id);
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setFormData({
+          ...parsedUser,
+          birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
+        });
+        setCompletionPercentage(calculateCompletionPercentage(parsedUser));
+        fetchProfile(getIdentifier(parsedUser));
+        fetchBookingHistory(parsedUser);
+      } catch {
+        navigate("/login");
+      }
     } else {
       navigate("/login");
     }
@@ -128,29 +133,43 @@ const Dashboard = () => {
     }
   };
 
-  const fetchBookingHistory = async (user_id) => {
+  const fetchBookingHistory = async (user) => {
+    setIsLoading(true);
     try {
+      const user_id = user.user_id;
+      if (!user_id) {
+        setError("User ID is required to fetch bookings");
+        return;
+      }
       const endpoints = [
         { url: `${API_URL}/flight_bookings?user_id=${user_id}`, setter: setFlightBookings, key: "bookings" },
         { url: `${API_URL}/hotel_bookings?user_id=${user_id}`, setter: setHotelBookings, key: "bookings" },
         { url: `${API_URL}/car_rentals?user_id=${user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
-        const response = await fetch(url);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.success) {
-          setter(data[key] || []);
-        } else {
-          setError(data.error || `Failed to load ${key}`);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        try {
+          const response = await fetch(url, { signal: controller.signal });
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.success) {
+            setter(data[key] || []);
+          } else {
+            setError(data.error || `Failed to load ${key}`);
+          }
+        } finally {
+          clearTimeout(timeoutId);
         }
       }
     } catch (err) {
       console.error("Fetch booking history error:", err);
       setError(`Failed to load booking history: ${err.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -195,7 +214,6 @@ const Dashboard = () => {
       setError("Pincode must be 6 digits");
       return;
     }
-
     try {
       const response = await fetch(`${API_URL}/update_profile`, {
         method: "POST",
@@ -238,7 +256,6 @@ const Dashboard = () => {
       setPasswordError("New password must be at least 6 characters");
       return;
     }
-
     try {
       const response = await fetch(`${API_URL}/change_password`, {
         method: "POST",
@@ -345,7 +362,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
-      {/* Mobile Header */}
       <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-md border-b border-gray-200">
         <motion.button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -472,17 +488,20 @@ const Dashboard = () => {
                     {error}
                   </motion.div>
                 )}
-                <div className="flex border-b border-gray-200 mb-6">
-                  {["Flights", "Hotels", "Cars"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setHistoryTab(tab)}
-                      className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
+                {isLoading && <p className="text-gray-500 text-sm mb-4">Loading bookings...</p>}
+                {!isLoading && (
+                  <div className="flex border-b border-gray-200 mb-6">
+                    {["Flights", "Hotels", "Cars"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setHistoryTab(tab)}
+                        className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
                   {historyTab === "Flights" && (
                     <>
@@ -501,17 +520,63 @@ const Dashboard = () => {
                       )}
                     </>
                   )}
-                  {historyTab === "Hotels" && (
+                  {historyTab === "Hotels" && !isLoading && (
                     <>
                       <h3 className="text-lg font-semibold text-gray-800">Hotel Bookings</h3>
                       {hotelBookings.length === 0 ? (
                         <p className="text-gray-500 text-sm">No hotel bookings found.</p>
                       ) : (
                         hotelBookings.map((booking) => (
-                          <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                            <div>
-                              <p className="text-sm font-medium text-gray-800">{booking.hotel_details || "Hotel Details"}</p>
-                              <p className="text-sm text-gray-500">{formatDate(booking.check_in_date)} - {formatDate(booking.check_out_date)}</p>
+                          <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
+                            <div className="flex justify-between items-center mb-2">
+                              <p className="text-sm font-medium text-gray-800">
+                                {booking.hotel_name || "Hotel Details"}
+                              </p>
+                              <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                                {booking.status || "N/A"}
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              <div>
+                                <p className="text-xs text-gray-500">Booking Number</p>
+                                <p className="text-sm font-semibold">{booking.booking_number || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Guest Name</p>
+                                <p className="text-sm">{booking.guest_name || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Email</p>
+                                <p className="text-sm">{booking.email || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Room Type</p>
+                                <p className="text-sm font-semibold">{booking.room_type || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Check-in</p>
+                                <p className="text-sm">{formatDate(booking.check_in_date)} • {booking.check_in_time || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Check-out</p>
+                                <p className="text-sm">{formatDate(booking.check_out_date)} • {booking.check_out_time || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Total Price</p>
+                                <p className="text-sm font-semibold">₹{Number(booking.total_amount || 0).toLocaleString()}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Arrival</p>
+                                <p className="text-sm">{booking.arrival || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Booked On</p>
+                                <p className="text-sm">{formatDate(booking.booked_on) || "N/A"}</p>
+                              </div>
+                              <div>
+                                <p className="text-xs text-gray-500">Created At</p>
+                                <p className="text-sm">{formatDate(booking.created_at) || "N/A"}</p>
+                              </div>
                             </div>
                           </motion.div>
                         ))
@@ -656,7 +721,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Edit Profile Popup */}
       <AnimatePresence>
         {showPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -725,11 +789,10 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Change Password Popup */}
       <AnimatePresence>
         {showPasswordPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1}} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
                 <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPasswordPopup(false)} className="text-gray-500 hover:text-gray-700">
@@ -783,7 +846,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Verification Popup */}
       <AnimatePresence>
         {showVerificationPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
