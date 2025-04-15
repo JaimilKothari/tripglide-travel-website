@@ -23,20 +23,21 @@ function HotelSearch() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState([]);
+  const [error, setError] = useState(null);
 
+  // Fetch destinations from the backend
   useEffect(() => {
-    axios
-      .get("http://localhost:5001/arrival")
-      .then((response) => {
-        const locations = Array.isArray(response.data.locations)
-          ? response.data.locations
-          : [];
-        setDestinations(locations);
-      })
-      .catch((error) => {
-        console.error("Error fetching destinations:", error);
-        setDestinations([]);
-      });
+    const fetchDestinations = async () => {
+      try {
+        const response = await axios.get("http://localhost:5003/arrival");
+        setDestinations(response.data.locations || []);
+      } catch (err) {
+        console.error("Error fetching destinations:", err);
+        setError("Failed to load destinations. Please try again.");
+      }
+    };
+
+    fetchDestinations();
   }, []);
 
   const [searchData, setSearchData] = useState({
@@ -134,6 +135,10 @@ function HotelSearch() {
     setShowGuestsDropdown(!showGuestsDropdown);
   };
 
+  if (error) {
+    return <div className="text-center py-8">{error}</div>;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="sticky top-0 z-50 flex justify-center w-full bg-[#06152B]">
@@ -143,20 +148,19 @@ function HotelSearch() {
               <span className="text-xs text-gray-600">
                 Where do you want to stay?
               </span>
-              <input
-                list="destinations"
-                type="text"
+              <select
                 name="destination"
                 value={searchData.destination}
-                onChange={handleInputChange}
-                placeholder="Enter Destination"
+                onChange={(e) => handleInputChange(e)}
                 className="text-blue-600 font-semibold text-base bg-transparent outline-none"
-              />
-              <datalist id="destinations">
-                {destinations.map((destination, index) => (
-                  <option key={index} value={destination} />
+              >
+                <option value="">Select Destination</option>
+                {destinations.map((dest, index) => (
+                  <option key={index} value={dest}>
+                    {dest}
+                  </option>
                 ))}
-              </datalist>
+              </select>
             </div>
             <div className="flex-1 flex flex-col items-start justify-center px-4 py-2 border-b md:border-b-0 md:border-r border-gray-300">
               <span className="text-xs text-gray-600">Check-in</span>
@@ -306,14 +310,17 @@ function HotelSearch() {
                     Loading hotels...
                   </div>
                 ) : (
-                  <HotelCard
-                    location={searchData.destination}
-                    checkInDate={searchData.checkInDate}
-                    checkOutDate={searchData.checkOutDate}
-                    adults={searchData.adults}
-                    children={searchData.children}
-                    rooms={searchData.rooms}
-                  />
+                  hotels.map((hotel, index) => (
+                    <HotelCard
+                      key={index}
+                      location={hotel.arrival}
+                      checkInDate={searchData.checkInDate}
+                      checkOutDate={searchData.checkOutDate}
+                      adults={searchData.adults}
+                      children={searchData.children}
+                      rooms={searchData.rooms}
+                    />
+                  ))
                 )}
               </div>
             </div>

@@ -10,6 +10,7 @@ import {
   FaExclamationCircle,
   FaBed,
 } from "react-icons/fa";
+import jsPDF from "jspdf";
 
 const HotelBooking = () => {
   const navigate = useNavigate();
@@ -23,14 +24,13 @@ const HotelBooking = () => {
   // Generate random booking number
   useEffect(() => {
     const generateBookingNumber = () => {
-      return Math.floor(1000000000 + Math.random() * 9000000000).toString(); // 10 digits for uniqueness
+      return Math.floor(1000000000 + Math.random() * 9000000000).toString();
     };
     setBookingNumber(generateBookingNumber());
   }, []);
 
   // Retrieve user and booking details
   useEffect(() => {
-    // Fetch user from localStorage (from Dashboard.jsx)
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
       console.warn("No user found in localStorage, redirecting to login");
@@ -53,7 +53,6 @@ const HotelBooking = () => {
       return;
     }
 
-    // Retrieve booking details
     let storedDetails = sessionStorage.getItem("hotelBookingDetails");
     if (!storedDetails) {
       storedDetails = localStorage.getItem("hotelBookingDetails");
@@ -94,22 +93,22 @@ const HotelBooking = () => {
           guest_name: parsedUser.username || "Guest",
           email: parsedUser.email || "No email provided",
           phone: parsedUser.phone || "Not provided",
-          booked_on: new Date().toISOString().split('T')[0],
+          booked_on: new Date().toISOString().split("T")[0],
           payment_method: "Credit Card",
         };
 
         console.log("Sending booking:", bookingData);
 
         try {
-          const response = await fetch('http://localhost:5003/api/bookings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          const response = await fetch("http://localhost:5003/api/bookings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
           });
 
           const result = await response.json();
           if (!response.ok) {
-            throw new Error(result.error || 'Failed to store booking');
+            throw new Error(result.error || "Failed to store booking");
           }
           console.log(`Booking ${bookingNumber} stored:`, result.message);
           sessionStorage.setItem("bookingSent", bookingNumber);
@@ -127,6 +126,296 @@ const HotelBooking = () => {
 
     setIsLoaded(true);
   }, [bookingNumber, navigate]);
+
+  // Function to convert number to words (simplified for INR)
+  const numberToWords = (num) => {
+    const units = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+    ];
+    const tens = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+    const teens = [
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+    const scales = ["", "Thousand", "Lakh", "Crore"];
+
+    if (num === 0) return "Zero";
+
+    let numStr = num.toString();
+    let chunks = [];
+    while (numStr.length > 0) {
+      if (numStr.length > 3) {
+        chunks.push(parseInt(numStr.slice(-3)));
+        numStr = numStr.slice(0, -3);
+      } else {
+        chunks.push(parseInt(numStr));
+        numStr = "";
+      }
+    }
+
+    let words = [];
+    for (let i = 0; i < chunks.length; i++) {
+      let chunk = chunks[i];
+      if (chunk === 0) continue;
+
+      let chunkWords = [];
+      if (chunk >= 100) {
+        chunkWords.push(`${units[Math.floor(chunk / 100)]} Hundred`);
+        chunk %= 100;
+      }
+      if (chunk >= 10 && chunk <= 19) {
+        chunkWords.push(teens[chunk - 10]);
+      } else if (chunk >= 20) {
+        chunkWords.push(tens[Math.floor(chunk / 10)]);
+        chunk %= 10;
+        if (chunk > 0) chunkWords.push(units[chunk]);
+      } else if (chunk > 0) {
+        chunkWords.push(units[chunk]);
+      }
+      if (i > 0 && chunkWords.length > 0) {
+        chunkWords.push(scales[i]);
+      }
+      words.unshift(...chunkWords);
+    }
+
+    return words.join(" ");
+  };
+
+  // Download Invoice with Dark Blue and White Theme
+  const downloadInvoice = () => {
+    if (!bookingDetails || !userDetails) return;
+
+    const {
+      hotelName,
+      checkInDate,
+      checkOutDate,
+      roomType,
+      rooms,
+      pricePerNight,
+      totalAmount,
+    } = bookingDetails;
+
+    const doc = new jsPDF();
+    let yPosition = 10;
+
+    // Colors
+    const darkBlue = [30, 58, 138]; // #1E3A8A
+    const lightGray = [243, 244, 246]; // #F3F4F6
+    const white = [255, 255, 255]; // #FFFFFF
+    const darkGray = [55, 65, 81]; // #374151
+
+    // Outer Border
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(...darkBlue);
+    doc.rect(5, 5, 200, 287, "S");
+
+    // Header: Dark Blue Background with White Text
+    doc.setFillColor(...darkBlue);
+    doc.rect(0, 0, 210, 30, "F");
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("TripGlide", 15, yPosition + 10);
+    doc.setFontSize(14);
+    doc.text("INVOICE", 190, yPosition + 10, { align: "right" });
+    yPosition += 20;
+
+    // Invoice Number and Booking Date
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice No: INV-2025-${bookingNumber}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 5;
+    doc.text(
+      `Booking Date: ${new Date().toLocaleDateString("en-US", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })}`,
+      190,
+      yPosition,
+      { align: "right" }
+    );
+    yPosition += 10;
+
+    // Customer Info Section
+    doc.setFillColor(...white);
+    doc.rect(10, yPosition - 5, 190, 40, "F");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...darkGray);
+    doc.text("Customer Information", 15, yPosition);
+    doc.setLineWidth(0.2);
+    doc.setDrawColor(...darkBlue);
+    doc.line(15, yPosition + 2, 85, yPosition + 2);
+    yPosition += 10;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Traveler: ${userDetails.name || "Guest"}`, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Email: ${userDetails.email || "Not provided"}`, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Booking ID: TG-${bookingNumber}`, 15, yPosition);
+    yPosition += 15;
+
+    // Hotel Details Section
+    doc.setFillColor(...lightGray);
+    doc.rect(10, yPosition - 5, 190, 10, "F");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...darkGray);
+    doc.text("Hotel Details", 15, yPosition);
+    doc.setLineWidth(0.2);
+    doc.line(15, yPosition + 2, 65, yPosition + 2);
+    yPosition += 10;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    const hotelTitle = `${hotelName} - ${roomType} (${rooms} Room${rooms > 1 ? "s" : ""})`;
+    doc.text(hotelTitle, 15, yPosition, { maxWidth: 180 });
+    yPosition += 8;
+    const checkIn = `Check-In: ${new Date(checkInDate).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    )}, 02:00 PM`;
+    doc.text(checkIn, 15, yPosition);
+    yPosition += 5;
+    const checkOut = `Check-Out: ${new Date(checkOutDate).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    )}, 11:00 AM`;
+    doc.text(checkOut, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Traveler: ${userDetails.name || "Guest"}`, 15, yPosition);
+    yPosition += 10;
+
+    // Fare Breakdown Table
+    doc.setFillColor(...darkBlue);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("Description", 20, yPosition);
+    doc.text("Base Rate", 100, yPosition, { align: "right" });
+    doc.text("Taxes & Fees", 150, yPosition, { align: "right" });
+    doc.text("Amount", 190, yPosition, { align: "right" });
+    yPosition += 8;
+
+    doc.setLineWidth(0.1);
+    doc.setDrawColor(...darkGray);
+    doc.line(15, yPosition - 2, 195, yPosition - 2);
+    yPosition += 5;
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...darkGray);
+    const baseRate = Math.round(totalAmount * 0.7); // Assume 70% is base rate
+    const taxes = Math.round(totalAmount * 0.3); // Assume 30% is taxes
+    const total = totalAmount;
+
+    // Row 1: Room Charges
+    doc.setFillColor(245, 245, 245);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.text(
+      `Room Charges (${rooms} Room${rooms > 1 ? "s" : ""})`,
+      20,
+      yPosition
+    );
+    doc.text(`Rs. ${baseRate.toLocaleString()}`, 100, yPosition, {
+      align: "right",
+    });
+    doc.text(`Rs. ${taxes.toLocaleString()}`, 150, yPosition, { align: "right" });
+    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 10;
+
+    // Total Row
+    doc.setFillColor(...lightGray);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.setFont("helvetica", "bold");
+    doc.text("Total", 20, yPosition);
+    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 15;
+
+    // Total in Words
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    const totalInWords = `${numberToWords(total).toUpperCase()} ONLY (INR)`;
+    doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
+      maxWidth: 180,
+    });
+    yPosition += 15;
+
+    // Footer: Dark Blue Background with White Text
+    doc.setFillColor(...darkBlue);
+    doc.rect(0, 260, 210, 37, "F");
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("TripGlide Customer Support", 15, 270);
+    yPosition = 275;
+    doc.setFont("helvetica", "normal");
+    doc.text("TripGlide Pvt. Ltd.", 15, yPosition);
+    yPosition += 5;
+    doc.text("123 Travel Lane, Phase 1, Gujarat, India", 15, yPosition);
+    yPosition += 5;
+    doc.text("India Toll Free: 1-800-123-4567", 15, yPosition);
+
+    // Footer Note
+    doc.setFontSize(8);
+    doc.setTextColor(200, 200, 200);
+    doc.text(
+      "Note: This is a computer-generated invoice and does not require a signature/stamp.",
+      15,
+      290,
+      { maxWidth: 180 }
+    );
+
+    doc.save(`invoice_${bookingNumber}.pdf`);
+  };
 
   if (!isLoaded) {
     return (
@@ -158,7 +447,6 @@ const HotelBooking = () => {
   const { hotelName, arrival, checkInDate, checkOutDate, adults, children, rooms, roomType, totalAmount, pricePerNight } =
     bookingDetails;
 
-  // Calculate number of nights
   const checkIn = new Date(checkInDate);
   const checkOut = new Date(checkOutDate);
   const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
@@ -329,12 +617,20 @@ const HotelBooking = () => {
           <p className="text-gray-600 mb-4">
             Thank you for your booking! A confirmation email has been sent to your registered email address.
           </p>
-          <button
-            onClick={() => navigate("/")}
-            className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
-          >
-            Back to Home
-          </button>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => navigate("/")}
+              className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-blue-700"
+            >
+              Back to Home
+            </button>
+            <button
+              onClick={downloadInvoice}
+              className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-green-700"
+            >
+              Download Invoice
+            </button>
+          </div>
         </div>
       </div>
 

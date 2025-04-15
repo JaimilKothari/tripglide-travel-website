@@ -272,6 +272,60 @@ def store_booking():
     except Exception as e:
         print(f"Unexpected error: {e}")
         return jsonify({'error': f'An error occurred: {e}'}), 500
+    
+@app.route('/api/hotel_bookings', methods=['GET', 'OPTIONS'])
+def get_hotel_bookings():
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+
+    identifier = request.args.get('identifier')
+    if not identifier:
+        return jsonify({"error": "Identifier (email or phone) is required"}), 400
+
+    query = """
+        SELECT id, booking_number, hotel_name, arrival, check_in_date, check_out_date,
+               adults, children, rooms, room_type, price_per_night, total_amount,
+               guest_name, email, phone, booked_on, payment_method, created_at
+        FROM hotel_bookings
+        WHERE email = %s OR phone = %s
+        ORDER BY booked_on DESC
+    """
+    params = (identifier, identifier)
+
+    bookings_data, error = fetch_data(query, params)
+    if error:
+        print(f"Error fetching hotel bookings: {error}")
+        return jsonify({"error": error}), 500
+
+    if not bookings_data:
+        return jsonify({"bookings": []}), 200
+
+    # Format the bookings data
+    formatted_bookings = []
+    for booking in bookings_data:
+        formatted_bookings.append({
+            "id": booking["id"],
+            "booking_number": booking["booking_number"],
+            "hotel_name": booking["hotel_name"],
+            "arrival": booking["arrival"],
+            "check_in_date": booking["check_in_date"],
+            "check_out_date": booking["check_out_date"],
+            "adults": booking["adults"],
+            "children": booking["children"],
+            "rooms": booking["rooms"],
+            "room_type": booking["room_type"],
+            "price_per_night": float(booking["price_per_night"]),
+            "total_amount": float(booking["total_amount"]),
+            "guest_name": booking["guest_name"],
+            "email": booking["email"],
+            "phone": booking["phone"],
+            "booked_on": booking["booked_on"].isoformat() if booking["booked_on"] else None,
+            "payment_method": booking["payment_method"],
+            "created_at": booking["created_at"].isoformat() if booking["created_at"] else None,
+            "hotel_details": f"{booking['hotel_name']} - {booking['room_type']} ({booking['rooms']} rooms)"
+        })
+
+    return jsonify({"bookings": formatted_bookings, "success": True})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)

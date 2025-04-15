@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
-import axios from "axios";
 
 const Login = ({ onLogIn, mockUsers }) => {
   const navigate = useNavigate();
@@ -40,7 +39,7 @@ const Login = ({ onLogIn, mockUsers }) => {
       }
 
       if (data.requires_verification) {
-        console.log("OTP required, showing poppy");
+        console.log("OTP required, showing popup");
         setPendingUser(data.user);
         setIdentifiers(data.identifiers);
         setVerificationData({ identifier: data.identifiers[0].identifier, code: "" });
@@ -74,35 +73,12 @@ const Login = ({ onLogIn, mockUsers }) => {
         setShowVerificationPopup(false);
         setVerificationData({ identifier: "", code: "" });
 
-        // Check for booking data from HotelDetails
-        const { bookingData } = location.state || {};
-        if (bookingData) {
-          // Store booking data and initiate Stripe checkout
-          sessionStorage.setItem("hotelBookingDetails", JSON.stringify(bookingData));
-          try {
-            const stripeResponse = await axios.post("http://localhost:5003/create-checkout-session", bookingData);
-            const sessionId = stripeResponse.data.id;
-
-            const stripe = window.Stripe(
-              "pk_test_51RA20B4D8TqxSjMO2AL0EwDRq7G1h3JF3CvdcasP9nE34rF4w5jNrSFbUPtbsoHsvGf7X2dkIUFZ4ETqGdjAfcjZ00UOI1COTA"
-            );
-            const { error } = await stripe.redirectToCheckout({ sessionId });
-
-            if (error) {
-              console.error("Stripe redirect error:", error);
-              setVerificationError("Failed to redirect to payment page.");
-              return;
-            }
-          } catch (err) {
-            console.error("Error initiating checkout:", err);
-            setVerificationError("Failed to initiate payment.");
-            return;
-          }
-        } else {
-          // Normal redirect
-          const redirectTo = location.state?.redirectTo || "/dashboard";
-          navigate(redirectTo, { state: location.state });
-        }
+        // Redirect back to HotelDetails page
+        const { redirectTo, bookingData, checkInDate, checkOutDate, adults, children, rooms } = location.state || {};
+        const target = redirectTo || "/dashboard";
+        navigate(target, {
+          state: { checkInDate, checkOutDate, adults, children, rooms, bookingData },
+        });
       } else {
         setVerificationError(data.error || "Invalid code");
       }

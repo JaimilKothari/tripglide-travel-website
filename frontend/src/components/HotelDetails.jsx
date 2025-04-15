@@ -6,7 +6,16 @@ const HotelDetails = () => {
   const { hotel, arrival } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { checkInDate, checkOutDate, adults, children, rooms } = location.state || {};
+
+  // Initialize state with location.state or sessionStorage
+  const sessionBookingData = JSON.parse(sessionStorage.getItem('hotelBookingDetails')) || {};
+  const {
+    checkInDate = sessionBookingData.checkInDate,
+    checkOutDate = sessionBookingData.checkOutDate,
+    adults = sessionBookingData.adults || 1,
+    children = sessionBookingData.children || 0,
+    rooms = sessionBookingData.rooms || 1,
+  } = location.state || {};
 
   const [hotelData, setHotelData] = useState({ Deluxe: null, Executive: null, Suite: null });
   const [loading, setLoading] = useState(true);
@@ -74,8 +83,22 @@ const HotelDetails = () => {
     return <div className="text-center py-8">Loading hotel details...</div>;
   }
 
-  if (error || !checkInDate || !checkOutDate) {
-    return <div className="text-center py-8">{error || 'No booking data available.'}</div>;
+  if (error) {
+    return <div className="text-center py-8">{error}</div>;
+  }
+
+  if (!checkInDate || !checkOutDate) {
+    return (
+      <div className="text-center py-8">
+        Missing booking details. Please try again from the hotel search page.
+        <button
+          onClick={() => navigate('/')}
+          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+        >
+          Go to Home
+        </button>
+      </div>
+    );
   }
 
   const renderRoomSection = (roomType, data) => {
@@ -124,7 +147,7 @@ const HotelDetails = () => {
         // Not logged in, navigate to login with booking data
         navigate('/login', {
           state: {
-            redirectTo: `/hotels/${encodeURIComponent(hotel)}/${encodeURIComponent(arrival)}`,
+            redirectTo: `/hotel-details/${encodeURIComponent(hotel)}/${encodeURIComponent(arrival)}`,
             bookingData,
             checkInDate,
             checkOutDate,
@@ -136,7 +159,7 @@ const HotelDetails = () => {
         return;
       }
 
-      // User is logged in, proceed to Stripe checkout
+      // User is logged in, store booking data and proceed to Stripe
       sessionStorage.setItem('hotelBookingDetails', JSON.stringify(bookingData));
       initiateStripeCheckout(bookingData);
     };
@@ -242,11 +265,11 @@ const HotelDetails = () => {
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 py-2 text-sm text-gray-600">
         <span>Home</span>
-        <span className="mx-1">&gt;</span>
+        <span className="mx-1">{'>'}</span>
         <span>Hotels in {decodeURIComponent(arrival)}</span>
-        <span className="mx-1">&gt;</span>
+        <span className="mx-1">{'>'}</span>
         <span>{decodeURIComponent(hotel)}</span>
-        <span className="mx-1">&gt;</span>
+        <span className="mx-1">{'>'}</span>
         <span>Review Hotel Booking</span>
       </div>
 
@@ -260,5 +283,3 @@ const HotelDetails = () => {
 };
 
 export default HotelDetails;
-
-
