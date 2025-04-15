@@ -15,7 +15,7 @@ try:
     cursor = conn.cursor()
 
     # Load CSV into DataFrame
-    hotels_df = pd.read_csv(r"D:\xampp\htdocs\Inbox\tripglide\database\Finallll(1).csv", encoding="ISO-8859-1")
+    hotels_df = pd.read_csv(r"C:/xampp/htdocs/Inbox/Tripglide/database/Finallll(1).csv", encoding="ISO-8859-1")
 
     # ✅ Rename columns to match MySQL table structure
     hotels_df.rename(columns={

@@ -21,13 +21,13 @@ import {
   FaWheelchair,
   FaBusinessTime,
   FaTshirt,
-  FaBell,
-  FaCar,
-  FaUserTie,
-  FaHelicopter,
-  FaCocktail,
-  FaCarSide,
-  FaUsers,
+  FaBell,           // For Room Service
+  FaCar,            // For Valet Parking
+  FaUserTie,        // For Private Butler
+  FaHelicopter,     // For Helipad
+  FaCocktail,       // For Rooftop Lounge
+  FaCarSide,        // For Limousine Service
+  FaUsers,          // For Meeting Rooms
 } from 'react-icons/fa';
 import HotelFilter from './HotelFilter';
 
@@ -110,7 +110,7 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
   const renderStars = (rating) => {
     const starCount = Math.ceil(parseFloat(rating));
     return Array.from({ length: starCount }).map((_, i) => (
-      <FaStar key={i} className="text-yellow-500 w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
+      <FaStar key={i} className="text-yellow-500 w-4 h-4" aria-hidden="true" />
     ));
   };
 
@@ -128,6 +128,7 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
     });
   };
 
+  // List of all possible amenities excluding "Wi-Fi", "TV", "Parking", "Suite"
   const allAmenities = [
     "Free Breakfast", "Pool", "Bar", "Gym", "Spa", "Airport Shuttle", "Restaurant",
     "Concierge", "Air Conditioning", "Sauna", "Pet Friendly", "Kids Activities",
@@ -162,29 +163,27 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4">
+    <div className="container mx-auto px-4">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/4">
           <HotelFilter onFilterChange={handleFilterChange} />
         </div>
 
         <div className="w-full md:w-3/4 flex flex-col gap-4">
-          <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">
-            Available Hotels in {location || 'Any Location'}
-          </h3>
+          <h3 className="text-xl font-semibold mb-4">Available Hotels in {location || 'Any Location'}</h3>
           {loading ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8">Loading hotels...</div>
+            <div className="text-center text-gray-500 py-8">Loading hotels...</div>
           ) : hotels.length === 0 ? (
-            <div className="text-center text-gray-500 py-6 sm:py-8">No hotels found for this location.</div>
+            <div className="text-center text-gray-500 py-8">No hotels found for this location.</div>
           ) : (
             hotels.map((hotel, index) => {
               const displayAmenities = getRandomAmenities(hotel.amenities, index);
               return (
                 <div
                   key={hotel.hotel + hotel.arrival}
-                  className="rounded-xl shadow-sm flex flex-col sm:flex-row bg-white overflow-hidden w-full"
+                  className="rounded-xl shadow-sm flex flex-col md:flex-row bg-white overflow-hidden w-full h-[300px] md:h-64"
                 >
-                  <div className="w-full sm:w-[30%] h-48 sm:h-auto">
+                  <div className="w-full md:w-[30%] h-56 md:h-full">
                     <img
                       src={
                         hotel.images
@@ -199,35 +198,34 @@ const HotelCard = ({ location, checkInDate, checkOutDate, adults, children, room
                       onError={(e) => (e.target.src = '/images/Hotel/placeholder.jpg')}
                     />
                   </div>
-                  <div className="flex-1 p-3 sm:p-5 flex flex-col">
+                  <div className="flex-1 p-5 flex flex-col h-full">
                     <div>
-                      <h3 className="text-base sm:text-lg font-semibold truncate">{hotel.hotel}</h3>
+                      <h3 className="text-lg font-semibold">{hotel.hotel}</h3>
                       <div className="flex items-center gap-1 mt-0.5" aria-label={`Rating: ${hotel.rating} out of 5`}>
                         {renderStars(hotel.rating)}
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1 truncate">{hotel.arrival}</p>
+                      <p className="text-sm text-gray-500 mt-1">{hotel.arrival}</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-1 sm:gap-2 text-xs sm:text-sm text-gray-700 mt-2 sm:mt-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700 mt-4">
                       {displayAmenities.map((amenity) => (
-                        <div key={amenity} className="flex items-center gap-1 truncate">
+                        <div key={amenity} className="flex items-center gap-1">
                           {amenityIcons[amenity] || <span className="w-4 h-4" />}
-                          <span className="truncate">{amenity}</span>
+                          {amenity}
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="flex flex-col justify-between items-center p-3 sm:w-48 md:w-56 border-t sm:border-t-0 sm:border-l border-gray-300">
-                    <div className="text-center mb-2 sm:mb-3">
-                      <div className="text-lg sm:text-2xl font-bold text-gray-800 mb-1">
-                        ₹{parseFloat(hotel.totalpricepernight).toLocaleString()}{' '}
-                        <span className="text-xs sm:text-sm font-normal text-gray-600">/ night</span>
+                  <div className="flex flex-col justify-between items-center p-3 md:w-56 border-t md:border-t-0 md:border-l border-gray-300 h-full">
+                    <div className="text-center mb-3">
+                      <div className="text-2xl font-bold text-gray-800 mb-1">
+                        ₹{parseFloat(hotel.totalpricepernight).toLocaleString()} <span className="text-sm font-normal text-gray-600">/ night</span>
                       </div>
                       <div className="text-xs text-gray-700 font-semibold">
                         +₹{parseFloat(hotel.totalcost - hotel.totalpricepernight).toLocaleString()} taxes & fees
                       </div>
                     </div>
                     <button
-                      className="bg-blue-600 text-white text-xs sm:text-sm py-2 px-3 sm:px-4 rounded hover:bg-blue-700 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="bg-blue-600 text-white text-sm py-2 px-4 rounded hover:bg-blue-700 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
                       aria-label={`Choose room at ${hotel.hotel}`}
                       onClick={() => handleChooseRoom(hotel.hotel, hotel.arrival)}
                     >

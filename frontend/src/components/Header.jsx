@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FaGlobe, FaUser, FaBars, FaHeart, FaPlane, FaHotel, FaCar, FaFlag, FaSearchLocation, FaQuestionCircle, FaChartBar } from "react-icons/fa";
-import logo from "../assets/image/logo2.png";
+// import logo from "../assets/image/logo2.png";
 
 export default function Header({ user, allFlights, tripType, returnDate }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
       <div className="container mx-auto max-w-7xl flex flex-wrap items-center justify-between p-4 md:p-6">
         <div className="flex items-center gap-3 flex-shrink-0">
           <Link to="/" className="flex items-center gap-3 cursor-pointer hover:text-blue-300">
-            <img src={logo} alt="Tripglide Logo" className="h-8 md:h-10 w-auto" />
+            {/* <img src={logo} alt="Tripglide Logo" className="h-8 md:h-10 w-auto" /> */}
             <span className="text-lg md:text-2xl font-bold font-serif">Tripglide</span>
           </Link>
         </div>
@@ -74,15 +74,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
           >
             <FaHeart />
           </div>
-          <a
-            href="https://dashboard.stripe.com/test/guests/gcus_1R9jv32RiOcrGJvia7h7puky"
-            className="p-2 rounded-lg hover:bg-gray-600 transition cursor-pointer"
-            title="Stripe Dashboard"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaChartBar />
-          </a>
+          
           {user ? (
             <div
               className="flex items-center gap-2 p-2 rounded-lg cursor-pointer hover:bg-gray-600"

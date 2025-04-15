@@ -1,0 +1,761 @@
+2025-04-14 17:50:44,977 - INFO - Database connection established
+2025-04-14 17:50:45,111 - INFO - Database tables initialized
+2025-04-14 17:50:45,112 - INFO - Twilio client initialized successfully
+2025-04-14 17:50:45,118 - INFO - Serving on http://0.0.0.0:5001
+2025-04-14 17:50:45,120 - DEBUG - Using selector: SelectSelector
+2025-04-14 17:50:45,133 - INFO - Start watching changes
+2025-04-14 17:50:45,133 - INFO - Start detecting changes
+2025-04-14 17:51:38,908 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-14 17:51:38,908 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-14 17:51:57,902 - INFO - 200 OPTIONS /api/login (127.0.0.1) 8.18ms
+2025-04-14 17:51:57,905 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-14 17:51:57,912 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: None
+2025-04-14 17:51:57,913 - WARNING - 401 POST /api/login (127.0.0.1) 9.16ms
+2025-04-14 17:53:17,240 - INFO - 200 OPTIONS /api/signup (127.0.0.1) 0.00ms
+2025-04-14 17:53:17,245 - INFO - User signed up: email=mokshabhavsar2004@gmail.com
+2025-04-14 17:53:17,245 - INFO - 201 POST /api/signup (127.0.0.1) 5.09ms
+2025-04-14 17:53:28,554 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-14 17:53:28,562 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-14 17:53:28,563 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': None, 'password': 'Mpb@123', 'username': 'NewUser', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-14 17:53:28,702 - INFO - -- BEGIN Twilio API Request --
+2025-04-14 17:53:28,702 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-14 17:53:28,702 - INFO - Headers:
+2025-04-14 17:53:28,702 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-14 17:53:28,702 - INFO - Accept : application/json
+2025-04-14 17:53:28,702 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-14 17:53:28,702 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-14 17:53:28,702 - INFO - Accept-Charset : utf-8
+2025-04-14 17:53:28,702 - INFO - -- END Twilio API Request --
+2025-04-14 17:53:28,710 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-14 17:53:29,201 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-14 17:53:29,201 - INFO - Response Status Code: 201
+2025-04-14 17:53:29,201 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Mon, 14 Apr 2025 12:24:15 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ44989d1ee74afd0f9a3577c0e03e44fb', 'Twilio-Request-Duration': '0.158', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 ebc391832d93e4ad6a92437d7b9c8006.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'ohusFN_6Q4xb6TjgBuXnqa_mhBcVZ9TXK63tZEsP4Mbz1XDVijwu1Q=='}
+2025-04-14 17:53:29,216 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VE870a152ae731bdfb26d19af5be166df8
+2025-04-14 17:53:29,216 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-14 17:53:29,219 - INFO - 200 POST /api/login (127.0.0.1) 657.98ms
+2025-04-14 17:53:43,212 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-14 17:53:43,212 - INFO - -- BEGIN Twilio API Request --
+2025-04-14 17:53:43,212 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-14 17:53:43,212 - INFO - Headers:
+2025-04-14 17:53:43,212 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-14 17:53:43,212 - INFO - Accept : application/json
+2025-04-14 17:53:43,212 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-14 17:53:43,212 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-14 17:53:43,212 - INFO - Accept-Charset : utf-8
+2025-04-14 17:53:43,212 - INFO - -- END Twilio API Request --
+2025-04-14 17:53:43,485 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-14 17:53:43,485 - INFO - Response Status Code: 200
+2025-04-14 17:53:43,485 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Mon, 14 Apr 2025 12:24:29 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQe7492c1122f950af4c3a3dccfc19e1ef', 'Twilio-Request-Duration': '0.041', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 ebc391832d93e4ad6a92437d7b9c8006.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'IdBHrMz0g0_fDxn7Ilm-wYLTK4MWQp8WY0ETXyi-jQ227IvgQrO9Wg=='}
+2025-04-14 17:53:43,493 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-14 17:53:43,494 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-14 17:53:43,494 - INFO - 200 POST /api/verify_code (127.0.0.1) 281.97ms
+2025-04-14 17:53:43,504 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:53:43,505 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.76ms
+2025-04-14 17:53:43,510 - INFO - Flight bookings fetched for user_id=1
+2025-04-14 17:53:43,511 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.68ms
+2025-04-14 17:53:43,516 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:53:43,517 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.31ms
+2025-04-14 17:53:43,517 - INFO - Flight bookings fetched for user_id=1
+2025-04-14 17:53:43,517 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-14 17:53:43,517 - INFO - Hotel bookings fetched for user_id=1
+2025-04-14 17:53:43,517 - INFO - 200 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-14 17:53:43,517 - INFO - Hotel bookings fetched for user_id=1
+2025-04-14 17:53:43,517 - INFO - 200 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-14 17:53:43,529 - INFO - Car rentals fetched for user_id=1
+2025-04-14 17:53:43,530 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 13.05ms
+2025-04-14 17:53:43,531 - INFO - Car rentals fetched for user_id=1
+2025-04-14 17:53:43,534 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.25ms
+2025-04-14 17:53:57,312 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 0.00ms
+2025-04-14 17:53:57,312 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, username = %s WHERE email = %s, Values: ['', 'mokshabhavsar2004@gmail.com', 'Unknown', 'Moksha', 'mokshabhavsar2004@gmail.com']
+2025-04-14 17:53:57,320 - INFO - Profile updated for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:53:57,320 - INFO - 200 POST /api/update_profile (127.0.0.1) 8.23ms
+2025-04-14 17:54:00,256 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:54:00,257 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.00ms
+2025-04-14 17:54:13,116 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:54:13,116 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.68ms
+2025-04-14 17:54:13,118 - INFO - Flight bookings fetched for user_id=1
+2025-04-14 17:54:13,118 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-14 17:54:13,162 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-14 17:54:13,162 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 41.44ms
+2025-04-14 17:54:13,170 - INFO - Flight bookings fetched for user_id=1
+2025-04-14 17:54:13,170 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.33ms
+2025-04-14 17:54:13,170 - INFO - Hotel bookings fetched for user_id=1
+2025-04-14 17:54:13,170 - INFO - 200 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 1.72ms
+2025-04-14 17:54:13,177 - INFO - Hotel bookings fetched for user_id=1
+2025-04-14 17:54:13,178 - INFO - 200 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 8.15ms
+2025-04-14 17:54:13,180 - INFO - Car rentals fetched for user_id=1
+2025-04-14 17:54:13,181 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.52ms
+2025-04-14 17:54:13,184 - INFO - Car rentals fetched for user_id=1
+2025-04-14 17:54:13,185 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.93ms
+2025-04-14 17:54:37,005 - WARNING - 404 GET /arrival (127.0.0.1) 0.31ms
+2025-04-14 17:54:37,015 - WARNING - 404 GET /arrival (127.0.0.1) 1.00ms
+2025-04-15 09:52:28,147 - INFO - Database connection established
+2025-04-15 09:52:28,163 - INFO - Database tables initialized
+2025-04-15 09:52:28,163 - INFO - Twilio client initialized successfully
+2025-04-15 09:52:28,163 - INFO - Serving on http://0.0.0.0:5001
+2025-04-15 09:52:28,163 - DEBUG - Using selector: SelectSelector
+2025-04-15 09:52:28,179 - INFO - Start watching changes
+2025-04-15 09:52:28,179 - INFO - Start detecting changes
+2025-04-15 09:54:58,536 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 09:54:58,678 - WARNING - 404 GET /arrival (127.0.0.1) 29.05ms
+2025-04-15 10:09:34,165 - WARNING - 404 GET /arrival (127.0.0.1) 2.03ms
+2025-04-15 10:09:34,167 - WARNING - 404 GET /arrival (127.0.0.1) 2.03ms
+2025-04-15 10:24:03,921 - WARNING - 404 GET /arrival (127.0.0.1) 2.01ms
+2025-04-15 10:24:03,947 - WARNING - 404 GET /arrival (127.0.0.1) 15.19ms
+2025-04-15 10:28:42,102 - WARNING - 404 GET /arrival (127.0.0.1) 1.00ms
+2025-04-15 10:28:42,121 - WARNING - 404 GET /arrival (127.0.0.1) 1.99ms
+2025-04-15 10:35:49,535 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 10:35:49,535 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 10:37:40,882 - WARNING - 404 GET /arrival (127.0.0.1) 1.01ms
+2025-04-15 10:37:40,883 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 10:44:07,043 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 10:44:07,043 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.09ms
+2025-04-15 10:44:07,050 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:44:07,050 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.16ms
+2025-04-15 10:44:07,055 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 10:44:07,056 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.05ms
+2025-04-15 10:44:07,061 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:44:07,062 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 5.63ms
+2025-04-15 10:44:07,064 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:44:07,067 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.45ms
+2025-04-15 10:44:07,073 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:44:07,073 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 2.31ms
+2025-04-15 10:46:27,486 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 2.02ms
+2025-04-15 10:46:27,490 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, phone = %s, username = %s WHERE email = %s, Values: ['', 'mokshabhavsar2004@gmail.com', 'Unknown', '8953235644', 'Moksha', 'mokshabhavsar2004@gmail.com']
+2025-04-15 10:46:27,490 - INFO - Profile updated for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:46:27,490 - INFO - 200 POST /api/update_profile (127.0.0.1) 4.16ms
+2025-04-15 10:46:29,651 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:46:29,652 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.67ms
+2025-04-15 10:58:17,488 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 10:58:17,490 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 10.01ms
+2025-04-15 10:58:17,492 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:58:17,496 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.06ms
+2025-04-15 10:58:17,500 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 10:58:17,501 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.93ms
+2025-04-15 10:58:17,506 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:58:17,507 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 4.68ms
+2025-04-15 10:58:17,512 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 10:58:17,513 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.32ms
+2025-04-15 10:58:17,515 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:58:17,518 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 3.29ms
+2025-04-15 10:59:03,759 - INFO - 200 OPTIONS /api/signup (127.0.0.1) 2.02ms
+2025-04-15 10:59:03,766 - INFO - User signed up: email=bhavsarmoksha344@gmail.com
+2025-04-15 10:59:03,767 - INFO - 201 POST /api/signup (127.0.0.1) 5.27ms
+2025-04-15 10:59:25,034 - INFO - 200 OPTIONS /api/login (127.0.0.1) 2.01ms
+2025-04-15 10:59:25,037 - DEBUG - Login attempt: identifier=bhavsarmoksha344@gmail.com
+2025-04-15 10:59:25,037 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 2, 'email': 'bhavsarmoksha344@gmail.com', 'phone': None, 'password': 'Mpb@456', 'username': 'NewUser', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 10:59:25,152 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 10:59:25,160 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 10:59:25,160 - INFO - Headers:
+2025-04-15 10:59:25,160 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 10:59:25,161 - INFO - Accept : application/json
+2025-04-15 10:59:25,161 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 10:59:25,161 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 10:59:25,161 - INFO - Accept-Charset : utf-8
+2025-04-15 10:59:25,161 - INFO - -- END Twilio API Request --
+2025-04-15 10:59:25,171 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-15 10:59:25,639 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 691
+2025-04-15 10:59:25,641 - INFO - Response Status Code: 201
+2025-04-15 10:59:25,641 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '691', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 05:30:13 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQd3f6b942514f5857154e59176cf73fa3', 'Twilio-Request-Duration': '0.128', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 5ecd55f028d3424418cf823c48f98656.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': '3Tp4amlhXtts0rHawgB7xbVlWsIVYdqFzN3ViV_4-Kz_gkSxAm_SyA=='}
+2025-04-15 10:59:25,646 - INFO - Verification sent to bhavsarmoksha344@gmail.com via email: VEbab313d5c53953796e9a5d6d58675f3c
+2025-04-15 10:59:25,646 - INFO - Login pending OTP: email=bhavsarmoksha344@gmail.com, sent to [{'identifier': 'bhavsarmoksha344@gmail.com', 'type': 'email'}]
+2025-04-15 10:59:25,646 - INFO - 200 POST /api/login (127.0.0.1) 610.99ms
+2025-04-15 10:59:42,417 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-15 10:59:42,417 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 10:59:42,417 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 10:59:42,417 - INFO - Headers:
+2025-04-15 10:59:42,417 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 10:59:42,417 - INFO - Accept : application/json
+2025-04-15 10:59:42,417 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 10:59:42,417 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 10:59:42,417 - INFO - Accept-Charset : utf-8
+2025-04-15 10:59:42,417 - INFO - -- END Twilio API Request --
+2025-04-15 10:59:42,699 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 355
+2025-04-15 10:59:42,700 - INFO - Response Status Code: 200
+2025-04-15 10:59:42,700 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '355', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 05:30:30 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQb2e8c88c3eb42c7857719439cb2cc8cd', 'Twilio-Request-Duration': '0.037', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 5ecd55f028d3424418cf823c48f98656.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'y6Ca_Jamf8I0nJB1ukeokMjlgObRaPS1bv5EuVD3QcVv-xQd3bRQXQ=='}
+2025-04-15 10:59:42,700 - INFO - Verification check for bhavsarmoksha344@gmail.com: approved
+2025-04-15 10:59:42,700 - INFO - email verified for bhavsarmoksha344@gmail.com
+2025-04-15 10:59:42,700 - INFO - 200 POST /api/verify_code (127.0.0.1) 283.40ms
+2025-04-15 10:59:42,774 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 10:59:42,775 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 2.17ms
+2025-04-15 10:59:42,776 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 10:59:42,776 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 4.62ms
+2025-04-15 10:59:42,779 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 10:59:42,781 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 4.55ms
+2025-04-15 10:59:42,783 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 10:59:42,783 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 6.43ms
+2025-04-15 10:59:42,786 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:59:42,786 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 3.25ms
+2025-04-15 10:59:42,788 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 10:59:42,788 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 0.00ms
+2025-04-15 11:00:06,155 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 0.00ms
+2025-04-15 11:00:06,155 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, phone = %s, username = %s WHERE email = %s, Values: ['', 'bhavsarmoksha344@gmail.com', 'Unknown', '8452369742', 'Bhavsar Moksha', 'bhavsarmoksha344@gmail.com']
+2025-04-15 11:00:06,163 - INFO - Profile updated for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:00:06,163 - INFO - 200 POST /api/update_profile (127.0.0.1) 8.01ms
+2025-04-15 11:00:08,118 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:00:08,118 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 2.66ms
+2025-04-15 11:00:12,946 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:00:12,947 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 2.00ms
+2025-04-15 11:00:12,947 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 11:00:12,947 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 0.00ms
+2025-04-15 11:00:12,947 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:00:12,947 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 0.00ms
+2025-04-15 11:00:12,953 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 11:00:12,954 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 2.01ms
+2025-04-15 11:00:12,962 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:00:12,963 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 2.32ms
+2025-04-15 11:00:12,966 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:00:12,966 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 2.01ms
+2025-04-15 11:00:30,385 - WARNING - 404 GET /arrival (127.0.0.1) 1.01ms
+2025-04-15 11:00:30,387 - WARNING - 404 GET /arrival (127.0.0.1) 1.00ms
+2025-04-15 11:02:09,241 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:02:09,242 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 2.73ms
+2025-04-15 11:02:09,244 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 11:02:09,244 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 1.75ms
+2025-04-15 11:02:09,246 - INFO - Profile fetched for email=bhavsarmoksha344@gmail.com
+2025-04-15 11:02:09,246 - INFO - 200 GET /api/profile?identifier=bhavsarmoksha344%40gmail.com (127.0.0.1) 1.49ms
+2025-04-15 11:02:09,248 - INFO - Flight bookings fetched for user_id=2
+2025-04-15 11:02:09,248 - INFO - 200 GET /api/flight_bookings?user_id=2 (127.0.0.1) 0.96ms
+2025-04-15 11:02:09,264 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:02:09,264 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 1.03ms
+2025-04-15 11:02:09,268 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:02:09,268 - ERROR - 500 GET /api/hotel_bookings?user_id=2 (127.0.0.1) 1.91ms
+2025-04-15 11:02:36,036 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-15 11:02:36,041 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 11:02:36,042 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 11:02:36,043 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:02:36,043 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 11:02:36,043 - INFO - Headers:
+2025-04-15 11:02:36,043 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:02:36,043 - INFO - Accept : application/json
+2025-04-15 11:02:36,043 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:02:36,043 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:02:36,043 - INFO - Accept-Charset : utf-8
+2025-04-15 11:02:36,043 - INFO - -- END Twilio API Request --
+2025-04-15 11:02:36,398 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 11:02:36,398 - INFO - Response Status Code: 201
+2025-04-15 11:02:36,405 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 05:33:24 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ53c8184e7cc6078c7e66637aca684430', 'Twilio-Request-Duration': '0.100', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 5ecd55f028d3424418cf823c48f98656.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'TKFntkBSuM-Y_ASMTpLah7kz4gJ89Q3ShQprAoAdZCLfe0q4Yq5LEg=='}
+2025-04-15 11:02:36,405 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VEec74d4ad118aeb33d4b71f216585a3af
+2025-04-15 11:02:36,405 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:02:36,405 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 11:02:36,405 - INFO - Headers:
+2025-04-15 11:02:36,405 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:02:36,405 - INFO - Accept : application/json
+2025-04-15 11:02:36,405 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:02:36,405 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:02:36,405 - INFO - Accept-Charset : utf-8
+2025-04-15 11:02:36,406 - INFO - -- END Twilio API Request --
+2025-04-15 11:02:37,036 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 11:02:37,036 - INFO - Response Status Code: 403
+2025-04-15 11:02:37,036 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 05:33:25 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ2767738f125d8ca0a17c58fff83b2663', 'Twilio-Request-Duration': '0.027', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 5ecd55f028d3424418cf823c48f98656.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'PWafh5sb1HCnrQArYXJ548d7fceuEiyCt4K9EuFLJZC2WHtMmdvAIw=='}
+2025-04-15 11:02:37,036 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 11:02:37,036 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 11:02:37,036 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 11:02:37,036 - INFO - 200 POST /api/login (127.0.0.1) 997.85ms
+2025-04-15 11:02:48,397 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-15 11:02:48,403 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:02:48,403 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 11:02:48,403 - INFO - Headers:
+2025-04-15 11:02:48,403 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:02:48,404 - INFO - Accept : application/json
+2025-04-15 11:02:48,404 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:02:48,404 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:02:48,404 - INFO - Accept-Charset : utf-8
+2025-04-15 11:02:48,404 - INFO - -- END Twilio API Request --
+2025-04-15 11:02:48,671 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-15 11:02:48,671 - INFO - Response Status Code: 200
+2025-04-15 11:02:48,671 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 05:33:36 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ57d496dc48dbdc6cdb43f4522ae724ec', 'Twilio-Request-Duration': '0.036', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 5ecd55f028d3424418cf823c48f98656.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': '3RJAD_CyRwHtpHc3E8uN7aP55IN7vrcGrt5msn-CNqtPzaemybpykw=='}
+2025-04-15 11:02:48,671 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-15 11:02:48,671 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-15 11:02:48,671 - INFO - 200 POST /api/verify_code (127.0.0.1) 273.52ms
+2025-04-15 11:02:48,757 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:02:48,757 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.81ms
+2025-04-15 11:02:48,757 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:02:48,757 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.81ms
+2025-04-15 11:02:48,763 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:02:48,764 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.43ms
+2025-04-15 11:02:48,765 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:02:48,765 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.80ms
+2025-04-15 11:02:48,765 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:02:48,771 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 5.63ms
+2025-04-15 11:02:48,774 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:02:48,779 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 4.54ms
+2025-04-15 11:03:40,182 - INFO - Shutting down...
+2025-04-15 11:11:45,894 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 11:11:45,894 - INFO - Twilio client initialized successfully
+2025-04-15 11:11:45,894 - INFO - Serving on http://0.0.0.0:5001
+2025-04-15 11:11:45,894 - DEBUG - Using selector: SelectSelector
+2025-04-15 11:11:45,894 - INFO - Start watching changes
+2025-04-15 11:11:45,894 - INFO - Start detecting changes
+2025-04-15 11:12:02,471 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 11:12:06,540 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 11:12:06,542 - ERROR - 500 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4070.55ms
+2025-04-15 11:12:06,591 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 11:12:10,648 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 11:12:10,648 - ERROR - 500 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4104.74ms
+2025-04-15 11:12:10,702 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 11:12:14,777 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 11:12:14,777 - ERROR - 500 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4128.43ms
+2025-04-15 11:12:14,813 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 11:12:18,873 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 11:12:18,873 - ERROR - 500 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4092.93ms
+2025-04-15 11:38:07,013 - INFO - 200 OPTIONS /api/login (127.0.0.1) 2.02ms
+2025-04-15 11:38:07,015 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 11:38:07,053 - INFO - Database connection established
+2025-04-15 11:38:07,053 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 11:38:07,129 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 11:38:07,224 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:38:07,224 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 11:38:07,224 - INFO - Headers:
+2025-04-15 11:38:07,224 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:38:07,224 - INFO - Accept : application/json
+2025-04-15 11:38:07,224 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:38:07,224 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:38:07,224 - INFO - Accept-Charset : utf-8
+2025-04-15 11:38:07,226 - INFO - -- END Twilio API Request --
+2025-04-15 11:38:07,230 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-15 11:38:08,078 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 11:38:08,078 - INFO - Response Status Code: 201
+2025-04-15 11:38:08,078 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:08:56 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQeb6799d5a192ac05c9e30c9c706fa180', 'Twilio-Request-Duration': '0.110', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 4b29f02c410f24e30ac59780fbf90e3c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'hj16MY35IvwwZbUN6GIla0b6wG84TWmL4p9adiJ2WjZoruIZ3WOZUg=='}
+2025-04-15 11:38:08,090 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VEda76467f9c1fb1f11d443ec73380b285
+2025-04-15 11:38:08,090 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:38:08,090 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 11:38:08,090 - INFO - Headers:
+2025-04-15 11:38:08,090 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:38:08,090 - INFO - Accept : application/json
+2025-04-15 11:38:08,091 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:38:08,091 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:38:08,091 - INFO - Accept-Charset : utf-8
+2025-04-15 11:38:08,093 - INFO - -- END Twilio API Request --
+2025-04-15 11:38:08,724 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 11:38:08,726 - INFO - Response Status Code: 403
+2025-04-15 11:38:08,726 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:08:56 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQac5de7a7e7b11dd82c50efbb9c19974f', 'Twilio-Request-Duration': '0.018', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 4b29f02c410f24e30ac59780fbf90e3c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'lbODFJFQtoFOoo227Cf5rPK_s_eSLdL2Lt9My8g9Av2Hc07bHywLcA=='}
+2025-04-15 11:38:08,726 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 11:38:08,726 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 11:38:08,726 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 11:38:08,728 - INFO - 200 POST /api/login (127.0.0.1) 1713.29ms
+2025-04-15 11:38:21,734 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 2.03ms
+2025-04-15 11:38:21,741 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 11:38:21,741 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 11:38:21,741 - INFO - Headers:
+2025-04-15 11:38:21,741 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 11:38:21,741 - INFO - Accept : application/json
+2025-04-15 11:38:21,741 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 11:38:21,741 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 11:38:21,741 - INFO - Accept-Charset : utf-8
+2025-04-15 11:38:21,741 - INFO - -- END Twilio API Request --
+2025-04-15 11:38:22,940 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-15 11:38:22,940 - INFO - Response Status Code: 200
+2025-04-15 11:38:22,940 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:09:10 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ54433f4a7ed255be269d943b4d68ca4d', 'Twilio-Request-Duration': '0.036', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 4b29f02c410f24e30ac59780fbf90e3c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'CNsUjxRz4Ek-VBQyMomSUFshvlr-1HT_vClU9qI9rdGi8cbQflSDmg=='}
+2025-04-15 11:38:22,940 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-15 11:38:22,945 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-15 11:38:22,946 - INFO - 200 POST /api/verify_code (127.0.0.1) 1209.90ms
+2025-04-15 11:38:23,175 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:38:23,177 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.25ms
+2025-04-15 11:38:23,190 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:38:23,191 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 19.83ms
+2025-04-15 11:38:23,200 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:38:23,202 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.53ms
+2025-04-15 11:38:23,213 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:38:23,215 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 17.00ms
+2025-04-15 11:38:23,237 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:38:23,239 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 19.69ms
+2025-04-15 11:38:23,245 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:38:23,247 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 4.57ms
+2025-04-15 11:42:10,716 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:42:10,717 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.29ms
+2025-04-15 11:42:10,720 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:42:10,723 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 10.68ms
+2025-04-15 11:42:10,739 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 11:42:10,741 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 15.39ms
+2025-04-15 11:42:10,749 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 11:42:10,751 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 25.68ms
+2025-04-15 11:42:10,760 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:42:10,760 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 5.48ms
+2025-04-15 11:42:10,770 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 11:42:10,772 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 10.21ms
+2025-04-15 12:01:34,189 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 12:01:34,189 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.36ms
+2025-04-15 12:01:34,197 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 12:01:34,197 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.32ms
+2025-04-15 12:01:34,205 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 12:01:34,205 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.82ms
+2025-04-15 12:01:34,205 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 12:01:34,205 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.82ms
+2025-04-15 12:01:34,214 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 12:01:34,214 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 0.70ms
+2025-04-15 12:01:34,214 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 12:01:34,222 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 7.66ms
+2025-04-15 12:11:30,814 - WARNING - 404 GET /arrival (127.0.0.1) 15.85ms
+2025-04-15 12:11:30,824 - WARNING - 404 GET /arrival (127.0.0.1) 10.11ms
+2025-04-15 12:11:57,519 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-15 12:11:57,533 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 12:11:57,533 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 12:11:57,533 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:11:57,533 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:11:57,533 - INFO - Headers:
+2025-04-15 12:11:57,533 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:11:57,533 - INFO - Accept : application/json
+2025-04-15 12:11:57,533 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:11:57,533 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:11:57,533 - INFO - Accept-Charset : utf-8
+2025-04-15 12:11:57,533 - INFO - -- END Twilio API Request --
+2025-04-15 12:11:57,533 - DEBUG - Resetting dropped connection: verify.twilio.com
+2025-04-15 12:11:58,104 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 12:11:58,104 - INFO - Response Status Code: 201
+2025-04-15 12:11:58,104 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:42:46 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQa472d2d8b9ad2410db08d8882436b4b5', 'Twilio-Request-Duration': '0.176', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'AsyyZw_V2Pbnc9Ot2yLDwDUH4qqEeORmzrDARz4B30DzFD-yF0pWmg=='}
+2025-04-15 12:11:58,104 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VE9b2425d613ee6a64178eccf1ca035571
+2025-04-15 12:11:58,104 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:11:58,104 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:11:58,104 - INFO - Headers:
+2025-04-15 12:11:58,104 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:11:58,104 - INFO - Accept : application/json
+2025-04-15 12:11:58,104 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:11:58,104 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:11:58,104 - INFO - Accept-Charset : utf-8
+2025-04-15 12:11:58,104 - INFO - -- END Twilio API Request --
+2025-04-15 12:11:58,802 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 12:11:58,818 - INFO - Response Status Code: 403
+2025-04-15 12:11:58,818 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:42:46 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQb6ed6a41c74f7ffd40ad5ed6c9625fec', 'Twilio-Request-Duration': '0.030', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'Ms6TYGWszOBDXU_aBN6JQURFPdQr0L7Rg3oRcZsvl_dwjBJrxI94WA=='}
+2025-04-15 12:11:58,818 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:11:58,818 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:11:58,818 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 12:11:58,818 - INFO - 200 POST /api/login (127.0.0.1) 1298.77ms
+2025-04-15 12:12:15,125 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-15 12:12:15,160 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:12:15,173 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 12:12:15,173 - INFO - Headers:
+2025-04-15 12:12:15,173 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:12:15,173 - INFO - Accept : application/json
+2025-04-15 12:12:15,173 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:12:15,173 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:12:15,173 - INFO - Accept-Charset : utf-8
+2025-04-15 12:12:15,173 - INFO - -- END Twilio API Request --
+2025-04-15 12:12:15,506 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-15 12:12:15,506 - INFO - Response Status Code: 200
+2025-04-15 12:12:15,506 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:43:03 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ9557c01f62a4fc1feb15424ef4f7c179', 'Twilio-Request-Duration': '0.037', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'dV-IFLwC99x3MsMXEC9acsAuHupLN4Nu4uBT8ieTaXbYeD_ccklD_w=='}
+2025-04-15 12:12:15,506 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-15 12:12:15,506 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-15 12:12:15,506 - INFO - 200 POST /api/verify_code (127.0.0.1) 349.17ms
+2025-04-15 12:12:27,317 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-15 12:12:27,333 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 12:12:27,333 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 12:12:27,333 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:12:27,333 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:12:27,333 - INFO - Headers:
+2025-04-15 12:12:27,333 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:12:27,333 - INFO - Accept : application/json
+2025-04-15 12:12:27,333 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:12:27,349 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:12:27,349 - INFO - Accept-Charset : utf-8
+2025-04-15 12:12:27,349 - INFO - -- END Twilio API Request --
+2025-04-15 12:12:27,824 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 12:12:27,824 - INFO - Response Status Code: 201
+2025-04-15 12:12:27,824 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:43:16 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ8507919c38a29bf172b443cd2269d056', 'Twilio-Request-Duration': '0.164', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': '-Nj_AFMfruzd5lAqEKsJ_e-BeuG0XYhJ-zviG9XNDtUoK_X4sSJieA=='}
+2025-04-15 12:12:27,824 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VEc9c33a386e8bd9a1359ee0a62255027f
+2025-04-15 12:12:27,824 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:12:27,824 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:12:27,824 - INFO - Headers:
+2025-04-15 12:12:27,824 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:12:27,824 - INFO - Accept : application/json
+2025-04-15 12:12:27,824 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:12:27,824 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:12:27,824 - INFO - Accept-Charset : utf-8
+2025-04-15 12:12:27,824 - INFO - -- END Twilio API Request --
+2025-04-15 12:12:28,474 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 12:12:28,474 - INFO - Response Status Code: 403
+2025-04-15 12:12:28,474 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:43:16 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQc45f7ecf0743f7614c4d03032d1fc0c2', 'Twilio-Request-Duration': '0.019', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'kxrIBqCWyvcnivz-Uli-ymNGXTrqbm5TC44ZuFHK73nT4EmI_psqBw=='}
+2025-04-15 12:12:28,474 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:12:28,474 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:12:28,474 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 12:12:28,474 - INFO - 200 POST /api/login (127.0.0.1) 1140.46ms
+2025-04-15 12:12:45,844 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-15 12:12:45,851 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:12:45,851 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 12:12:45,851 - INFO - Headers:
+2025-04-15 12:12:45,851 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:12:45,851 - INFO - Accept : application/json
+2025-04-15 12:12:45,851 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:12:45,851 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:12:45,851 - INFO - Accept-Charset : utf-8
+2025-04-15 12:12:45,851 - INFO - -- END Twilio API Request --
+2025-04-15 12:12:46,133 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-15 12:12:46,133 - INFO - Response Status Code: 200
+2025-04-15 12:12:46,140 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:43:34 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQf3fb6756a4970113dbd0863ad08215d3', 'Twilio-Request-Duration': '0.036', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 a254b804a514a03398ee1399ef3d47c6.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'szsFbynqYIJW3j5iDzbP5IiWa3QhOCIvC3yrnoLiFwZk7kHeNr45mg=='}
+2025-04-15 12:12:46,140 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-15 12:12:46,141 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-15 12:12:46,141 - INFO - 200 POST /api/verify_code (127.0.0.1) 290.26ms
+2025-04-15 12:16:13,677 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 12:16:13,677 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 8.52ms
+2025-04-15 12:16:13,684 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 12:16:13,685 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.16ms
+2025-04-15 12:16:13,693 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 12:16:13,702 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 9.52ms
+2025-04-15 12:16:13,710 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 12:16:13,710 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.98ms
+2025-04-15 12:16:13,719 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 12:16:13,719 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 9.09ms
+2025-04-15 12:16:13,736 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 12:16:13,736 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 8.71ms
+2025-04-15 12:18:57,351 - WARNING - 404 GET /arrival (127.0.0.1) 1.30ms
+2025-04-15 12:18:57,355 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 12:19:10,951 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-15 12:19:10,951 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 12:19:10,951 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 12:19:10,951 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:19:10,951 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:19:10,951 - INFO - Headers:
+2025-04-15 12:19:10,951 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:19:10,951 - INFO - Accept : application/json
+2025-04-15 12:19:10,951 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:19:10,951 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:19:10,951 - INFO - Accept-Charset : utf-8
+2025-04-15 12:19:10,951 - INFO - -- END Twilio API Request --
+2025-04-15 12:19:10,951 - DEBUG - Resetting dropped connection: verify.twilio.com
+2025-04-15 12:19:12,130 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 12:19:12,130 - INFO - Response Status Code: 201
+2025-04-15 12:19:12,130 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:49:59 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ279e988e36128ee69c0792c3aa4aba1c', 'Twilio-Request-Duration': '0.151', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 f6e1feaef8bcc12ea83a6297254d61e8.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'D-F4BhxSR5m_OPYW2KUMVQoeNbrBfOyo1AihHG_ZXUu7Bma77q9G_Q=='}
+2025-04-15 12:19:12,130 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VEb578af6ae02b85cfe01819ae5ad2e9e6
+2025-04-15 12:19:12,130 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:19:12,130 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:19:12,130 - INFO - Headers:
+2025-04-15 12:19:12,130 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:19:12,130 - INFO - Accept : application/json
+2025-04-15 12:19:12,130 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:19:12,130 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:19:12,130 - INFO - Accept-Charset : utf-8
+2025-04-15 12:19:12,130 - INFO - -- END Twilio API Request --
+2025-04-15 12:19:12,797 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 12:19:12,797 - INFO - Response Status Code: 403
+2025-04-15 12:19:12,797 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:50:00 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ1b0e1f5773503795b0890fd9c5630e37', 'Twilio-Request-Duration': '0.019', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 f6e1feaef8bcc12ea83a6297254d61e8.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'v4LppwFPiIa0rHLlfx7cBFZPzIobcErZ1cBP7vLApgm-1kgPgp-XQw=='}
+2025-04-15 12:19:12,797 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:19:12,797 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:19:12,797 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 12:19:12,797 - INFO - 200 POST /api/login (127.0.0.1) 1845.85ms
+2025-04-15 12:19:31,340 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-15 12:19:31,340 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:19:31,340 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-15 12:19:31,340 - INFO - Headers:
+2025-04-15 12:19:31,340 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:19:31,340 - INFO - Accept : application/json
+2025-04-15 12:19:31,340 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:19:31,340 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:19:31,340 - INFO - Accept-Charset : utf-8
+2025-04-15 12:19:31,340 - INFO - -- END Twilio API Request --
+2025-04-15 12:19:31,675 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-15 12:19:31,676 - INFO - Response Status Code: 200
+2025-04-15 12:19:31,676 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:50:19 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ194d02ff92767f5cd6089d4acf423182', 'Twilio-Request-Duration': '0.033', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 f6e1feaef8bcc12ea83a6297254d61e8.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'NOh2PXrplgqxOBtHOHiQXfJeC57tYRZEsc4lCFAFfz6JpY3iibggiQ=='}
+2025-04-15 12:19:31,676 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-15 12:19:31,677 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-15 12:19:31,677 - INFO - 200 POST /api/verify_code (127.0.0.1) 336.94ms
+2025-04-15 12:19:36,429 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-15 12:19:36,433 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-15 12:19:36,433 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-15 12:19:36,433 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:19:36,433 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:19:36,433 - INFO - Headers:
+2025-04-15 12:19:36,433 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:19:36,433 - INFO - Accept : application/json
+2025-04-15 12:19:36,433 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:19:36,433 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:19:36,433 - INFO - Accept-Charset : utf-8
+2025-04-15 12:19:36,433 - INFO - -- END Twilio API Request --
+2025-04-15 12:19:36,843 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-15 12:19:36,843 - INFO - Response Status Code: 201
+2025-04-15 12:19:36,843 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:50:25 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQff6f9f4300e70251330d7228a676e886', 'Twilio-Request-Duration': '0.149', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 f6e1feaef8bcc12ea83a6297254d61e8.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': '6o2pz3iARx8vH1cUwihUElO6TTWIri5LuiYnpSdRp89P9b0TjdaK1g=='}
+2025-04-15 12:19:36,843 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VE439d833087a2497bac4e1167e745f3e6
+2025-04-15 12:19:36,843 - INFO - -- BEGIN Twilio API Request --
+2025-04-15 12:19:36,843 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-15 12:19:36,843 - INFO - Headers:
+2025-04-15 12:19:36,843 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-15 12:19:36,843 - INFO - Accept : application/json
+2025-04-15 12:19:36,843 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-15 12:19:36,843 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-15 12:19:36,843 - INFO - Accept-Charset : utf-8
+2025-04-15 12:19:36,843 - INFO - -- END Twilio API Request --
+2025-04-15 12:19:37,570 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-15 12:19:37,570 - INFO - Response Status Code: 403
+2025-04-15 12:19:37,570 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Tue, 15 Apr 2025 06:50:25 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ9eec7c2b3f50ec05b68b5a771118adfc', 'Twilio-Request-Duration': '0.017', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 f6e1feaef8bcc12ea83a6297254d61e8.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'hNN9dO7b1VMpGIkzf34DUJOEyOHJYFovekLigcF84nHfkh35oIHjXA=='}
+2025-04-15 12:19:37,570 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:19:37,570 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-15 12:19:37,570 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-15 12:19:37,570 - INFO - 200 POST /api/login (127.0.0.1) 1141.04ms
+2025-04-15 12:24:07,908 - INFO - Shutting down...
+2025-04-15 14:58:19,751 - ERROR - Failed to connect to database: 2003 (HY000): Can't connect to MySQL server on 'localhost:3306' (10061)
+2025-04-15 14:58:19,751 - INFO - Twilio client initialized successfully
+2025-04-15 14:58:19,751 - INFO - Serving on http://0.0.0.0:5001
+2025-04-15 14:58:19,759 - DEBUG - Using selector: SelectSelector
+2025-04-15 14:58:19,759 - INFO - Start watching changes
+2025-04-15 14:58:19,759 - INFO - Start detecting changes
+2025-04-15 15:00:14,055 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 15:00:14,055 - WARNING - 404 GET /arrival (127.0.0.1) 0.00ms
+2025-04-15 15:00:43,147 - WARNING - Database connection lost, attempting to reconnect
+2025-04-15 15:00:43,151 - INFO - Database connection established
+2025-04-15 15:00:43,165 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 15:00:43,166 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 19.41ms
+2025-04-15 15:00:43,168 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 15:00:43,168 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.15ms
+2025-04-15 15:00:43,181 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-15 15:00:43,182 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 13.66ms
+2025-04-15 15:00:43,186 - INFO - Flight bookings fetched for user_id=1
+2025-04-15 15:00:43,186 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.59ms
+2025-04-15 15:00:43,189 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 15:00:43,189 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 2.00ms
+2025-04-15 15:00:43,192 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
+2025-04-15 15:00:43,192 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 1.74ms

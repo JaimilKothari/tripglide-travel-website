@@ -406,30 +406,13 @@ function App() {
           <Route path="/country-facts" element={<CountryFacts />} />
           <Route path="/hotels" element={<Hotels />} />
           <Route path="/hotel-search" element={<HotelSearch />} />
-          <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} />
-          <Route path="/hotel-card" element={<HotelCard />} />
-          <Route path="/hotel-filter" element={<HotelFilter />} />
-          <Route path="/hotel-booking" element={<HotelBooking />} />
-          <Route
-            path="/hotel-booking-confirmation"
-            element={<BookingConfirmation />} />
+          {/* <Route path="/car-confirmation" element={<CarConfirmation />} /> */}
+        <Route path="/hotel-details/:hotel/:arrival" element={<HotelDetails />} /> 
+        <Route path="/hotel-booking" element={<HotelBooking />} />
+          <Route path="/favorites" element={<Favorite allFlights={allFlights} />} />
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
 
-
-          <Route
-            path="/favorites"
-            element={
-              <Favorite
-                allFlights={allFlights}
-                setAllFlights={setAllFlights}
-                tripType={tripType}
-                returnDate={returnDate}
-              />
-            }
-          />
-          <Route
-            path="/booking-confirmation"
-            element={<BookingConfirmation />}
-          />
+          
         </Routes>
       </Router>
     </GoogleOAuthProvider>

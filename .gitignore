@@ -1,4 +1,6 @@
 backend/venv/
-.env
+backend/.env
 .vscode/*backend/server.log
 backend/server.log
+backend/.env
+.env

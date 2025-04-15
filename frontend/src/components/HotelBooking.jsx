@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FaCheckCircle,
   FaHotel,
@@ -13,6 +13,7 @@ import {
 
 const HotelBooking = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [bookingDetails, setBookingDetails] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   const [bookingNumber, setBookingNumber] = useState("");
@@ -27,101 +28,105 @@ const HotelBooking = () => {
     setBookingNumber(generateBookingNumber());
   }, []);
 
-  // Retrieve and send booking details
+  // Retrieve user and booking details
   useEffect(() => {
-    let storedDetails = sessionStorage.getItem("hotelBookingDetails");
-    let storedUserDetails = sessionStorage.getItem("stripeUserDetails");
+    // Fetch user from localStorage (from Dashboard.jsx)
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      console.warn("No user found in localStorage, redirecting to login");
+      navigate("/login");
+      return;
+    }
 
+    let parsedUser;
+    try {
+      parsedUser = JSON.parse(storedUser);
+      setUserDetails({
+        name: parsedUser.username || "Guest",
+        email: parsedUser.email || "No email provided",
+        phone: parsedUser.phone || "Not provided",
+      });
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+      setError("Failed to load user data");
+      setIsLoaded(true);
+      return;
+    }
+
+    // Retrieve booking details
+    let storedDetails = sessionStorage.getItem("hotelBookingDetails");
     if (!storedDetails) {
       storedDetails = localStorage.getItem("hotelBookingDetails");
       if (storedDetails) sessionStorage.setItem("hotelBookingDetails", storedDetails);
     }
 
-    if (!storedUserDetails) {
-      storedUserDetails = localStorage.getItem("stripeUserDetails");
-      if (storedUserDetails) sessionStorage.setItem("stripeUserDetails", storedUserDetails);
+    if (!storedDetails) {
+      console.warn("No booking details found");
+      setError("No booking details found");
+      setIsLoaded(true);
+      return;
     }
 
-    let parsedUserDetails = null;
-    if (storedUserDetails) {
-      try {
-        parsedUserDetails = JSON.parse(storedUserDetails);
-      } catch (e) {
-        console.error("Error parsing stripeUserDetails:", e);
-      }
-    }
+    try {
+      const parsedDetails = JSON.parse(storedDetails);
+      setBookingDetails(parsedDetails);
+      localStorage.setItem("hotelBookingDetails", storedDetails);
 
-    const defaultUserDetails = {
-      name: "Jaimil Kothari",
-      email: "jaimilkothari2003@gmail.com",
-      phone: "Not provided",
-    };
-    setUserDetails(parsedUserDetails || defaultUserDetails);
+      const sendBookingToBackend = async () => {
+        const bookingSent = sessionStorage.getItem("bookingSent");
+        if (bookingSent === bookingNumber) {
+          console.log(`Booking ${bookingNumber} already sent, skipping...`);
+          return;
+        }
 
-    if (storedDetails) {
-      try {
-        const parsedDetails = JSON.parse(storedDetails);
-        setBookingDetails(parsedDetails);
-        localStorage.setItem("hotelBookingDetails", storedDetails);
-
-        const sendBookingToBackend = async () => {
-          const bookingSent = sessionStorage.getItem("bookingSent");
-          if (bookingSent === bookingNumber) {
-            console.log(`Booking ${bookingNumber} already sent, skipping...`);
-            return;
-          }
-
-          const bookingData = {
-            booking_number: bookingNumber,
-            hotel_name: parsedDetails.hotelName,
-            arrival: parsedDetails.arrival,
-            check_in_date: parsedDetails.checkInDate,
-            check_out_date: parsedDetails.checkOutDate,
-            adults: parsedDetails.adults,
-            children: parsedDetails.children,
-            rooms: parsedDetails.rooms,
-            room_type: parsedDetails.roomType,
-            price_per_night: parsedDetails.pricePerNight,
-            total_amount: parsedDetails.totalAmount,
-            guest_name: parsedUserDetails?.name || defaultUserDetails.name,
-            email: parsedUserDetails?.email || defaultUserDetails.email,
-            phone: parsedUserDetails?.phone || defaultUserDetails.phone,
-            booked_on: new Date().toISOString().split('T')[0],
-            payment_method: "Credit Card",
-          };
-
-          console.log("Sending booking:", bookingData);  // Debug
-
-          try {
-            const response = await fetch('http://localhost:5003/api/bookings', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(bookingData),
-            });
-
-            const result = await response.json();
-            if (!response.ok) {
-              throw new Error(result.error || 'Failed to store booking');
-            }
-            console.log(`Booking ${bookingNumber} stored:`, result.message);
-            sessionStorage.setItem("bookingSent", bookingNumber); // Tie to specific booking
-          } catch (err) {
-            console.error(`Error sending booking ${bookingNumber}:`, err);
-            setError(err.message);
-          }
+        const bookingData = {
+          booking_number: bookingNumber,
+          hotel_name: parsedDetails.hotelName,
+          arrival: parsedDetails.arrival,
+          check_in_date: parsedDetails.checkInDate,
+          check_out_date: parsedDetails.checkOutDate,
+          adults: parsedDetails.adults,
+          children: parsedDetails.children,
+          rooms: parsedDetails.rooms,
+          room_type: parsedDetails.roomType,
+          price_per_night: parsedDetails.pricePerNight,
+          total_amount: parsedDetails.totalAmount,
+          guest_name: parsedUser.username || "Guest",
+          email: parsedUser.email || "No email provided",
+          phone: parsedUser.phone || "Not provided",
+          booked_on: new Date().toISOString().split('T')[0],
+          payment_method: "Credit Card",
         };
 
-        if (bookingNumber) sendBookingToBackend();
-      } catch (e) {
-        console.error("Error parsing hotelBookingDetails:", e);
-        setError("Invalid booking details");
-      }
-    } else {
-      console.warn("No booking details found");
+        console.log("Sending booking:", bookingData);
+
+        try {
+          const response = await fetch('http://localhost:5003/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookingData),
+          });
+
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to store booking');
+          }
+          console.log(`Booking ${bookingNumber} stored:`, result.message);
+          sessionStorage.setItem("bookingSent", bookingNumber);
+        } catch (err) {
+          console.error(`Error sending booking ${bookingNumber}:`, err);
+          setError(err.message);
+        }
+      };
+
+      if (bookingNumber) sendBookingToBackend();
+    } catch (e) {
+      console.error("Error parsing hotelBookingDetails:", e);
+      setError("Invalid booking details");
     }
 
     setIsLoaded(true);
-  }, [bookingNumber]);
+  }, [bookingNumber, navigate]);
 
   if (!isLoaded) {
     return (
@@ -133,29 +138,12 @@ const HotelBooking = () => {
     );
   }
 
-  if (isLoaded && !bookingDetails) {
+  if (isLoaded && (!bookingDetails || error)) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md text-center">
           <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p>No booking details found. Please complete the booking process.</p>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Go to Home
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md text-center">
-          <h2 className="text-2xl font-bold mb-4 text-red-500">Error</h2>
-          <p>{error}</p>
+          <p>{error || "No booking details found. Please complete the booking process."}</p>
           <button
             onClick={() => navigate("/")}
             className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -170,6 +158,7 @@ const HotelBooking = () => {
   const { hotelName, arrival, checkInDate, checkOutDate, adults, children, rooms, roomType, totalAmount, pricePerNight } =
     bookingDetails;
 
+  // Calculate number of nights
   const checkIn = new Date(checkInDate);
   const checkOut = new Date(checkOutDate);
   const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
@@ -208,21 +197,21 @@ const HotelBooking = () => {
               <FaUser className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Guest</p>
-                <p className="font-semibold">{userDetails?.name || "Jaimil Kothari"}</p>
+                <p className="font-semibold">{userDetails.name}</p>
               </div>
             </div>
             <div className="flex items-center">
               <FaPhone className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Phone</p>
-                <p className="font-semibold">{userDetails?.phone || "Not provided"}</p>
+                <p className="font-semibold">{userDetails.phone}</p>
               </div>
             </div>
             <div className="flex items-center">
               <FaEnvelope className="text-gray-500 mr-2" />
               <div>
                 <p className="text-gray-500 text-sm">Email</p>
-                <p className="font-semibold">{userDetails?.email || "jaimilkothari2003@gmail.com"}</p>
+                <p className="font-semibold">{userDetails.email}</p>
               </div>
             </div>
             <div className="flex items-center">
@@ -296,7 +285,7 @@ const HotelBooking = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 <tr>
-                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails?.name || "Jaimil Kothari"}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-sm">{userDetails.name}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">{bookingNumber}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">{roomType}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-sm">—</td>

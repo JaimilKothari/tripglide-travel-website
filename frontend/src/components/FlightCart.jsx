@@ -4,7 +4,7 @@ import { FaTimes, FaCheckCircle, FaTimesCircle, FaSuitcaseRolling, FaChair, FaUt
 import { loadStripe } from "@stripe/stripe-js";
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe("pk_test_51RA20B4D8TqxSjMO2AL0EwDRq7G1h3JF3CvdcasP9nE34rF4w5jNrSFbUPtbsoHsvGf7X2dkIUFZ4ETqGdjAfcjZ00UOI1COTA"); // Replace with your Stripe Publishable Key
+const stripePromise = loadStripe("pk_test_51RBDzAQVbUKIjAtM0sKQOZ3Z3ErNkHUXooqIOCQkMUzNYsl85hKfQhevmDlAB46ebEcGSrvOquL507u2t6OZVu1T00E8wJhZTD"); // Replace with your Stripe Publishable Key
 
 // Utility function to calculate duration between two times
 const calculateDuration = (depTime, arrTime) => {

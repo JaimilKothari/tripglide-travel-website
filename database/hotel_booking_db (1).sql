@@ -17,6 +17,10 @@ CREATE TABLE hotel_bookings (
     StayingDays int,
     TotalCost int,
     CheckOut date,
+<<<<<<< HEAD
+    CheckIn date
+=======
     CheckIn date,
     HotelID varchar(100)
+>>>>>>> 2ffd4dcaef5abc45eda35a883b9e96f47e2eaadc
     );

@@ -63,7 +63,7 @@ const HotelFilter = ({ onFilterChange }) => {
   }, [filters, onFilterChange]);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md mb-4">
+    <div className="bg-white p-4 rounded-lg shadow-md mb-4 md:block w-70 sm:p-6 md:sticky h-auto md:h-[70vh] overflow-y-auto scrollbar-thin">
       <h3 className="text-lg font-semibold mb-3">Filters</h3>
 
       {/* Price Filter */}
