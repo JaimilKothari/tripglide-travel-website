@@ -271,21 +271,5 @@ def store_booking():
         print(f"Unexpected error: {e}")
         return jsonify({'error': f'An error occurred: {e}'}), 500
 
-@app.route('/api/hotel_bookings', methods=['GET'])
-def get_hotel_bookings():
-    user_id = request.args.get('user_id')
-    if not user_id:
-        return jsonify({'error': 'user_id is required'}), 400
-    query = """
-        SELECT booking_number, hotel_name, arrival, check_in_date, check_out_date, 
-               total_amount, status
-        FROM hotel_bookings
-        WHERE email = (SELECT email FROM users WHERE user_id = %s)
-    """
-    data, error = fetch_data(query, (user_id,))
-    if error:
-        return jsonify({'error': error}), 500
-    return jsonify({'success': True, 'bookings': data or []})
-
 if __name__ == '__main__':
     app.run(debug=True, port=5003)
