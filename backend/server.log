@@ -2195,3 +2195,905 @@
 2025-04-16 13:19:19,497 - INFO - Car rentals fetched for user_id=1
 2025-04-16 13:19:19,497 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
 2025-04-16 13:34:54,317 - INFO - Shutting down...
+2025-04-16 13:36:47,747 - INFO - Database connection established
+2025-04-16 13:36:47,750 - INFO - Database tables initialized
+2025-04-16 13:36:47,751 - INFO - Twilio client initialized successfully
+2025-04-16 13:36:47,752 - INFO - Serving on http://0.0.0.0:5001
+2025-04-16 13:36:47,752 - DEBUG - Using selector: SelectSelector
+2025-04-16 13:36:47,752 - INFO - Start watching changes
+2025-04-16 13:36:47,752 - INFO - Start detecting changes
+2025-04-16 13:40:19,544 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:40:19,551 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 99.30ms
+2025-04-16 13:40:19,560 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:40:19,560 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 108.28ms
+2025-04-16 13:40:19,567 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:40:19,568 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.55ms
+2025-04-16 13:40:19,568 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:40:19,568 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 13:40:19,901 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:40:19,901 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.97ms
+2025-04-16 13:40:20,151 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:40:20,151 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 13:56:45,840 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:56:45,840 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 13:56:45,847 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:56:45,847 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.62ms
+2025-04-16 13:56:45,849 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:56:45,850 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.03ms
+2025-04-16 13:56:45,851 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:56:45,852 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.97ms
+2025-04-16 13:56:46,175 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:56:46,175 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.42ms
+2025-04-16 13:56:46,452 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:56:46,452 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.22ms
+2025-04-16 13:58:01,654 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:58:01,656 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.41ms
+2025-04-16 13:58:01,658 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:58:01,658 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.02ms
+2025-04-16 13:58:01,660 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:58:01,660 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.37ms
+2025-04-16 13:58:01,664 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:58:01,666 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.40ms
+2025-04-16 13:58:01,690 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:58:01,694 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.63ms
+2025-04-16 13:58:02,020 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:58:02,020 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 8.85ms
+2025-04-16 13:59:40,641 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:59:40,641 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 13:59:40,647 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:59:40,647 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 5.87ms
+2025-04-16 13:59:40,647 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 13:59:40,647 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.31ms
+2025-04-16 13:59:40,647 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:59:40,647 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 13:59:40,991 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:59:40,991 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.79ms
+2025-04-16 13:59:41,306 - INFO - Car rentals fetched for user_id=1
+2025-04-16 13:59:41,306 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:01:45,818 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:01:45,818 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 16.21ms
+2025-04-16 14:01:45,818 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:01:45,818 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:01:45,908 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:01:45,908 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:01:45,908 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:01:45,908 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:01:46,159 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:01:46,159 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.93ms
+2025-04-16 14:01:46,409 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:01:46,409 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.75ms
+2025-04-16 14:01:56,048 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:01:56,048 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.13ms
+2025-04-16 14:01:56,048 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:01:56,051 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.51ms
+2025-04-16 14:01:56,051 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:01:56,051 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:01:56,056 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:01:56,057 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.01ms
+2025-04-16 14:01:56,081 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:01:56,082 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 5.33ms
+2025-04-16 14:01:56,391 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:01:56,391 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:22,400 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:22,400 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.95ms
+2025-04-16 14:09:22,403 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:22,403 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.04ms
+2025-04-16 14:09:22,755 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:22,755 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:09:22,839 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:22,839 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.62ms
+2025-04-16 14:09:22,843 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:22,843 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 14:09:22,980 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:22,980 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:27,806 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:27,806 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:27,808 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:27,808 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:27,837 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:27,838 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.76ms
+2025-04-16 14:09:27,855 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:27,855 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.00ms
+2025-04-16 14:09:27,855 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:27,855 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:28,480 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:28,480 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.39ms
+2025-04-16 14:09:43,807 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:43,807 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:43,807 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:43,807 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:43,824 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:43,824 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:43,853 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:43,853 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.00ms
+2025-04-16 14:09:43,855 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:43,856 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.94ms
+2025-04-16 14:09:44,225 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:44,225 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.01ms
+2025-04-16 14:09:44,815 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:44,815 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:44,819 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:44,819 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.95ms
+2025-04-16 14:09:44,847 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:44,847 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:09:44,849 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:44,849 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.91ms
+2025-04-16 14:09:44,849 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:44,849 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:45,210 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:45,210 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.77ms
+2025-04-16 14:09:46,799 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:46,799 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:46,801 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:46,801 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 14:09:46,815 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:46,815 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:47,045 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:47,045 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.48ms
+2025-04-16 14:09:47,045 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:47,047 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.55ms
+2025-04-16 14:09:47,232 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:47,232 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.02ms
+2025-04-16 14:09:47,234 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:47,234 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.46ms
+2025-04-16 14:09:47,410 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:47,411 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.99ms
+2025-04-16 14:09:47,659 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:47,659 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.02ms
+2025-04-16 14:09:47,804 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:47,804 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:47,812 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:47,812 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.96ms
+2025-04-16 14:09:47,845 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:47,845 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.01ms
+2025-04-16 14:09:53,718 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:53,718 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.94ms
+2025-04-16 14:09:53,719 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:53,720 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.01ms
+2025-04-16 14:09:53,811 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:53,819 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 8.29ms
+2025-04-16 14:09:53,819 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:53,819 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:54,051 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:54,051 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.92ms
+2025-04-16 14:09:54,290 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:54,290 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:09:58,885 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:58,886 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.90ms
+2025-04-16 14:09:58,887 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:58,887 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.40ms
+2025-04-16 14:09:58,946 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:58,951 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 5.65ms
+2025-04-16 14:09:58,969 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:09:58,969 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:09:58,976 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:09:58,976 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.21ms
+2025-04-16 14:09:59,342 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:09:59,343 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:10:00,289 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:00,289 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.07ms
+2025-04-16 14:10:00,290 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:00,290 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.66ms
+2025-04-16 14:10:00,316 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:00,317 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:10:00,814 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:00,814 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.08ms
+2025-04-16 14:10:00,816 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:00,816 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.98ms
+2025-04-16 14:10:01,253 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:01,253 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.40ms
+2025-04-16 14:10:05,581 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:05,581 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.08ms
+2025-04-16 14:10:05,583 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:05,583 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:10:05,601 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:05,602 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:10:05,957 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:05,957 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:10:05,965 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:05,965 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.34ms
+2025-04-16 14:10:06,285 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:06,285 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.05ms
+2025-04-16 14:10:10,908 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:10,908 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.02ms
+2025-04-16 14:10:10,909 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:10,910 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:10:10,928 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:10,928 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 14:10:11,874 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:10:11,874 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:10:11,874 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:10:11,874 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:10:12,195 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:10:12,195 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:11:01,733 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:01,734 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.00ms
+2025-04-16 14:11:01,735 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:01,735 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:11:01,753 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:01,754 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:11:01,802 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:01,803 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.00ms
+2025-04-16 14:11:01,804 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:01,804 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:11:02,133 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:02,133 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.01ms
+2025-04-16 14:11:09,424 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:09,424 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.13ms
+2025-04-16 14:11:09,426 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:09,426 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:11:09,453 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:09,453 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 14:11:09,810 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:09,813 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.01ms
+2025-04-16 14:11:09,813 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:09,816 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.45ms
+2025-04-16 14:11:10,145 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:10,145 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:11:13,589 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:13,590 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.59ms
+2025-04-16 14:11:13,591 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:13,591 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:11:13,612 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:13,612 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.07ms
+2025-04-16 14:11:13,809 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:11:13,811 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.05ms
+2025-04-16 14:11:13,811 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:11:13,815 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:11:14,322 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:11:14,322 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.60ms
+2025-04-16 14:17:54,108 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:17:54,108 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:17:54,108 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:17:54,108 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:17:54,116 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:17:54,116 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 8.46ms
+2025-04-16 14:17:54,119 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:17:54,119 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.07ms
+2025-04-16 14:17:54,450 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:17:54,450 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.99ms
+2025-04-16 14:17:54,709 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:17:54,709 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.17ms
+2025-04-16 14:17:56,812 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:17:56,812 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.82ms
+2025-04-16 14:17:56,814 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:17:56,814 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.25ms
+2025-04-16 14:17:56,840 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:17:56,840 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.94ms
+2025-04-16 14:17:56,862 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:17:56,862 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:17:56,866 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:17:56,866 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.75ms
+2025-04-16 14:17:57,319 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:17:57,319 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.86ms
+2025-04-16 14:18:09,821 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:18:09,821 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.79ms
+2025-04-16 14:18:09,821 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:18:09,821 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:18:09,841 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:18:09,841 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:18:09,857 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:18:09,857 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:18:09,861 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:18:09,862 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.99ms
+2025-04-16 14:18:10,264 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:18:10,264 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.31ms
+2025-04-16 14:18:18,807 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:18:18,807 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:18:18,811 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:18:18,811 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.37ms
+2025-04-16 14:18:18,831 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:18:18,832 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.21ms
+2025-04-16 14:18:18,855 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:18:18,856 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.05ms
+2025-04-16 14:18:18,858 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:18:18,858 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.43ms
+2025-04-16 14:18:19,219 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:18:19,219 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.29ms
+2025-04-16 14:20:44,805 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:20:44,805 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.42ms
+2025-04-16 14:20:44,807 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:20:44,807 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.00ms
+2025-04-16 14:20:44,853 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:20:44,853 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.89ms
+2025-04-16 14:20:44,855 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:20:44,856 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.54ms
+2025-04-16 14:20:45,130 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:20:45,131 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.41ms
+2025-04-16 14:20:45,380 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:20:45,380 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:22:03,818 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:22:03,818 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:22:03,823 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:22:03,823 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 5.76ms
+2025-04-16 14:22:03,868 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:22:03,868 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:22:03,868 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:22:03,875 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.15ms
+2025-04-16 14:22:04,155 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:22:04,157 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.94ms
+2025-04-16 14:22:04,412 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:22:04,412 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 14:25:10,054 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:10,054 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.90ms
+2025-04-16 14:25:10,059 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:10,060 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 13.30ms
+2025-04-16 14:25:10,074 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:10,077 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 15.00ms
+2025-04-16 14:25:10,086 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:10,087 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 15.05ms
+2025-04-16 14:25:10,124 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:10,127 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 5.11ms
+2025-04-16 14:25:10,969 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:10,971 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.11ms
+2025-04-16 14:25:19,436 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:19,436 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.94ms
+2025-04-16 14:25:19,442 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:19,444 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 12.92ms
+2025-04-16 14:25:19,458 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:19,470 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 15.74ms
+2025-04-16 14:25:19,482 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:19,482 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 28.01ms
+2025-04-16 14:25:20,396 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:20,396 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:25:20,404 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:20,404 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:25:51,461 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:51,461 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.48ms
+2025-04-16 14:25:51,469 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:51,477 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 24.95ms
+2025-04-16 14:25:51,503 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:25:51,503 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 17.07ms
+2025-04-16 14:25:51,511 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:25:51,511 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 16.59ms
+2025-04-16 14:25:51,541 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:51,543 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.61ms
+2025-04-16 14:25:51,935 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:25:51,935 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:26:23,227 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:26:23,227 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 20.50ms
+2025-04-16 14:26:23,281 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:26:23,281 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.61ms
+2025-04-16 14:26:23,687 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:26:23,687 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 384.60ms
+2025-04-16 14:26:23,694 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:26:23,698 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 10.46ms
+2025-04-16 14:26:23,702 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:26:23,711 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 9.61ms
+2025-04-16 14:26:24,044 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:26:24,044 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 8.00ms
+2025-04-16 14:28:34,675 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-16 14:28:34,700 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-16 14:28:34,700 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-16 14:28:35,212 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 14:28:35,212 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 14:28:35,212 - INFO - Headers:
+2025-04-16 14:28:35,212 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 14:28:35,212 - INFO - Accept : application/json
+2025-04-16 14:28:35,212 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 14:28:35,212 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 14:28:35,212 - INFO - Accept-Charset : utf-8
+2025-04-16 14:28:35,212 - INFO - -- END Twilio API Request --
+2025-04-16 14:28:35,212 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-16 14:28:35,705 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-16 14:28:35,705 - INFO - Response Status Code: 201
+2025-04-16 14:28:35,705 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 08:59:25 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ3a5f6e2e64571c5670d0e89e1eab6be5', 'Twilio-Request-Duration': '0.154', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 d73fe43a0a2e6638e0427bc7769f5c74.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'kmwFt5RT3hgYFEZk34HCafU3kntxR02rFzXW5DBSedVbi469UDw-5A=='}
+2025-04-16 14:28:35,721 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VEc5de01d2e32cacf1142ef5c036625b2d
+2025-04-16 14:28:35,721 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 14:28:35,721 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 14:28:35,721 - INFO - Headers:
+2025-04-16 14:28:35,721 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 14:28:35,721 - INFO - Accept : application/json
+2025-04-16 14:28:35,721 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 14:28:35,721 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 14:28:35,721 - INFO - Accept-Charset : utf-8
+2025-04-16 14:28:35,721 - INFO - -- END Twilio API Request --
+2025-04-16 14:28:36,418 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-16 14:28:36,418 - INFO - Response Status Code: 403
+2025-04-16 14:28:36,418 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 08:59:26 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQe5f047e93abe673178542216fc89b26c', 'Twilio-Request-Duration': '0.022', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 d73fe43a0a2e6638e0427bc7769f5c74.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'XUfjCInoONVfKmNYQBfI-m2O-3Y2ZvE6-fqCZgkt_mRgzJ3hWwQ0_w=='}
+2025-04-16 14:28:36,418 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 14:28:36,418 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 14:28:36,418 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-16 14:28:36,434 - INFO - 200 POST /api/login (127.0.0.1) 1733.38ms
+2025-04-16 14:28:49,003 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 4.52ms
+2025-04-16 14:28:49,007 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 14:28:49,007 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-16 14:28:49,007 - INFO - Headers:
+2025-04-16 14:28:49,007 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 14:28:49,007 - INFO - Accept : application/json
+2025-04-16 14:28:49,007 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 14:28:49,007 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 14:28:49,007 - INFO - Accept-Charset : utf-8
+2025-04-16 14:28:49,007 - INFO - -- END Twilio API Request --
+2025-04-16 14:28:49,307 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-16 14:28:49,307 - INFO - Response Status Code: 200
+2025-04-16 14:28:49,307 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 08:59:39 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQdbdf03dc517216a72fcad98e1296e0a0', 'Twilio-Request-Duration': '0.038', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 d73fe43a0a2e6638e0427bc7769f5c74.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'yf1Kv-EyQMY-QBqIAiHT2y1vH90cgKxE_Ad4kEgfbJ-nLGDaor7Pbg=='}
+2025-04-16 14:28:49,307 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-16 14:28:49,315 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-16 14:28:49,315 - INFO - 200 POST /api/verify_code (127.0.0.1) 308.08ms
+2025-04-16 14:39:16,110 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:39:16,110 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.01ms
+2025-04-16 14:39:16,110 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:39:16,110 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:39:16,437 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:39:16,437 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:39:17,804 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:39:17,804 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:39:17,804 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:39:17,804 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:39:17,826 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:39:17,826 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.64ms
+2025-04-16 14:39:23,806 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:39:23,806 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:39:23,813 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:39:23,813 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.47ms
+2025-04-16 14:39:24,206 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:39:24,206 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:51:40,202 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:51:40,202 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 14:51:40,202 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:51:40,202 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:51:41,066 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:51:41,066 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 8.92ms
+2025-04-16 14:51:52,344 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:51:52,344 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.35ms
+2025-04-16 14:51:52,353 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:51:52,353 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 9.43ms
+2025-04-16 14:51:52,359 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:51:52,359 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.60ms
+2025-04-16 14:51:52,369 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:51:52,369 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 10.27ms
+2025-04-16 14:51:52,670 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:51:52,670 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:51:52,979 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:51:52,982 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.83ms
+2025-04-16 14:51:54,699 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:51:54,699 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.58ms
+2025-04-16 14:51:54,702 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 14:51:54,707 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.13ms
+2025-04-16 14:51:54,709 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:51:54,709 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.87ms
+2025-04-16 14:51:54,714 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 14:51:54,715 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.61ms
+2025-04-16 14:51:54,849 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:51:54,849 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 14:51:55,074 - INFO - Car rentals fetched for user_id=1
+2025-04-16 14:51:55,076 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 5.17ms
+2025-04-16 15:03:32,138 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:03:32,138 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.42ms
+2025-04-16 15:03:32,143 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:03:32,143 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.28ms
+2025-04-16 15:03:32,147 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:03:32,149 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.05ms
+2025-04-16 15:03:32,151 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:03:32,153 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.27ms
+2025-04-16 15:03:32,514 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:03:32,514 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.21ms
+2025-04-16 15:03:32,794 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:03:32,794 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.06ms
+2025-04-16 15:03:41,958 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:03:41,960 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.30ms
+2025-04-16 15:03:41,960 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:03:41,960 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.76ms
+2025-04-16 15:03:41,969 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:03:41,971 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 5.57ms
+2025-04-16 15:03:41,975 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:03:41,977 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 10.55ms
+2025-04-16 15:03:41,989 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:03:41,991 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.95ms
+2025-04-16 15:03:42,383 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:03:42,383 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:07:51,816 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:07:51,816 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.54ms
+2025-04-16 15:07:51,819 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:07:51,821 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.95ms
+2025-04-16 15:07:51,928 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:07:51,928 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:07:51,930 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:07:51,930 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 15:07:52,210 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:07:52,214 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.57ms
+2025-04-16 15:07:52,485 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:07:52,485 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.02ms
+2025-04-16 15:07:57,802 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:07:57,802 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:07:57,810 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:07:57,810 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.28ms
+2025-04-16 15:07:57,855 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:07:57,855 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.65ms
+2025-04-16 15:07:58,019 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:07:58,019 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.96ms
+2025-04-16 15:07:58,019 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:07:58,019 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:07:58,442 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:07:58,442 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 15:08:03,811 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:03,811 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:08:03,815 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:03,815 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.25ms
+2025-04-16 15:08:03,838 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:03,839 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.54ms
+2025-04-16 15:08:03,925 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:03,927 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:08:03,929 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:03,930 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.73ms
+2025-04-16 15:08:04,363 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:04,363 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.81ms
+2025-04-16 15:08:30,810 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:30,810 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:08:30,813 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:30,815 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.44ms
+2025-04-16 15:08:30,886 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:30,886 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:08:30,890 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:30,890 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.58ms
+2025-04-16 15:08:30,931 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:30,932 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.77ms
+2025-04-16 15:08:31,333 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:31,333 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:08:35,805 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:35,805 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.23ms
+2025-04-16 15:08:35,805 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:35,805 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:08:35,842 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:35,844 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 15:08:35,865 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:08:35,865 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.44ms
+2025-04-16 15:08:35,867 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:08:35,867 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.25ms
+2025-04-16 15:08:36,280 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:08:36,287 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.32ms
+2025-04-16 15:09:05,947 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:05,947 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.01ms
+2025-04-16 15:09:05,950 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:05,950 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.34ms
+2025-04-16 15:09:05,951 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:05,951 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.56ms
+2025-04-16 15:09:05,955 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:05,955 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.28ms
+2025-04-16 15:09:06,013 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:06,015 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 5.17ms
+2025-04-16 15:09:06,318 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:06,319 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.92ms
+2025-04-16 15:09:39,828 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:39,829 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.17ms
+2025-04-16 15:09:39,831 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:39,831 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.51ms
+2025-04-16 15:09:39,895 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:39,895 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.62ms
+2025-04-16 15:09:39,897 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:39,897 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:09:40,163 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:40,163 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:09:40,426 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:40,428 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.02ms
+2025-04-16 15:09:41,837 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:41,838 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.83ms
+2025-04-16 15:09:41,840 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:41,842 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.06ms
+2025-04-16 15:09:41,887 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:41,889 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.73ms
+2025-04-16 15:09:41,933 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:41,933 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.16ms
+2025-04-16 15:09:41,938 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:41,938 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.77ms
+2025-04-16 15:09:42,343 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:42,343 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 15:09:46,816 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:46,818 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:09:46,821 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:46,822 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.33ms
+2025-04-16 15:09:46,865 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:46,865 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:09:46,921 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:09:46,921 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.63ms
+2025-04-16 15:09:46,925 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:09:46,925 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.02ms
+2025-04-16 15:09:47,386 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:09:47,387 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.50ms
+2025-04-16 15:16:19,141 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:16:19,141 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:16:19,150 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:16:19,150 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.11ms
+2025-04-16 15:16:19,518 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:16:19,518 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.92ms
+2025-04-16 15:16:27,837 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:16:27,837 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:16:27,837 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:16:27,837 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:16:27,987 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:16:27,987 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.51ms
+2025-04-16 15:16:31,947 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:16:31,947 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 13.29ms
+2025-04-16 15:16:31,952 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:16:31,952 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.59ms
+2025-04-16 15:16:32,409 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:16:32,409 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.59ms
+2025-04-16 15:16:48,837 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:16:48,837 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:16:48,837 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:16:48,837 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:16:48,946 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:16:48,946 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.12ms
+2025-04-16 15:16:51,875 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:16:51,875 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.02ms
+2025-04-16 15:16:51,880 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:16:51,880 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.01ms
+2025-04-16 15:16:52,372 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:16:52,372 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.77ms
+2025-04-16 15:17:32,838 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:17:32,838 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 8.45ms
+2025-04-16 15:17:32,840 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:17:32,842 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.01ms
+2025-04-16 15:17:33,049 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:17:33,049 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:18:00,358 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:18:00,358 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:18:00,363 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:18:00,363 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.68ms
+2025-04-16 15:18:00,363 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:18:00,363 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:18:00,363 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:18:00,363 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:18:00,731 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:18:00,731 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.62ms
+2025-04-16 15:18:00,966 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:18:00,966 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:23:36,586 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:23:36,586 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 83.34ms
+2025-04-16 15:23:36,640 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:23:36,640 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 135.06ms
+2025-04-16 15:23:36,677 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:23:36,677 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 31.78ms
+2025-04-16 15:23:36,685 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:23:36,685 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.47ms
+2025-04-16 15:23:36,727 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:23:36,727 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.70ms
+2025-04-16 15:23:37,060 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:23:37,060 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.53ms
+2025-04-16 15:30:03,222 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:30:03,223 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 4.95ms
+2025-04-16 15:30:03,223 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:30:03,223 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:30:03,667 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:30:03,667 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.05ms
+2025-04-16 15:31:03,214 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:31:03,214 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.00ms
+2025-04-16 15:31:03,215 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:31:03,216 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 15:31:03,217 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:31:03,217 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.13ms
+2025-04-16 15:31:03,218 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:31:03,218 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.42ms
+2025-04-16 15:31:03,259 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:31:03,260 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 15:31:03,563 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:31:03,564 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.09ms
+2025-04-16 15:32:15,899 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:15,899 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 13.41ms
+2025-04-16 15:32:15,901 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:15,901 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:16,393 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:16,394 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 15:32:17,870 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:17,870 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 8.30ms
+2025-04-16 15:32:17,870 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:17,870 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:18,087 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:18,087 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:27,862 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:27,862 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:32:27,862 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:27,862 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:28,294 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:28,294 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.01ms
+2025-04-16 15:32:30,856 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:30,856 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:32:30,856 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:30,856 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:30,976 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:30,976 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:31,869 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:31,870 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.28ms
+2025-04-16 15:32:31,870 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:31,870 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:32:32,271 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:32,272 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.25ms
+2025-04-16 15:32:33,879 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:32:33,881 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.03ms
+2025-04-16 15:32:33,883 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:32:33,885 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.04ms
+2025-04-16 15:32:34,021 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:32:34,022 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.76ms
+2025-04-16 15:34:58,868 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:34:58,875 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.51ms
+2025-04-16 15:34:58,876 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:34:58,876 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:34:59,275 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:34:59,276 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 9.04ms
+2025-04-16 15:40:21,826 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:40:21,826 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:40:21,834 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:40:21,834 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 7.95ms
+2025-04-16 15:40:21,840 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:40:21,840 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.01ms
+2025-04-16 15:40:21,842 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:40:21,842 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:40:22,177 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:40:22,177 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 9.44ms
+2025-04-16 15:40:22,428 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:40:22,428 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:53:27,641 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:53:27,641 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 15:53:27,641 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:53:27,641 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 15:53:27,660 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:53:27,661 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 19.97ms
+2025-04-16 15:53:27,661 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:53:27,661 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.92ms
+2025-04-16 15:53:27,681 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:53:27,684 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.49ms
+2025-04-16 15:53:28,000 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:53:28,001 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.91ms
+2025-04-16 15:54:25,953 - INFO - 200 OPTIONS /api/login (127.0.0.1) 3.98ms
+2025-04-16 15:54:25,958 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-16 15:54:25,959 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-16 15:54:25,960 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 15:54:25,960 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 15:54:25,960 - INFO - Headers:
+2025-04-16 15:54:25,960 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 15:54:25,960 - INFO - Accept : application/json
+2025-04-16 15:54:25,960 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 15:54:25,960 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 15:54:25,960 - INFO - Accept-Charset : utf-8
+2025-04-16 15:54:25,960 - INFO - -- END Twilio API Request --
+2025-04-16 15:54:25,967 - DEBUG - Resetting dropped connection: verify.twilio.com
+2025-04-16 15:54:26,456 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-16 15:54:26,456 - INFO - Response Status Code: 201
+2025-04-16 15:54:26,456 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 10:25:16 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQebbdd9ca16d90d74c150259d41a3f4b2', 'Twilio-Request-Duration': '0.165', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 99213fd5cb3468320e69c259200489b2.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'LddpynQ-4G2Hw861oUuVU0oXynryX3FxsLdKK5RtNBuOyOZoArW-Xw=='}
+2025-04-16 15:54:26,458 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VE2b729fd262c8565aebc2e92c5ccb8f51
+2025-04-16 15:54:26,458 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 15:54:26,458 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 15:54:26,458 - INFO - Headers:
+2025-04-16 15:54:26,458 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 15:54:26,458 - INFO - Accept : application/json
+2025-04-16 15:54:26,458 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 15:54:26,458 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 15:54:26,458 - INFO - Accept-Charset : utf-8
+2025-04-16 15:54:26,458 - INFO - -- END Twilio API Request --
+2025-04-16 15:54:27,134 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-16 15:54:27,134 - INFO - Response Status Code: 403
+2025-04-16 15:54:27,134 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 10:25:17 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ850f3487925a507323c22a649ab17146', 'Twilio-Request-Duration': '0.035', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 99213fd5cb3468320e69c259200489b2.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'CzG4GlOGrSo-1OSG4uIuXO6f2_7f2GlsmF5C6XrJSlbTxJSIoFJKmQ=='}
+2025-04-16 15:54:27,138 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 15:54:27,138 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 15:54:27,138 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-16 15:54:27,138 - INFO - 200 POST /api/login (127.0.0.1) 1183.92ms
+2025-04-16 15:54:47,612 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 0.00ms
+2025-04-16 15:54:47,619 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 15:54:47,619 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-16 15:54:47,619 - INFO - Headers:
+2025-04-16 15:54:47,619 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 15:54:47,620 - INFO - Accept : application/json
+2025-04-16 15:54:47,620 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 15:54:47,620 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 15:54:47,620 - INFO - Accept-Charset : utf-8
+2025-04-16 15:54:47,620 - INFO - -- END Twilio API Request --
+2025-04-16 15:54:48,757 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-16 15:54:48,757 - INFO - Response Status Code: 200
+2025-04-16 15:54:48,757 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 10:25:37 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ161ba5bfcef879c609871fe33b443c94', 'Twilio-Request-Duration': '0.035', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 99213fd5cb3468320e69c259200489b2.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'A2ShiN0Layxdng0fyct6j3Lu8itLXGcqDUEVELLYGTTytx5bTnKL4g=='}
+2025-04-16 15:54:48,757 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-16 15:54:48,757 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-16 15:54:48,757 - INFO - 200 POST /api/verify_code (127.0.0.1) 1145.20ms
+2025-04-16 15:54:48,833 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:54:48,833 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.20ms
+2025-04-16 15:54:48,833 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:54:48,833 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.20ms
+2025-04-16 15:54:48,841 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 15:54:48,842 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 9.11ms
+2025-04-16 15:54:48,843 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 15:54:48,843 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.92ms
+2025-04-16 15:54:49,164 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:54:49,165 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.42ms
+2025-04-16 15:54:49,415 - INFO - Car rentals fetched for user_id=1
+2025-04-16 15:54:49,415 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:04:49,964 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:04:49,964 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 16:04:49,971 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:04:49,971 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:04:49,971 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:04:49,971 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 16:04:49,971 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:04:49,971 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:04:50,292 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:04:50,292 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.21ms
+2025-04-16 16:04:50,571 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:04:50,572 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.25ms
+2025-04-16 16:05:39,461 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:05:39,461 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 16:05:39,466 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:05:39,466 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.76ms
+2025-04-16 16:05:39,468 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:05:39,468 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 2.71ms
+2025-04-16 16:05:39,470 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:05:39,470 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.76ms
+2025-04-16 16:05:39,802 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:05:39,802 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:05:40,078 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:05:40,078 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.70ms
+2025-04-16 16:12:39,704 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:12:39,704 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.43ms
+2025-04-16 16:12:39,707 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:12:39,707 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.73ms
+2025-04-16 16:12:39,707 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:12:39,707 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 16:12:39,717 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:12:39,717 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:12:40,080 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:12:40,086 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.10ms
+2025-04-16 16:12:40,342 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:12:40,342 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:14:46,634 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:14:46,634 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 16:14:46,634 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:14:46,634 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:14:46,634 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 16:14:46,641 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.14ms
+2025-04-16 16:14:46,643 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 16:14:46,643 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.58ms
+2025-04-16 16:14:47,094 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:14:47,099 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 12.84ms
+2025-04-16 16:14:47,311 - INFO - Car rentals fetched for user_id=1
+2025-04-16 16:14:47,311 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 16:29:41,759 - INFO - Shutting down...

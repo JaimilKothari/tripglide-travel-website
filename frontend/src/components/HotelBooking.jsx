@@ -34,6 +34,8 @@ const HotelBooking = () => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
       console.warn("No user found in localStorage, redirecting to login");
+      setError("Please log in to view booking details");
+      setIsLoaded(true);
       navigate("/login");
       return;
     }
@@ -68,6 +70,17 @@ const HotelBooking = () => {
 
     try {
       const parsedDetails = JSON.parse(storedDetails);
+      // Validate required fields
+      if (
+        !parsedDetails.hotelName ||
+        !parsedDetails.checkInDate ||
+        !parsedDetails.checkOutDate ||
+        !parsedDetails.roomType ||
+        !parsedDetails.rooms ||
+        !parsedDetails.totalAmount
+      ) {
+        throw new Error("Incomplete booking details");
+      }
       setBookingDetails(parsedDetails);
       localStorage.setItem("hotelBookingDetails", storedDetails);
 
@@ -114,7 +127,7 @@ const HotelBooking = () => {
           sessionStorage.setItem("bookingSent", bookingNumber);
         } catch (err) {
           console.error(`Error sending booking ${bookingNumber}:`, err);
-          setError(err.message);
+          setError("Failed to save booking to server");
         }
       };
 
@@ -122,6 +135,7 @@ const HotelBooking = () => {
     } catch (e) {
       console.error("Error parsing hotelBookingDetails:", e);
       setError("Invalid booking details");
+      setIsLoaded(true);
     }
 
     setIsLoaded(true);
@@ -211,7 +225,14 @@ const HotelBooking = () => {
 
   // Download Invoice with Dark Blue and White Theme
   const downloadInvoice = () => {
-    if (!bookingDetails || !userDetails) return;
+    if (!bookingDetails || !userDetails) {
+      console.error("Cannot download invoice: missing booking or user details", {
+        bookingDetails,
+        userDetails,
+      });
+      alert("Unable to generate invoice due to missing booking details.");
+      return;
+    }
 
     const {
       hotelName,
@@ -305,6 +326,10 @@ const HotelBooking = () => {
     const hotelTitle = `${hotelName} - ${roomType} (${rooms} Room${rooms > 1 ? "s" : ""})`;
     doc.text(hotelTitle, 15, yPosition, { maxWidth: 180 });
     yPosition += 8;
+    const totalGuests = (bookingDetails.adults || 0) + (bookingDetails.children || 0);
+    doc.text(`Guest: ${totalGuests} (Adults: ${bookingDetails.adults || 0}, Children: ${bookingDetails.children || 0})`, 15, yPosition);
+    yPosition += 5;
+
     const checkIn = `Check-In: ${new Date(checkInDate).toLocaleDateString(
       "en-US",
       {
@@ -387,6 +412,15 @@ const HotelBooking = () => {
     doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
       maxWidth: 180,
     });
+    yPosition += 15;
+
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      "Policy: Please ensure to present valid identification proof at the time of check-in.",
+      15,
+      yPosition,
+      { maxWidth: 180 }
+    );
     yPosition += 15;
 
     // Footer: Dark Blue Background with White Text
@@ -626,7 +660,12 @@ const HotelBooking = () => {
             </button>
             <button
               onClick={downloadInvoice}
-              className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded-lg hover:bg-green-700"
+              disabled={!bookingDetails || !userDetails || error}
+              className={`px-4 py-2 cursor-pointer rounded-lg ${
+                !bookingDetails || !userDetails || error
+                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
             >
               Download Invoice
             </button>
