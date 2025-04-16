@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import mysql.connector
 from flask_cors import CORS
 import stripe
+from datetime import date
 
 app = Flask(__name__)
 # Apply CORS to all routes
@@ -177,8 +178,6 @@ def create_checkout_session():
         print(f"Error creating checkout session: {e}")
         return jsonify({'error': str(e)}), 500
 
-
-
 @app.route('/api/bookings', methods=['POST', 'OPTIONS'])
 def store_booking():
     if request.method == 'OPTIONS':
@@ -246,8 +245,8 @@ def store_booking():
         INSERT INTO hotel_bookings (
             booking_number, hotel_name, arrival, check_in_date, check_out_date,
             adults, children, rooms, room_type, price_per_night, total_amount,
-            guest_name, email, phone, booked_on, payment_method
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            guest_name, email, phone, booked_on, payment_method, status
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'Upcoming')
         """
         values = (
             booking_number, hotel_name, arrival, check_in_date, check_out_date,
@@ -273,6 +272,7 @@ def store_booking():
         print(f"Unexpected error: {e}")
         return jsonify({'error': f'An error occurred: {e}'}), 500
     
+
 @app.route('/api/hotel_bookings', methods=['GET', 'OPTIONS'])
 def get_hotel_bookings():
     if request.method == 'OPTIONS':
@@ -282,10 +282,47 @@ def get_hotel_bookings():
     if not identifier:
         return jsonify({"error": "Identifier (email or phone) is required"}), 400
 
+    # Update booking statuses
+    connection = get_db_connection()
+    if not connection:
+        print("Database connection failed")
+        return jsonify({"error": "Database connection failed"}), 500
+
+    cursor = connection.cursor()
+    today = date.today().strftime('%Y-%m-%d')
+    try:
+        # Update to Ongoing: check_in_date <= today AND check_out_date > today
+        update_ongoing_query = """
+            UPDATE hotel_bookings 
+            SET status = 'Ongoing'
+            WHERE check_in_date <= %s AND check_out_date > %s AND status = 'Upcoming'
+        """
+        cursor.execute(update_ongoing_query, (today, today))
+        connection.commit()
+        print(f"Updated bookings to Ongoing for check_in_date <= {today} and check_out_date > {today}")
+
+        # Update to Upcoming: check_in_date > today
+        update_upcoming_query = """
+            UPDATE hotel_bookings 
+            SET status = 'Upcoming'
+            WHERE check_in_date > %s AND status != 'Cancelled'
+        """
+        cursor.execute(update_upcoming_query, (today,))
+        connection.commit()
+        print(f"Updated bookings to Upcoming for check_in_date > {today}")
+    except mysql.connector.Error as e:
+        print(f"Error updating booking status: {e}")
+        connection.rollback()
+        return jsonify({"error": f"Database error: {e}"}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+    # Fetch bookings
     query = """
         SELECT id, booking_number, hotel_name, arrival, check_in_date, check_out_date,
                adults, children, rooms, room_type, price_per_night, total_amount,
-               guest_name, email, phone, booked_on, payment_method, created_at
+               guest_name, email, phone, booked_on, payment_method, created_at, status
         FROM hotel_bookings
         WHERE email = %s OR phone = %s
         ORDER BY booked_on DESC
@@ -322,10 +359,36 @@ def get_hotel_bookings():
             "booked_on": booking["booked_on"].isoformat() if booking["booked_on"] else None,
             "payment_method": booking["payment_method"],
             "created_at": booking["created_at"].isoformat() if booking["created_at"] else None,
-            "hotel_details": f"{booking['hotel_name']} - {booking['room_type']} ({booking['rooms']} rooms)"
+            "hotel_details": f"{booking['hotel_name']} - {booking['room_type']} ({booking['rooms']} rooms)",
+            "status": booking["status"]
         })
 
     return jsonify({"bookings": formatted_bookings, "success": True})
+
+
+@app.route('/api/hotel_bookings/<int:booking_id>/cancel', methods=['POST', 'OPTIONS'])
+def cancel_booking(booking_id):
+    if request.method == 'OPTIONS':
+        return jsonify({}), 200
+    try:
+        connection = get_db_connection()
+        if not connection:
+            return jsonify({"error": "Database connection failed"}), 500
+
+        cursor = connection.cursor()
+        query = "UPDATE hotel_bookings SET status = 'Cancelled' WHERE id = %s AND status = 'Upcoming'"
+        cursor.execute(query, (booking_id,))
+        if cursor.rowcount == 0:
+            connection.close()
+            return jsonify({"error": "Booking not found or not cancellable"}), 404
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return jsonify({"success": true, "message": "Booking cancelled successfully"})
+    except Exception as e:
+        print(f"Error cancelling booking: {e}")
+        return jsonify({"error": f"An error occurred: {e}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5003)
