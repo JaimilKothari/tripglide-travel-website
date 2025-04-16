@@ -14,7 +14,7 @@ CORS(app, resources={
 })
 
 # Stripe configuration
-stripe.api_key = 'sk_test_51RBDzAQVbUKIjAtM6UPjWghbzD1KfUtRfU4CezBB2BfzXAiDzVhevRZ5gzvDTTwnppMqs8ODDcaTgVI6DSLn3Vgm00CGD9930m'
+stripe.api_key = '***REMOVED***'
 
 def get_db_connection():
     try:
@@ -144,6 +144,16 @@ def create_checkout_session():
         return jsonify({}), 200
     try:
         data = request.get_json()
+        print(f"Received data: {data}")  # Log incoming data
+
+        # Validate required fields
+        required_fields = ['hotelName', 'totalAmount', 'checkInDate', 'checkOutDate', 'adults', 'children', 'rooms', 'roomType']
+        missing_fields = [field for field in required_fields if field not in data or data[field] is None]
+        if missing_fields:
+            error_msg = f"Missing required fields: {', '.join(missing_fields)}"
+            print(error_msg)
+            return jsonify({'error': error_msg}), 400
+
         hotel_name = data['hotelName']
         total_amount = data['totalAmount']
         check_in_date = data['checkInDate']
@@ -152,6 +162,35 @@ def create_checkout_session():
         children = data['children']
         rooms = data['rooms']
         room_type = data['roomType']
+
+        # Validate total_amount
+        try:
+            total_amount = float(total_amount)
+            if total_amount <= 0:
+                error_msg = "Total amount must be greater than 0"
+                print(error_msg)
+                return jsonify({'error': error_msg}), 400
+            unit_amount = int(total_amount * 100)  # Convert to paise
+            if unit_amount < 50:  # Stripe's minimum for INR
+                error_msg = "Total amount is too low for Stripe (minimum ₹0.50)"
+                print(error_msg)
+                return jsonify({'error': error_msg}), 400
+        except (ValueError, TypeError) as e:
+            error_msg = f"Invalid total amount: {str(e)}"
+            print(error_msg)
+            return jsonify({'error': error_msg}), 400
+
+        # Validate numeric fields
+        try:
+            adults = int(adults)
+            children = int(children)
+            rooms = int(rooms)
+        except (ValueError, TypeError) as e:
+            error_msg = f"Invalid numeric fields: {str(e)}"
+            print(error_msg)
+            return jsonify({'error': error_msg}), 400
+
+        # Create Stripe session
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[
@@ -162,22 +201,23 @@ def create_checkout_session():
                             'name': f'Booking: {hotel_name} ({room_type})',
                             'description': f'Check-in: {check_in_date}, Check-out: {check_out_date}, Guests: {adults + children}, Rooms: {rooms}',
                         },
-                        'unit_amount': int(total_amount * 100),
+                        'unit_amount': unit_amount,
                     },
                     'quantity': 1,
                 },
             ],
             mode='payment',
             success_url='http://localhost:5173/hotel-booking',
-            cancel_url='http://localhost:3000/cancel',
+            cancel_url='http://localhost:5173/cancel',  # Updated to match frontend
         )
         print(f"Stripe session created: {session.id}")
         return jsonify({'id': session.id})
+    except stripe.error.StripeError as e:
+        print(f"Stripe error: {e.user_message or str(e)}")
+        return jsonify({'error': f'Stripe error: {e.user_message or str(e)}'}), 400
     except Exception as e:
-        print(f"Error creating checkout session: {e}")
-        return jsonify({'error': str(e)}), 500
-
-
+        print(f"Error creating checkout session: {str(e)}")
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 @app.route('/api/bookings', methods=['POST', 'OPTIONS'])
 def store_booking():

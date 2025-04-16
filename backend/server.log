@@ -759,3 +759,28 @@
 2025-04-15 15:00:43,189 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 2.00ms
 2025-04-15 15:00:43,192 - ERROR - Database error in hotel_bookings: 1054 (42S22): Unknown column 'user_id' in 'where clause'
 2025-04-15 15:00:43,192 - ERROR - 500 GET /api/hotel_bookings?user_id=1 (127.0.0.1) 1.74ms
+2025-04-15 16:02:44,857 - DEBUG - Starting authorization phase
+2025-04-15 16:02:44,857 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-15 16:02:44,857 - INFO - package: mysql.connector.plugins
+2025-04-15 16:02:44,857 - INFO - plugin_name: mysql_native_password
+2025-04-15 16:02:44,858 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-15 16:02:44,858 - DEBUG - mysql_native_password completed succesfully
+2025-04-15 16:02:44,859 - INFO - Database connection established
+2025-04-15 16:02:44,860 - INFO - Database tables initialized
+2025-04-15 16:02:44,862 - INFO - Twilio client initialized successfully
+2025-04-15 16:02:44,867 - INFO - Serving on http://0.0.0.0:5001
+2025-04-15 16:02:44,868 - DEBUG - Using selector: SelectSelector
+2025-04-15 16:02:44,871 - INFO - Start watching changes
+2025-04-15 16:02:44,872 - INFO - Start detecting changes
+2025-04-15 16:03:26,615 - WARNING - 404 GET /arrival (127.0.0.1) 3.99ms
+2025-04-15 16:03:26,619 - WARNING - 404 GET /arrival (127.0.0.1) 1.75ms
+2025-04-15 16:09:15,793 - WARNING - 404 GET /arrival (127.0.0.1) 2.15ms
+2025-04-15 16:09:15,796 - WARNING - 404 GET /arrival (127.0.0.1) 1.44ms
+2025-04-15 16:10:02,642 - WARNING - 404 GET /arrival (127.0.0.1) 1.64ms
+2025-04-15 16:10:02,650 - WARNING - 404 GET /arrival (127.0.0.1) 4.59ms
+2025-04-15 16:10:07,006 - WARNING - 404 GET /arrival (127.0.0.1) 1.16ms
+2025-04-15 16:10:07,008 - WARNING - 404 GET /arrival (127.0.0.1) 0.83ms
+2025-04-15 16:10:37,509 - WARNING - 404 GET /arrival (127.0.0.1) 1.35ms
+2025-04-15 16:10:37,511 - WARNING - 404 GET /arrival (127.0.0.1) 0.85ms
+2025-04-15 16:12:06,573 - WARNING - 404 GET /arrival (127.0.0.1) 1.09ms
+2025-04-15 16:12:06,579 - WARNING - 404 GET /arrival (127.0.0.1) 3.90ms
