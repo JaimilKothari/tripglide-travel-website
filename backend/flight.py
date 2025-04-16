@@ -91,15 +91,19 @@ def get_cities():
         return jsonify({"error": "DatabaseConnectionError", "message": "Failed to connect to database"}), 500
     cursor = connection.cursor(dictionary=True)
     try:
-        cursor.execute("SELECT DISTINCT departure FROM flights")
-        departure_airports = [row["departure"] for row in cursor.fetchall()]
-        cursor.execute("SELECT DISTINCT arrival FROM flights")
-        arrival_airports = [row["arrival"] for row in cursor.fetchall()]
+        # Fetch distinct departure_city and departure, combine into single string
+        cursor.execute("SELECT DISTINCT departure_city, departure FROM flights")
+        departure_data = [f"{row['departure_city']} ({row['departure']})" for row in cursor.fetchall()]
+
+        # Fetch distinct arrival_city and arrival, combine into single string
+        cursor.execute("SELECT DISTINCT arrival_city, arrival FROM flights")
+        arrival_data = [f"{row['arrival_city']} ({row['arrival']})" for row in cursor.fetchall()]
+
         response = {
-            "departure_airport": departure_airports if departure_airports else [],
-            "arrival_airport": arrival_airports if arrival_airports else []
+            "departure_airport": departure_data if departure_data else [],
+            "arrival_airport": arrival_data if arrival_data else []
         }
-        logger.info("Returning airports data")
+        logger.info("Returning combined cities and airports data")
         return jsonify(response)
     except mysql.connector.Error as e:
         logger.error(f"Database query error in /get_flights: {str(e)}")

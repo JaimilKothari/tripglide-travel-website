@@ -181,7 +181,7 @@ const FlightDealsCards = () => {
       };
       sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
 
-      const response = await fetch("http://localhost:5000/create-checkout-session", {
+      const response = await fetch("http://localhost:5002/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
