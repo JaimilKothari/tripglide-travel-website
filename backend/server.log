@@ -1575,3 +1575,133 @@
 2025-04-15 18:30:26,480 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 5.39ms
 2025-04-15 18:30:26,484 - INFO - Flight bookings fetched for user_id=1
 2025-04-15 18:30:26,484 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.55ms
+2025-04-16 09:50:40,415 - INFO - Database connection established
+2025-04-16 09:50:40,415 - INFO - Database tables initialized
+2025-04-16 09:50:40,431 - INFO - Twilio client initialized successfully
+2025-04-16 09:50:40,431 - INFO - Serving on http://0.0.0.0:5001
+2025-04-16 09:50:40,431 - DEBUG - Using selector: SelectSelector
+2025-04-16 09:50:40,431 - INFO - Start watching changes
+2025-04-16 09:50:40,431 - INFO - Start detecting changes
+2025-04-16 09:51:09,488 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 09:51:09,488 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.45ms
+2025-04-16 09:51:09,488 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 09:51:09,495 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 15.30ms
+2025-04-16 09:51:09,496 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 09:51:09,496 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 09:51:09,496 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 09:51:09,496 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 09:51:09,504 - INFO - Car rentals fetched for user_id=1
+2025-04-16 09:51:09,504 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 09:51:09,821 - INFO - Car rentals fetched for user_id=1
+2025-04-16 09:51:09,823 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 11.26ms
+2025-04-16 10:00:06,005 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:00:06,011 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 6.56ms
+2025-04-16 10:00:06,012 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:00:06,012 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 10:00:06,019 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:00:06,020 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 7.46ms
+2025-04-16 10:00:06,020 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:00:06,020 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 10:00:06,038 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:00:06,038 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 9.99ms
+2025-04-16 10:00:06,363 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:00:06,363 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 8.93ms
+2025-04-16 10:00:48,691 - INFO - 200 OPTIONS /api/login (127.0.0.1) 0.00ms
+2025-04-16 10:00:48,695 - DEBUG - Login attempt: identifier=mokshabhavsar2004@gmail.com
+2025-04-16 10:00:48,697 - DEBUG - Query: SELECT * FROM users WHERE email = %s AND password = %s, Result: {'user_id': 1, 'email': 'mokshabhavsar2004@gmail.com', 'phone': '8953235644', 'password': 'Mpb@123', 'username': 'Moksha', 'gender': 'Unknown', 'birthday': None, 'address': None, 'pincode': None, 'state': None, 'phone_verified': 0}
+2025-04-16 10:00:48,771 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 10:00:48,771 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 10:00:48,771 - INFO - Headers:
+2025-04-16 10:00:48,771 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 10:00:48,771 - INFO - Accept : application/json
+2025-04-16 10:00:48,771 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 10:00:48,771 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 10:00:48,771 - INFO - Accept-Charset : utf-8
+2025-04-16 10:00:48,771 - INFO - -- END Twilio API Request --
+2025-04-16 10:00:48,771 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-16 10:00:49,662 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 692
+2025-04-16 10:00:49,678 - INFO - Response Status Code: 201
+2025-04-16 10:00:49,678 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '692', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 04:31:39 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ186b2cd102f347b38cb6bfe67609add7', 'Twilio-Request-Duration': '0.217', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 e3d27343c37766f7c4e8005d9d973068.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'H0kgPc4J7ZOXeCZ8QJToVgE45S116fvhOk72obevFy4-jzK7cRg_dA=='}
+2025-04-16 10:00:49,726 - INFO - Verification sent to mokshabhavsar2004@gmail.com via email: VE5904c3ee5c6ba767e62c3560050fb364
+2025-04-16 10:00:49,726 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 10:00:49,726 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-16 10:00:49,726 - INFO - Headers:
+2025-04-16 10:00:49,726 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 10:00:49,726 - INFO - Accept : application/json
+2025-04-16 10:00:49,726 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 10:00:49,726 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 10:00:49,726 - INFO - Accept-Charset : utf-8
+2025-04-16 10:00:49,726 - INFO - -- END Twilio API Request --
+2025-04-16 10:00:50,348 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 403 252
+2025-04-16 10:00:50,348 - INFO - Response Status Code: 403
+2025-04-16 10:00:50,348 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '252', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 04:31:40 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ6a7e6982b0d3b388e30d5d6d0db2f700', 'Twilio-Request-Duration': '0.029', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Error from cloudfront', 'Via': '1.1 e3d27343c37766f7c4e8005d9d973068.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'ave3GwNKKoHz4ibLYG08AplWfZXJYY2YHxRqvtT_OyxPiqg3aTimYw=='}
+2025-04-16 10:00:50,358 - ERROR - Twilio error sending OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 10:00:50,358 - WARNING - Failed to send SMS OTP to 8953235644: 
+[31m[49mHTTP Error[0m [37m[49mYour request was:[0m
+
+[36m[49mPOST /Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications[0m
+
+[37m[49mTwilio returned the following information:[0m
+
+[34m[49mUnable to create record: The phone number is unverified. Trial accounts cannot send messages to unverified numbers; verify it at twilio.com/user/account/phone-numbers/verified[0m
+
+[37m[49mMore information may be available here:[0m
+
+[34m[49mhttps://www.twilio.com/docs/errors/21608[0m
+
+
+2025-04-16 10:00:50,358 - INFO - Login pending OTP: email=mokshabhavsar2004@gmail.com, sent to [{'identifier': 'mokshabhavsar2004@gmail.com', 'type': 'email'}]
+2025-04-16 10:00:50,358 - INFO - 200 POST /api/login (127.0.0.1) 1667.08ms
+2025-04-16 10:01:02,994 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 6.88ms
+2025-04-16 10:01:02,995 - INFO - -- BEGIN Twilio API Request --
+2025-04-16 10:01:02,995 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-16 10:01:02,995 - INFO - Headers:
+2025-04-16 10:01:02,995 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-16 10:01:02,995 - INFO - Accept : application/json
+2025-04-16 10:01:02,995 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.5
+2025-04-16 10:01:02,995 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-16 10:01:02,995 - INFO - Accept-Charset : utf-8
+2025-04-16 10:01:02,995 - INFO - -- END Twilio API Request --
+2025-04-16 10:01:03,263 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 356
+2025-04-16 10:01:03,263 - INFO - Response Status Code: 200
+2025-04-16 10:01:03,263 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '356', 'Connection': 'keep-alive', 'Date': 'Wed, 16 Apr 2025 04:31:53 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQdd6d77f99d642073d0682af78cb053ea', 'Twilio-Request-Duration': '0.036', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 e3d27343c37766f7c4e8005d9d973068.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'Gj4-uk8HVG8P8M6FwUF8wosZ446tpM_xOLSMS8g8cgRfW0ZqnFCXAg=='}
+2025-04-16 10:01:03,263 - INFO - Verification check for mokshabhavsar2004@gmail.com: approved
+2025-04-16 10:01:03,263 - INFO - email verified for mokshabhavsar2004@gmail.com
+2025-04-16 10:01:03,263 - INFO - 200 POST /api/verify_code (127.0.0.1) 267.68ms
+2025-04-16 10:04:06,507 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:04:06,508 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 3.19ms
+2025-04-16 10:04:06,510 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:04:06,510 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.49ms
+2025-04-16 10:04:06,511 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:04:06,512 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.28ms
+2025-04-16 10:04:06,512 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:04:06,512 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.00ms
+2025-04-16 10:04:06,537 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:04:06,538 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.00ms
+2025-04-16 10:04:06,858 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:04:06,858 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 8.19ms
+2025-04-16 10:04:21,231 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:04:21,231 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 1.12ms
+2025-04-16 10:04:21,233 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:04:21,233 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 0.51ms
+2025-04-16 10:04:21,235 - INFO - Profile fetched for email=mokshabhavsar2004@gmail.com
+2025-04-16 10:04:21,235 - INFO - 200 GET /api/profile?identifier=mokshabhavsar2004%40gmail.com (127.0.0.1) 0.00ms
+2025-04-16 10:04:21,238 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 10:04:21,239 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.28ms
+2025-04-16 10:04:21,626 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:04:21,627 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 10.76ms
+2025-04-16 10:04:21,831 - INFO - Car rentals fetched for user_id=1
+2025-04-16 10:04:21,832 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 9.79ms
