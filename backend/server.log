@@ -921,3 +921,277 @@
 2025-04-16 11:33:27,785 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.89ms
 2025-04-16 11:33:28,066 - INFO - Car rentals fetched for user_id=1
 2025-04-16 11:33:28,088 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 41.01ms
+2025-04-16 11:49:03,532 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:49:03,532 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.72ms
+2025-04-16 11:49:03,535 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:49:03,535 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.37ms
+2025-04-16 11:49:03,539 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:49:03,539 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.12ms
+2025-04-16 11:49:03,544 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:49:03,547 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.46ms
+2025-04-16 11:49:03,886 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:49:03,887 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.06ms
+2025-04-16 11:49:04,120 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:49:04,121 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 1.82ms
+2025-04-16 11:50:48,877 - INFO - D:\xampp\htdocs\Inbox\tripglide\backend\login.py modified; restarting server
+2025-04-16 11:50:50,106 - DEBUG - Starting authorization phase
+2025-04-16 11:50:50,106 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-16 11:50:50,106 - INFO - package: mysql.connector.plugins
+2025-04-16 11:50:50,106 - INFO - plugin_name: mysql_native_password
+2025-04-16 11:50:50,107 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-16 11:50:50,108 - DEBUG - mysql_native_password completed succesfully
+2025-04-16 11:50:50,108 - INFO - Database connection established
+2025-04-16 11:50:50,112 - INFO - Database tables initialized
+2025-04-16 11:50:50,114 - INFO - Twilio client initialized successfully
+2025-04-16 11:50:50,120 - INFO - Serving on http://0.0.0.0:5001
+2025-04-16 11:50:50,121 - DEBUG - Using selector: SelectSelector
+2025-04-16 11:50:50,125 - INFO - Start watching changes
+2025-04-16 11:50:50,128 - INFO - Start detecting changes
+2025-04-16 11:52:25,747 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:52:25,750 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 9.28ms
+2025-04-16 11:52:25,795 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:52:25,797 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 55.51ms
+2025-04-16 11:52:25,885 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:52:25,886 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 44.57ms
+2025-04-16 11:52:25,922 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:52:25,922 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 80.71ms
+2025-04-16 11:52:26,453 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:52:26,453 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 6.17ms
+2025-04-16 11:52:26,470 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:52:26,471 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.78ms
+2025-04-16 11:53:08,658 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:08,659 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 10.11ms
+2025-04-16 11:53:08,665 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:08,666 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.90ms
+2025-04-16 11:53:08,669 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:08,671 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 3.88ms
+2025-04-16 11:53:08,674 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:08,675 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.31ms
+2025-04-16 11:53:09,029 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:09,030 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 21.01ms
+2025-04-16 11:53:09,269 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:09,269 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.27ms
+2025-04-16 11:53:21,324 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:21,325 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 11.92ms
+2025-04-16 11:53:21,328 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:21,330 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.10ms
+2025-04-16 11:53:21,345 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:21,346 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 14.15ms
+2025-04-16 11:53:21,373 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:21,374 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 25.86ms
+2025-04-16 11:53:21,680 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:21,681 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.61ms
+2025-04-16 11:53:21,928 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:21,929 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.17ms
+2025-04-16 11:53:41,623 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:41,624 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 10.25ms
+2025-04-16 11:53:41,632 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:41,633 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.07ms
+2025-04-16 11:53:41,694 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 11:53:41,696 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 55.32ms
+2025-04-16 11:53:41,699 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 11:53:41,705 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.07ms
+2025-04-16 11:53:41,744 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:41,746 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 22.57ms
+2025-04-16 11:53:42,040 - INFO - Car rentals fetched for user_id=1
+2025-04-16 11:53:42,041 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.97ms
+2025-04-16 12:07:53,460 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:07:53,462 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 14.50ms
+2025-04-16 12:07:53,474 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:07:53,476 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 27.48ms
+2025-04-16 12:07:53,482 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:07:53,483 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 4.79ms
+2025-04-16 12:07:53,490 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:07:53,492 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 12.42ms
+2025-04-16 12:07:53,821 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:07:53,822 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.12ms
+2025-04-16 12:07:54,080 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:07:54,082 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.84ms
+2025-04-16 12:08:05,992 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 2.36ms
+2025-04-16 12:08:05,998 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, username = %s WHERE email = %s, Values: ['', 'riddhiishah03@gmail.com', 'Unknown', 'Riddhi baa', 'riddhiishah03@gmail.com']
+2025-04-16 12:08:06,119 - INFO - Profile updated for email=riddhiishah03@gmail.com
+2025-04-16 12:08:06,120 - INFO - 200 POST /api/update_profile (127.0.0.1) 124.28ms
+2025-04-16 12:08:07,923 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:08:07,928 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 9.13ms
+2025-04-16 12:08:12,214 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:08:12,215 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 10.83ms
+2025-04-16 12:08:12,220 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:08:12,221 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.86ms
+2025-04-16 12:08:12,232 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:08:12,233 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 10.28ms
+2025-04-16 12:08:12,264 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:08:12,265 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 23.36ms
+2025-04-16 12:08:12,300 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:08:12,303 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 18.24ms
+2025-04-16 12:08:12,615 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:08:12,616 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.94ms
+2025-04-16 12:12:17,737 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:12:17,738 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 9.93ms
+2025-04-16 12:12:17,743 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:12:17,743 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.65ms
+2025-04-16 12:12:17,747 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:12:17,748 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 7.31ms
+2025-04-16 12:12:17,754 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:12:17,755 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.05ms
+2025-04-16 12:12:18,066 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:12:18,067 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 4.12ms
+2025-04-16 12:12:18,328 - INFO - Car rentals fetched for user_id=1
+2025-04-16 12:12:18,329 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 2.12ms
+2025-04-16 12:24:54,041 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:24:54,042 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 588.94ms
+2025-04-16 12:24:54,056 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:24:54,056 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 12.79ms
+2025-04-16 12:24:54,070 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 12:24:54,071 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 12.21ms
+2025-04-16 12:24:54,092 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 12:24:54,093 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 12.51ms
+2025-04-16 13:13:53,060 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:13:53,061 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 74.56ms
+2025-04-16 13:13:53,074 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:13:53,075 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 88.51ms
+2025-04-16 13:13:53,084 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:13:53,085 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 5.62ms
+2025-04-16 13:13:53,108 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:13:53,109 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 13.84ms
+2025-04-16 13:20:28,721 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:20:28,722 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 12.94ms
+2025-04-16 13:20:28,726 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:20:28,727 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 3.63ms
+2025-04-16 13:20:28,890 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:20:28,895 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 7.97ms
+2025-04-16 13:20:28,899 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:20:28,902 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 5.59ms
+2025-04-16 13:20:34,931 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:20:34,931 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.28ms
+2025-04-16 13:20:34,934 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:20:34,935 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.15ms
+2025-04-16 13:20:50,350 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:20:50,350 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 5.60ms
+2025-04-16 13:20:50,355 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:20:50,355 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.34ms
+2025-04-16 13:20:50,360 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:20:50,362 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 4.49ms
+2025-04-16 13:20:50,367 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:20:50,368 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.52ms
+2025-04-16 13:21:16,563 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 2.91ms
+2025-04-16 13:21:16,574 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, username = %s WHERE email = %s, Values: ['', 'riddhiishah03@gmail.com', 'Unknown', 'Riddhi ', 'riddhiishah03@gmail.com']
+2025-04-16 13:21:16,730 - INFO - Profile updated for email=riddhiishah03@gmail.com
+2025-04-16 13:21:16,731 - INFO - 200 POST /api/update_profile (127.0.0.1) 166.24ms
+2025-04-16 13:21:18,498 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:21:18,501 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 8.79ms
+2025-04-16 13:21:37,576 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:21:37,577 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 4.18ms
+2025-04-16 13:21:37,694 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:21:37,695 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 114.43ms
+2025-04-16 13:21:37,881 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:21:37,882 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 3.72ms
+2025-04-16 13:21:37,885 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:21:37,887 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.00ms
+2025-04-16 13:21:43,620 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:21:43,621 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 11.33ms
+2025-04-16 13:21:43,627 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:21:43,628 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.15ms
+2025-04-16 13:21:43,647 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:21:43,648 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 12.93ms
+2025-04-16 13:21:43,705 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:21:43,708 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 57.91ms
+2025-04-16 13:22:09,402 - INFO - 200 OPTIONS /api/update_profile (127.0.0.1) 1.46ms
+2025-04-16 13:22:09,407 - DEBUG - Update query: UPDATE users SET birthday = %s, email = %s, gender = %s, username = %s WHERE email = %s, Values: ['', 'riddhiishah03@gmail.com', 'Unknown', 'riddhi ', 'riddhiishah03@gmail.com']
+2025-04-16 13:22:09,556 - INFO - Profile updated for email=riddhiishah03@gmail.com
+2025-04-16 13:22:09,557 - INFO - 200 POST /api/update_profile (127.0.0.1) 152.33ms
+2025-04-16 13:22:11,875 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:22:11,876 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 7.27ms
+2025-04-16 13:22:17,234 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:22:17,241 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 14.10ms
+2025-04-16 13:22:17,244 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:22:17,245 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.97ms
+2025-04-16 13:22:17,249 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:22:17,250 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 4.19ms
+2025-04-16 13:22:17,274 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:22:17,278 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 26.31ms
+2025-04-16 13:22:43,862 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:22:43,864 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 5.80ms
+2025-04-16 13:22:43,868 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:22:43,869 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.00ms
+2025-04-16 13:22:43,875 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:22:43,876 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 4.70ms
+2025-04-16 13:22:43,883 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:22:43,884 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 6.85ms
+2025-04-16 13:24:04,881 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:04,881 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.45ms
+2025-04-16 13:24:04,885 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:04,886 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.13ms
+2025-04-16 13:24:04,888 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:04,889 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.40ms
+2025-04-16 13:24:04,892 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:04,893 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.15ms
+2025-04-16 13:24:07,858 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:07,859 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.56ms
+2025-04-16 13:24:07,863 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:07,864 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.44ms
+2025-04-16 13:24:07,935 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:07,936 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 56.58ms
+2025-04-16 13:24:08,053 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:08,054 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.05ms
+2025-04-16 13:24:15,203 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:15,206 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 14.77ms
+2025-04-16 13:24:15,218 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:15,219 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.88ms
+2025-04-16 13:24:15,282 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:15,286 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 63.55ms
+2025-04-16 13:24:15,351 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:15,352 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 53.17ms
+2025-04-16 13:24:19,486 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:19,488 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 105.54ms
+2025-04-16 13:24:19,498 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:19,499 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 8.63ms
+2025-04-16 13:24:19,525 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:19,528 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 23.55ms
+2025-04-16 13:24:19,532 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:19,533 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 3.73ms
+2025-04-16 13:24:33,230 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:33,231 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 14.70ms
+2025-04-16 13:24:33,286 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:33,287 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 70.53ms
+2025-04-16 13:24:33,348 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:24:33,349 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 50.24ms
+2025-04-16 13:24:33,482 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:24:33,483 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 182.51ms
+2025-04-16 13:26:54,885 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:26:54,886 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 3.39ms
+2025-04-16 13:26:54,906 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:26:54,907 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 2.92ms
+2025-04-16 13:26:54,941 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:26:54,942 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 2.28ms
+2025-04-16 13:26:54,944 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:26:54,944 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 1.79ms
+2025-04-16 13:29:02,876 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:29:02,876 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 6.14ms
+2025-04-16 13:29:02,883 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:29:02,884 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 4.78ms
+2025-04-16 13:29:02,892 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:29:02,893 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 3.63ms
+2025-04-16 13:29:02,898 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:29:02,899 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 5.05ms
+2025-04-16 13:31:51,115 - DEBUG - Starting authorization phase
+2025-04-16 13:31:51,115 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-16 13:31:51,115 - INFO - package: mysql.connector.plugins
+2025-04-16 13:31:51,115 - INFO - plugin_name: mysql_native_password
+2025-04-16 13:31:51,116 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-16 13:31:51,117 - DEBUG - mysql_native_password completed succesfully
+2025-04-16 13:31:51,117 - INFO - Database connection established
+2025-04-16 13:31:51,119 - INFO - Database tables initialized
+2025-04-16 13:31:51,121 - INFO - Twilio client initialized successfully
+2025-04-16 13:31:51,127 - INFO - Serving on http://0.0.0.0:5001
+2025-04-16 13:31:51,128 - DEBUG - Using selector: SelectSelector
+2025-04-16 13:31:51,132 - INFO - Start watching changes
+2025-04-16 13:31:51,132 - INFO - Start detecting changes
+2025-04-16 13:32:40,283 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:32:40,285 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 115.40ms
+2025-04-16 13:32:40,292 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:32:40,295 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 122.66ms
+2025-04-16 13:32:40,301 - INFO - Profile fetched for email=riddhiishah03@gmail.com
+2025-04-16 13:32:40,304 - INFO - 200 GET /api/profile?identifier=riddhiishah03%40gmail.com (127.0.0.1) 7.13ms
+2025-04-16 13:32:40,308 - INFO - Flight bookings fetched for user_id=1
+2025-04-16 13:32:40,309 - INFO - 200 GET /api/flight_bookings?user_id=1 (127.0.0.1) 11.10ms
+2025-04-16 13:35:48,642 - INFO - Shutting down...

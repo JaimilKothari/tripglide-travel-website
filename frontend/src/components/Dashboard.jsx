@@ -124,6 +124,21 @@
 //   useEffect(() => {
 //     const storedUser = localStorage.getItem("user");
 //     if (storedUser) {
+// <<<<<<< HEAD
+//       try {
+//         const parsedUser = JSON.parse(storedUser);
+//         setUser(parsedUser);
+//         setFormData({
+//           ...parsedUser,
+//           birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
+//         });
+//         setCompletionPercentage(calculateCompletionPercentage(parsedUser));
+//         fetchProfile(getIdentifier(parsedUser));
+//         fetchBookingHistory(parsedUser);
+//       } catch {
+//         navigate("/login");
+//       }
+// =======
 //       const parsedUser = JSON.parse(storedUser);
 //       setUser(parsedUser);
 //       setFormData({
@@ -133,6 +148,7 @@
 //       setCompletionPercentage(calculateCompletionPercentage(parsedUser));
 //       fetchProfile(getIdentifier(parsedUser));
 //       fetchBookingHistory(parsedUser);
+// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //     } else {
 //       navigate("/login");
 //     }
@@ -175,8 +191,18 @@
 //   };
 
 //   const fetchBookingHistory = async (user) => {
+// <<<<<<< HEAD
+//     setIsLoading(true);
+//     try {
+//       const user_id = user.user_id;
+//       if (!user_id) {
+//         setError("User ID is required to fetch bookings");
+//         return;
+//       }
+// =======
 //     try {
 //       const identifier = getIdentifier(user);
+// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //       const endpoints = [
 //         { url: `${API_URL}/flight_bookings?user_id=${user.user_id}`, setter: setFlightBookings, key: "bookings" },
 //         { url: `http://localhost:5003/api/hotel_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setHotelBookings, key: "bookings" },
@@ -538,6 +564,22 @@
 //                     {error}
 //                   </motion.div>
 //                 )}
+// <<<<<<< HEAD
+//                 {isLoading && <p className="text-gray-500 text-sm mb-4">Loading bookings...</p>}
+//                 {!isLoading && (
+//                   <div className="flex border-b border-gray-200 mb-6">
+//                     {["Flights", "Hotels", "Cars"].map((tab) => (
+//                       <button
+//                         key={tab}
+//                         onClick={() => setHistoryTab(tab)}
+//                         className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+//                       >
+//                         {tab}
+//                       </button>
+//                     ))}
+//                   </div>
+//                 )}
+// =======
 //                 <div className="flex border-b border-gray-200 mb-6">
 //                   {["Flights", "Hotels", "Cars"].map((tab) => (
 //                     <button
@@ -551,6 +593,7 @@
 //                     </button>
 //                   ))}
 //                 </div>
+// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
 //                   {historyTab === "Flights" && (
 //                     <>
@@ -579,6 +622,62 @@
 //                       {hotelBookings.length === 0 ? (
 //                         <p className="text-gray-500 text-sm">No hotel bookings found.</p>
 //                       ) : (
+// <<<<<<< HEAD
+//                         hotelBookings.map((booking) => (
+//                           <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
+//                             <div className="flex justify-between items-center mb-2">
+//                               <p className="text-sm font-medium text-gray-800">
+//                                 {booking.hotel_name || "Hotel Details"}
+//                               </p>
+//                               <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+//                                 {booking.status || "N/A"}
+//                               </span>
+//                             </div>
+//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Booking Number</p>
+//                                 <p className="text-sm font-semibold">{booking.booking_number || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Guest Name</p>
+//                                 <p className="text-sm">{booking.guest_name || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Email</p>
+//                                 <p className="text-sm">{booking.email || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Room Type</p>
+//                                 <p className="text-sm font-semibold">{booking.room_type || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Check-in</p>
+//                                 <p className="text-sm">{formatDate(booking.check_in_date)} • {booking.check_in_time || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Check-out</p>
+//                                 <p className="text-sm">{formatDate(booking.check_out_date)} • {booking.check_out_time || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Total Price</p>
+//                                 <p className="text-sm font-semibold">₹{Number(booking.total_amount || 0).toLocaleString()}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Arrival</p>
+//                                 <p className="text-sm">{booking.arrival || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Booked On</p>
+//                                 <p className="text-sm">{formatDate(booking.booked_on) || "N/A"}</p>
+//                               </div>
+//                               <div>
+//                                 <p className="text-xs text-gray-500">Created At</p>
+//                                 <p className="text-sm">{formatDate(booking.created_at) || "N/A"}</p>
+//                               </div>
+//                             </div>
+//                           </motion.div>
+//                         ))
+// =======
 //                         hotelBookings.map((booking) => {
 //                           const isUpcoming = new Date(booking.check_in_date) > new Date("2025-04-15");
 //                           return (
@@ -666,6 +765,7 @@
 //                             </motion.div>
 //                           );
 //                         })
+// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //                       )}
 //                     </>
 //                   )}
@@ -968,6 +1068,10 @@
 
 //       <AnimatePresence>
 //         {showPasswordPopup && (
+// <<<<<<< HEAD
+//           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+//             <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1}} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+// =======
 //           <motion.div
 //             initial={{ opacity: 0 }}
 //             animate={{ opacity: 1 }}
@@ -982,6 +1086,7 @@
 //               exit={{ scale: 0.9 }}
 //               transition={{ type: "spring", stiffness: 200, damping: 20 }}
 //             >
+// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //               <div className="flex justify-between items-center mb-4">
 //                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
 //                 <motion.button
