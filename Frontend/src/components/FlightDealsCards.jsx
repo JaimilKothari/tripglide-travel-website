@@ -1,174 +1,138 @@
 import React, { useState } from 'react';
 import { ChevronRight, Clock, MapPin, Calendar, Plane } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
 
+// Load Stripe with your publishable key
+const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ");
+
+// Utility function to format date with correct day for 2025
+const formatDateWithDay = (day, month) => {
+  const monthMap = {
+    "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
+    "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
+  };
+  const date = new Date(2025, monthMap[month], parseInt(day, 10));
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return `${dayNames[date.getDay()]}, ${day} ${month}`;
+};
+
+// Utility function to calculate arrival date based on departure date and duration
+const calculateArrivalDate = (departureDateStr, durationStr) => {
+  const [, datePart] = departureDateStr.split(", "); // Ignore hardcoded day
+  const [day, month] = datePart.split(" ");
+  const monthMap = {
+    "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
+    "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
+  };
+  const departureDate = new Date(2025, monthMap[month], parseInt(day, 10));
+
+  const [hours, minutes] = durationStr.match(/(\d+)h\s*(\d+)m/).slice(1).map(Number);
+  const durationMs = (hours * 60 + minutes) * 60 * 1000;
+  const arrivalDate = new Date(departureDate.getTime() + durationMs);
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${arrivalDate.getDate()} ${monthNames[arrivalDate.getMonth()]} ${dayNames[arrivalDate.getDay()]}`;
+};
+
+// Updated flightDeals with unique flight codes
 const flightDeals = [
   { 
-    id: 1,
-    city: "Agra", 
-    country: "India", 
-    date: "Sat, 5 Apr", 
-    returnDate: "Sun, 6 Apr", 
-    price: 878,
-    airline: "IndiGo",
-    airlineCode: "6E",
-    departureTime: "06:15",
-    arrivalTime: "09:25",
-    duration: "3h 10m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 1, city: "Moscow", country: "Russia", date: "Tue, 22 Apr", price: 8788,
+    airline: "IndiGo", airlineCode: "6E", flightCode: "6E-1234", departureTime: "06:15", arrivalTime: "09:25", duration: "3h 10m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
+    departureAirport: "Indira Gandhi International Airport (DEL)",
+    arrivalAirport: "Sheremetyevo International Airport (SVO)",
     logo: "https://i.pinimg.com/474x/56/f2/3c/56f23c6ea0edbf642fce2682664b51d6.jpg",
-    image: "https://i.pinimg.com/474x/a2/45/13/a245133998244908efecadf2798e5e5f.jpg" 
+    image: "https://i.pinimg.com/474x/29/2d/e2/292de231f2d4bb8572813423294bae60.jpg" 
   },
   { 
-    id: 2,
-    city: "Kuala Lumpur", 
-    country: "Malaysia", 
-    date: "Tue, 18 Mar", 
-    returnDate: "Sat, 22 Mar", 
-    price: 7248,
-    airline: "AirAsia",
-    airlineCode: "AK",
-    departureTime: "09:40",
-    arrivalTime: "15:30",
-    duration: "5h 50m",
-    stops: 1,
-    stopCities: ["Singapore"],
-    cabinClass: "Economy",
+    id: 2, city: "Kuala Lumpur", country: "Malaysia", date: "Tue, 20 May", price: 7248,
+    airline: "AirAsia", airlineCode: "AK", flightCode: "AK-5678", departureTime: "09:40", arrivalTime: "15:30", duration: "5h 50m",
+    stops: 0, stopCities: ["Singapore"], cabinClass: "Economy",
+    departureAirport: "Chhatrapati Shivaji Maharaj International Airport (BOM)",
+    arrivalAirport: "Kuala Lumpur International Airport (KUL)",
     logo: "https://i.pinimg.com/474x/4e/28/37/4e28374b3286209b1a7da455983a8f51.jpg",
     image: "https://i.pinimg.com/474x/d4/3e/f3/d43ef32953c8cc10441255eb58a66d34.jpg" 
   },
   { 
-    id: 3,
-    city: "Muscat", 
-    country: "Oman", 
-    date: "Fri, 14 Mar", 
-    returnDate: "Sun, 16 Mar", 
-    price: 9451,
-    airline: "Oman Air",
-    airlineCode: "WY",
-    departureTime: "02:10",
-    arrivalTime: "07:45",
-    duration: "5h 35m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 3, city: "Muscat", country: "Oman", date: "Fri, 16 May", price: 9451,
+    airline: "Oman Air", airlineCode: "WY", flightCode: "WY-9101", departureTime: "02:10", arrivalTime: "07:45", duration: "5h 35m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
+    departureAirport: "Kempegowda International Airport (BLR)",
+    arrivalAirport: "Muscat International Airport (MCT)",
     logo: "https://i.pinimg.com/474x/ba/2d/6b/ba2d6bce884e16fdcac6b29de17eca17.jpg",
     image: "https://i.pinimg.com/474x/e6/30/66/e6306613b1ecb7afc1d0b9e3e5c41a62.jpg" 
   },
   { 
-    id: 4,
-    city: "Dhaka", 
-    country: "Bangladesh", 
-    date: "Thu, 13 Mar", 
-    returnDate: "Fri, 14 Mar", 
-    price: 9646,
-    airline: "Biman Bangladesh",
-    airlineCode: "BG",
-    departureTime: "13:25",
-    arrivalTime: "22:15",
-    duration: "8h 50m",
-    stops: 1,
-    stopCities: ["Kolkata"],
-    cabinClass: "Economy",
+    id: 4, city: "Dhaka", country: "Bangladesh", date: "Thu, 24 Apr", price: 9646,
+    airline: "Biman Bangladesh", airlineCode: "BG", flightCode: "BG-3456", departureTime: "13:25", arrivalTime: "22:15", duration: "8h 50m",
+    stops: 0, stopCities: ["Kolkata"], cabinClass: "Economy",
+    departureAirport: "Sardar Vallabhbhai Patel International Airport (AMD)",
+    arrivalAirport: "Hazrat Shahjalal International Airport (DAC)",
     logo: "https://i.pinimg.com/474x/1a/d0/30/1ad0301a1e8e2cfc8a465d40dfc119d8.jpg",
     image: "https://i.pinimg.com/474x/6f/64/7c/6f647c4f9940c7b9fed6cd336e537374.jpg" 
   },
   { 
-    id: 5,
-    city: "Colombo", 
-    country: "Sri Lanka", 
-    date: "Mon, 5 May", 
-    returnDate: "Wed, 7 May", 
-    price: 11075,
-    airline: "SriLankan Airlines",
-    airlineCode: "UL",
-    departureTime: "11:05",
-    arrivalTime: "16:25",
-    duration: "5h 20m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 5, city: "Colombo", country: "Sri Lanka", date: "Mon, 5 May", price: 11075,
+    airline: "SriLankan Airlines", airlineCode: "UL", flightCode: "UL-7890", departureTime: "11:05", arrivalTime: "16:25", duration: "5h 20m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
+    departureAirport: "Indira Gandhi International Airport (DEL)",
+    arrivalAirport: "Bandaranaike International Airport (CMB)",
     logo: "https://i.pinimg.com/474x/49/b6/4a/49b64a7c09c9732c2ed8e54eb25a136f.jpg",
     image: "https://i.pinimg.com/474x/3a/84/1a/3a841a66007cae4724025e451208ef44.jpg" 
   },
   { 
-    id: 6,
-    city: "Singapore", 
-    country: "Singapore", 
-    date: "Fri, 28 Mar", 
-    returnDate: "Wed, 2 Apr", 
-    price: 12356,
-    airline: "Singapore Airlines",
-    airlineCode: "SQ",
-    departureTime: "03:55",
-    arrivalTime: "12:40",
-    duration: "8h 45m",
-    stops: 1,
-    stopCities: ["Bangkok"],
-    cabinClass: "Economy",
+    id: 6, city: "Singapore", country: "Singapore", date: "Fri, 30 May", price: 12356,
+    airline: "Singapore Airlines", airlineCode: "SQ", flightCode: "SQ-2345", departureTime: "03:55", arrivalTime: "12:40", duration: "8h 45m",
+    stops: 0, stopCities: ["Bangkok"], cabinClass: "Economy",
+    departureAirport: "Chhatrapati Shivaji Maharaj International Airport (BOM)",
+    arrivalAirport: "Singapore Changi Airport (SIN)",
     logo: "https://i.pinimg.com/474x/91/37/09/913709c8027990ce9831efa1dd44f07c.jpg",
     image: "https://i.pinimg.com/474x/1f/7a/36/1f7a36ee1580c0fc154ba480a16d5ec1.jpg" 
   },
   { 
-    id: 7,
-    city: "Bali", 
-    country: "Indonesia", 
-    date: "Fri, 8 Apr", 
-    returnDate: "Mon, 12 Apr", 
-    price: 15450,
-    airline: "Garuda Indonesia",
-    airlineCode: "GA",
-    departureTime: "21:05",
-    arrivalTime: "06:45",
-    duration: "9h 40m",
-    stops: 1,
-    stopCities: ["Jakarta"],
-    cabinClass: "Economy",
+    id: 7, city: "Bali", country: "Indonesia", date: "Fri, 28 Apr", price: 15450,
+    airline: "Garuda Indonesia", airlineCode: "GA", flightCode: "GA-6789", departureTime: "21:05", arrivalTime: "06:45", duration: "9h 40m",
+    stops: 0, stopCities: ["Jakarta"], cabinClass: "Economy",
+    departureAirport: "Kempegowda International Airport (BLR)",
+    arrivalAirport: "Ngurah Rai International Airport (DPS)",
     logo: "https://i.pinimg.com/474x/4d/5c/d1/4d5cd1565e04ee98ec74056275136d1e.jpg",
     image: "https://i.pinimg.com/474x/0b/40/7f/0b407f324f3948b4b5878e834d4839a2.jpg" 
   },
   { 
-    id: 8,
-    city: "Istanbul", 
-    country: "Turkey", 
-    date: "Sat, 10 May", 
-    returnDate: "Thu, 15 May", 
-    price: 19800,
-    airline: "Turkish Airlines",
-    airlineCode: "TK",
-    departureTime: "01:15",
-    arrivalTime: "09:45",
-    duration: "8h 30m",
-    stops: 1,
-    stopCities: ["Dubai"],
-    cabinClass: "Economy",
+    id: 8, city: "Istanbul", country: "Turkey", date: "Sat, 10 May", price: 19800,
+    airline: "Turkish Airlines", airlineCode: "TK", flightCode: "TK-4321", departureTime: "01:15", arrivalTime: "09:45", duration: "8h 30m",
+    stops: 0, stopCities: ["Dubai"], cabinClass: "Economy",
+    departureAirport: "Sardar Vallabhbhai Patel International Airport (AMD)",
+    arrivalAirport: "Istanbul Airport (IST)",
     logo: "https://i.pinimg.com/474x/6a/99/ee/6a99ee843798375c5f7049316e8d31ed.jpg",
     image: "https://i.pinimg.com/474x/4d/5c/d1/4d5cd1565e04ee98ec74056275136d1e.jpg" 
   },
   { 
-    id: 9,
-    city: "Paris", 
-    country: "France", 
-    date: "Sun, 15 Jun", 
-    returnDate: "Sat, 22 Jun", 
-    price: 34500,
-    airline: "Air France",
-    airlineCode: "AF",
-    departureTime: "10:30",
-    arrivalTime: "19:45",
-    duration: "9h 15m",
-    stops: 0,
-    stopCities: [],
-    cabinClass: "Economy",
+    id: 9, city: "Paris", country: "France", date: "Sun, 15 Jun", price: 34500,
+    airline: "Air France", airlineCode: "AF", flightCode: "AF-8765", departureTime: "10:30", arrivalTime: "19:45", duration: "9h 15m",
+    stops: 0, stopCities: [], cabinClass: "Economy",
+    departureAirport: "Indira Gandhi International Airport (DEL)",
+    arrivalAirport: "Paris Charles de Gaulle Airport (CDG)",
     logo: "https://i.pinimg.com/474x/5a/4a/a5/5a4aa5378d51b1c9da7c4e4d776b614c.jpg",
     image: "https://i.pinimg.com/474x/6a/99/ee/6a99ee843798375c5f7049316e8d31ed.jpg"
   }
 ];
 
+// Correct the hardcoded days in flightDeals
+flightDeals.forEach(deal => {
+  const [, datePart] = deal.date.split(", ");
+  const [day, month] = datePart.split(" ");
+  deal.date = formatDateWithDay(day, month);
+});
+
 const FlightDealsCards = () => {
   const [showAll, setShowAll] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const visibleDeals = showAll ? flightDeals : flightDeals.slice(0, 6);
 
   const handleDealClick = (deal) => {
@@ -179,13 +143,74 @@ const FlightDealsCards = () => {
     setSelectedDeal(null);
   };
 
+  const handleBookNow = async (deal) => {
+    setLoading(true);
+    try {
+      const arrivalDate = calculateArrivalDate(deal.date, deal.duration);
+      const selectedFlight = {
+        id: deal.id,
+        departure: "India",
+        departureAirport: deal.departureAirport,
+        arrival: deal.city,
+        arrivalAirport: deal.arrivalAirport,
+        airline: deal.airline,
+        flightNumber: deal.flightCode, // Added flightCode here
+        departureTime: deal.departureTime,
+        arrivalTime: deal.arrivalTime,
+        departureDate: deal.date,
+        arrivalDate: arrivalDate,
+        logo: deal.logo,
+        returnFlight: null,
+      };
+      const selectedFare = {
+        type: deal.cabinClass,
+        price: deal.price,
+      };
+      const searchParams = {
+        tripType: "oneway",
+        from: "India",
+        to: deal.city,
+        departDate: deal.date,
+        multiCityFlights: null,
+      };
+      const bookingDetails = { 
+        selectedFlight, 
+        selectedFare, 
+        searchParams, 
+        isFlightDeal: true 
+      };
+      sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+
+      const response = await fetch("http://localhost:5000/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: deal.price * 100,
+          description: `${deal.airline} Flight ${deal.flightCode} from ${deal.departureAirport} to ${deal.arrivalAirport} - ${deal.date}`, // Updated description with flightCode
+          flightId: deal.id.toString(),
+          fareType: deal.cabinClass,
+        }),
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const { sessionId } = await response.json();
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+      if (error) throw new Error(`Stripe redirect error: ${error.message}`);
+    } catch (error) {
+      console.error("Error initiating payment:", error.message);
+      alert(`Failed to initiate payment: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-blue-50 min-h-screen">
       <div className="max-w-7xl container mx-auto p-4">
         <h2 className="text-2xl font-semibold mb-4 mt-5">Flight deals from India</h2>
         <p className="mb-5 text-gray-800">Here are the flight deals with the lowest prices. Act fast – they all depart within the next three months.</p>
         
-        {/* Deals Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {visibleDeals.map((deal) => (
             <div 
@@ -198,16 +223,15 @@ const FlightDealsCards = () => {
                 <h3 className="text-lg font-bold">{deal.city}</h3>
                 <p className="text-gray-600">{deal.country}</p>
                 <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-800">{deal.date} - {deal.returnDate}</p>
+                  <p className="text-sm text-gray-800">{deal.date.split(", ")[1] + " " + deal.date.split(", ")[0]}</p>
                   <span className="text-gray-700">{deal.stops === 0 ? "Direct" : `${deal.stops} Stop`}</span>
                 </div>
-                <p className="mt-2 text-blue-600">from ₹{deal.price.toLocaleString()}</p>
+                <p className="mt-2 text-blue-600">Get now - ₹{deal.price.toLocaleString()}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* See More/Less Button */}
         <div className="text-center mt-6">
           <button 
             onClick={() => setShowAll(!showAll)} 
@@ -217,15 +241,13 @@ const FlightDealsCards = () => {
           </button>
         </div>
 
-        {/* Flight Details Overlay */}
         {selectedDeal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-              {/* Flight Details Header */}
               <div className="bg-[#06152B] text-white p-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold">{selectedDeal.city}, {selectedDeal.country}</h2>
-                  <p className="text-sm text-gray-300">{selectedDeal.date} - {selectedDeal.returnDate}</p>
+                  <p className="text-sm text-gray-300">{selectedDeal.date.split(", ")[1] + " " + selectedDeal.date.split(", ")[0]}</p>
                 </div>
                 <button 
                   onClick={closeDetailView}
@@ -237,26 +259,23 @@ const FlightDealsCards = () => {
                 </button>
               </div>
 
-              {/* Flight Details Content */}
               <div className="p-6">
                 <div className="bg-white rounded-xl shadow-md overflow-hidden">
                   <div className="p-6">
-                    {/* Main Flight Info */}
                     <div className="flex flex-col md:flex-row gap-6">
-                      {/* Airline Info */}
                       <div className="md:w-1/5 flex items-center space-x-3">
                         <img src={selectedDeal.logo} alt={selectedDeal.airline} className="h-8 w-8 object-contain" />
                         <div>
                           <p className="font-medium">{selectedDeal.airline}</p>
-                          <p className="text-sm text-gray-500">{selectedDeal.airlineCode}</p>
+                          <p className="text-sm text-gray-500">{selectedDeal.flightCode}</p> {/* Updated to show flightCode */}
                         </div>
                       </div>
                       
-                      {/* Flight Times */}
                       <div className="md:w-2/5 flex items-center justify-between">
                         <div className="text-center">
                           <p className="text-lg font-bold">{selectedDeal.departureTime}</p>
                           <p className="text-sm">India</p>
+                          <p className="text-xs text-gray-500">({selectedDeal.departureAirport})</p>
                         </div>
                         
                         <div className="flex flex-col items-center justify-center px-4">
@@ -274,10 +293,10 @@ const FlightDealsCards = () => {
                         <div className="text-center">
                           <p className="text-lg font-bold">{selectedDeal.arrivalTime}</p>
                           <p className="text-sm">{selectedDeal.city}</p>
+                          <p className="text-xs text-gray-500">({selectedDeal.arrivalAirport})</p>
                         </div>
                       </div>
                       
-                      {/* Cabin & Price */}
                       <div className="md:w-2/5 flex flex-col-reverse md:flex-row items-center justify-between">
                         <div>
                           <p className="text-sm text-gray-500">{selectedDeal.cabinClass}</p>
@@ -290,16 +309,18 @@ const FlightDealsCards = () => {
                         
                         <div className="text-right">
                           <p className="text-2xl font-bold text-blue-600">₹{selectedDeal.price.toLocaleString()}</p>
-                          <button className="mt-2 cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-                            Book Now
+                          <button 
+                            onClick={() => handleBookNow(selectedDeal)}
+                            className="mt-2 cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+                            disabled={loading}
+                          >
+                            {loading ? "Processing..." : "Book Now"}
                           </button>
                         </div>
                       </div>
                     </div>
 
-                    {/* Additional Flight Details */}
                     <div className="mt-6 grid md:grid-cols-2 gap-6">
-                      {/* Itinerary */}
                       <div>
                         <h4 className="font-semibold mb-4">Itinerary</h4>
                         <div className="space-y-2">
@@ -307,7 +328,8 @@ const FlightDealsCards = () => {
                             <Plane className="text-blue-600" size={20} />
                             <div>
                               <p className="font-medium">{selectedDeal.departureTime} • India</p>
-                              <p className="text-sm text-gray-500">{selectedDeal.date}</p>
+                              <p className="text-sm text-gray-500">({selectedDeal.departureAirport})</p>
+                              <p className="text-sm text-gray-500">{selectedDeal.date.split(", ")[1] + " " + selectedDeal.date.split(", ")[0]}</p>
                             </div>
                           </div>
                           {selectedDeal.stops > 0 && (
@@ -322,13 +344,13 @@ const FlightDealsCards = () => {
                             <MapPin className="text-blue-600" size={20} />
                             <div>
                               <p className="font-medium">{selectedDeal.arrivalTime} • {selectedDeal.city}</p>
-                              <p className="text-sm text-gray-500">{selectedDeal.returnDate}</p>
+                              <p className="text-sm text-gray-500">({selectedDeal.arrivalAirport})</p>
+                              <p className="text-sm text-gray-500">{calculateArrivalDate(selectedDeal.date, selectedDeal.duration)}</p>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Price Breakdown */}
                       <div>
                         <h4 className="font-semibold mb-4">Price Breakdown</h4>
                         <div className="space-y-2">
@@ -357,5 +379,4 @@ const FlightDealsCards = () => {
     </div>
   );
 };
-
 export default FlightDealsCards;
