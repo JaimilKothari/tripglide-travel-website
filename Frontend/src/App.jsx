@@ -1,4 +1,7 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Header from "./components/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchSection from "./components/SearchSection";
 import SignUp from "./components/Signup";
@@ -399,6 +402,13 @@ function App() {
         <Route path="/hotel-booking" element={<HotelBooking />} />
           <Route path="/favorites" element={<Favorite allFlights={allFlights} />} />
           <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+          <Route path="/hotels" element={<Hotels />} />
+          <Route path="/hotel-card" element={<HotelCard />} />
+          <Route path="/hotel-filter" element={<HotelFilter />} />
+          <Route path="/flight-data" element={<FlightData />} />
+          <Route path="/flight-cart" element={<FlightCart />} />
+
+  
 
           
         </Routes>
