@@ -22,5 +22,5 @@ CREATE TABLE hotel_bookings (
 =======
     CheckIn date,
     HotelID varchar(100)
->>>>>>> 2ffd4dcaef5abc45eda35a883b9e96f47e2eaadc
+>>>>>>> f59948b22d6d9f6eea37dcfccc009c962c9a9495
     );

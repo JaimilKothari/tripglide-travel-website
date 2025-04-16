@@ -14,6 +14,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  // Update activeTab based on current path
   useEffect(() => {
     const path = location.pathname;
     if (path.includes("/hotel") || path.includes("/hotel-search")) {
@@ -56,6 +57,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
   return (
     <header className="bg-[#06152B] text-white w-full">
       <div className="container mx-auto max-w-7xl flex flex-wrap items-center justify-between p-4 md:p-6">
+      </div>
         <div className="flex items-center gap-3 flex-shrink-0">
           <Link to="/" className="flex items-center gap-3 cursor-pointer hover:text-blue-300">
             {/* <img src={logo} alt="Tripglide Logo" className="h-8 md:h-10 w-auto" /> */}
@@ -135,10 +137,9 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
             )}
           </div>
         </div>
-      </div>
-
-      <div className="container mx-auto max-w-7xl overflow-x-auto scrollbar-hide">
-        <div className="flex flex-nowrap gap-2 md:gap-4 px-4 md:px-6 py-2 md:py-4 bg-[#06152B] text-white min-w-max">
+  
+        {/* Tabs Section - Responsive */}
+        <div className="container mx-auto max-w-7xl flex flex-wrap gap-2 md:gap-4 px-4 md:px-6 py-2 md:py-4 bg-[#06152B] text-white">
           {[
             { id: "flights", icon: <FaPlane />, label: "Flights" },
             { id: "hotels", icon: <FaHotel />, label: "Hotels" },
@@ -146,8 +147,8 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
           ].map(({ id, icon, label }) => (
             <Link
               key={id}
-              to={`/${id === "flights" ? "" : id}`}
-              className={`flex items-center whitespace-nowrap cursor-pointer gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white transition-transform duration-300 hover:scale-105 hover:bg-blue-600 ${
+              to={`/${id}`}
+              className={`flex items-center cursor-pointer gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white transition-transform duration-300 hover:scale-105 hover:bg-blue-600 ${
                 activeTab === id ? "bg-blue-600" : "bg-gray-800"
               }`}
             >
@@ -155,7 +156,6 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
             </Link>
           ))}
         </div>
-      </div>
     </header>
-  );
+  );  
 }

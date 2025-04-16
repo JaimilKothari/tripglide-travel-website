@@ -3,6 +3,7 @@ import { ChevronDown, ArrowRight } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import HotelCard from "./HotelCard";
+import HotelFilter from "./HotelFilter";
 import axios from "axios";
 
 // Utility function to debounce a callback
@@ -24,6 +25,13 @@ function HotelSearch() {
   const [loading, setLoading] = useState(false);
   const [destinations, setDestinations] = useState([]);
   const [error, setError] = useState(null);
+  const [lastFetched, setLastFetched] = useState(null); // Track last fetched destination and filters
+  const [filters, setFilters] = useState({
+    price: [],
+    rating: [],
+    amenities: [],
+    bedroomType: [],
+  });
 
   // Fetch destinations from the backend
   useEffect(() => {
@@ -51,28 +59,81 @@ function HotelSearch() {
 
   const guestsDropdownRef = useRef(null);
 
-  const fetchHotels = async (dest) => {
-    if (!dest) return;
+  // Memoized and debounced fetchHotels
+  const fetchHotels = useCallback(
+    debounce(async (dest, filters) => {
+      if (!dest) return;
 
-    setLoading(true);
-    try {
-      const response = await axios.get("http://localhost:5003/all", {
-        params: { arrival: dest },
-      });
-      setHotels(response.data.all || []);
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-      setHotels([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+      const queryParams = new URLSearchParams();
+      queryParams.append("arrival", dest);
 
+      if (filters.price?.length > 0 && !filters.price.includes("all")) {
+        filters.price.forEach((price) => {
+          switch (price) {
+            case "below2000":
+              queryParams.append("totalpricepernight", "0-2000");
+              break;
+            case "2000to5000":
+              queryParams.append("totalpricepernight", "2000-5000");
+              break;
+            case "5000to10000":
+              queryParams.append("totalpricepernight", "5000-10000");
+              break;
+            case "above10000":
+              queryParams.append("totalpricepernight", "10000+");
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
+      if (filters.rating?.length > 0 && !filters.rating.includes("all")) {
+        filters.rating.forEach((rating) => {
+          queryParams.append("rating", rating === "below3" ? "0-2.9" : rating);
+        });
+      }
+
+      if (filters.amenities?.length > 0) {
+        filters.amenities.forEach((amenity) =>
+          queryParams.append("amenities", amenity)
+        );
+      }
+
+      if (filters.bedroomType?.length > 0) {
+        filters.bedroomType.forEach((type) =>
+          queryParams.append("bedroomtype", type)
+        );
+      }
+
+      const fetchKey = `${dest}|${queryParams.toString()}`;
+      if (fetchKey === lastFetched) {
+        return; // Skip if already fetched
+      }
+
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `http://localhost:5003/all?${queryParams.toString()}`
+        );
+        setHotels(response.data.all || []);
+        setLastFetched(fetchKey);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+        setHotels([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 500),
+    [lastFetched]
+  );
+
+  // Fetch hotels when destination or filters change
   useEffect(() => {
-    if (destination) {
-      fetchHotels(destination);
+    if (searchData.destination) {
+      fetchHotels(searchData.destination, filters);
     }
-  }, [destination]);
+  }, [searchData.destination, filters, fetchHotels]);
 
   const handleGuestChange = (type, increment) => {
     setSearchData((prev) => {
@@ -82,10 +143,7 @@ function HotelSearch() {
         return { ...prev, adults: newAdults, rooms: newRooms };
       }
       if (type === "children") {
-        const newChildren = Math.max(
-          0,
-          Math.min(prev.children + increment, 10)
-        );
+        const newChildren = Math.max(0, Math.min(prev.children + increment, 10));
         return { ...prev, children: newChildren };
       }
       if (type === "rooms") {
@@ -127,8 +185,12 @@ function HotelSearch() {
       alert("Please enter a destination.");
       return;
     }
-    fetchHotels(searchData.destination);
+    fetchHotels(searchData.destination, filters);
   };
+
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(newFilters);
+  }, []);
 
   const handleGuestsDropdownClick = (e) => {
     e.stopPropagation();
@@ -190,9 +252,7 @@ function HotelSearch() {
               <span className="text-xs text-gray-600">Guests and rooms</span>
               <span className="text-blue-600 font-semibold text-base">
                 {searchData.adults} adults
-                {searchData.children > 0
-                  ? `${searchData.children} children`
-                  : ""}
+                {searchData.children > 0 ? `, ${searchData.children} children` : ""}
                 , {searchData.rooms} room
               </span>
               <ChevronDown
@@ -302,26 +362,38 @@ function HotelSearch() {
       </div>
       <div className="flex-1 flex flex-col bg-gray-100">
         <div className="w-full max-w-7xl mx-auto flex flex-col mt-8 px-4 gap-4 flex-1">
-          <div className="w-full flex flex-col">
-            <div className="flex-1 overflow-y-auto h-[calc(100vh-180px)]">
-              <div className="space-y-4 pb-10">
-                {loading ? (
-                  <div className="text-center text-gray-500 py-8">
-                    Loading hotels...
-                  </div>
-                ) : (
-                  hotels.map((hotel, index) => (
-                    <HotelCard
-                      key={index}
-                      location={hotel.arrival}
-                      checkInDate={searchData.checkInDate}
-                      checkOutDate={searchData.checkOutDate}
-                      adults={searchData.adults}
-                      children={searchData.children}
-                      rooms={searchData.rooms}
-                    />
-                  ))
-                )}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/4">
+              <HotelFilter onFilterChange={handleFilterChange} />
+            </div>
+            <div className="w-full md:w-3/4 flex flex-col gap-4">
+              <h3 className="text-xl font-semibold mb-4">
+                Available Hotels in {searchData.destination || "Any Location"}
+              </h3>
+              <div className="flex-1 overflow-y-auto h-[calc(100vh-180px)]">
+                <div className="space-y-4 pb-10">
+                  {loading ? (
+                    <div className="text-center text-gray-500 py-8">
+                      Loading hotels...
+                    </div>
+                  ) : hotels.length === 0 ? (
+                    <div className="text-center text-gray-500 py-8">
+                      No hotels found for this location.
+                    </div>
+                  ) : (
+                    hotels.map((hotel, index) => (
+                      <HotelCard
+                        key={hotel.hotel + hotel.arrival}
+                        hotel={hotel}
+                        checkInDate={searchData.checkInDate}
+                        checkOutDate={searchData.checkOutDate}
+                        adults={searchData.adults}
+                        children={searchData.children}
+                        rooms={searchData.rooms}
+                      />
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>

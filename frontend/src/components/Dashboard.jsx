@@ -17,6 +17,7 @@
 // import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 // import { IoClose } from "react-icons/io5";
 // import { motion, AnimatePresence } from "framer-motion";
+// import jsPDF from "jspdf";
 
 // const Dashboard = () => {
 //   const navigate = useNavigate();
@@ -44,9 +45,11 @@
 //   const [hotelBookings, setHotelBookings] = useState([]);
 //   const [carRentals, setCarRentals] = useState([]);
 //   const [historyTab, setHistoryTab] = useState("Flights");
-//   const [isLoading, setIsLoading] = useState(false);
+//   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+//   const [bookingToCancel, setBookingToCancel] = useState(null);
+//   const [successMessage, setSuccessMessage] = useState("");
 
-//   const API_URL = "http://localhost:5003/api"; // Updated to match your backend port
+//   const API_URL = "http://localhost:5001/api";
 
 //   const statesList = [
 //     "Andaman and Nicobar",
@@ -121,24 +124,288 @@
 
 //   const getIdentifier = (user) => user.email || user.phone;
 
+//   // Function to convert number to words (simplified for INR)
+//   const numberToWords = (num) => {
+//     const units = [
+//       "",
+//       "One",
+//       "Two",
+//       "Three",
+//       "Four",
+//       "Five",
+//       "Six",
+//       "Seven",
+//       "Eight",
+//       "Nine",
+//     ];
+//     const tens = [
+//       "",
+//       "",
+//       "Twenty",
+//       "Thirty",
+//       "Forty",
+//       "Fifty",
+//       "Sixty",
+//       "Seventy",
+//       "Eighty",
+//       "Ninety",
+//     ];
+//     const teens = [
+//       "Ten",
+//       "Eleven",
+//       "Twelve",
+//       "Thirteen",
+//       "Fourteen",
+//       "Fifteen",
+//       "Sixteen",
+//       "Seventeen",
+//       "Eighteen",
+//       "Nineteen",
+//     ];
+//     const scales = ["", "Thousand", "Lakh", "Crore"];
+
+//     if (num === 0) return "Zero";
+
+//     let numStr = num.toString();
+//     let chunks = [];
+//     while (numStr.length > 0) {
+//       if (numStr.length > 3) {
+//         chunks.push(parseInt(numStr.slice(-3)));
+//         numStr = numStr.slice(0, -3);
+//       } else {
+//         chunks.push(parseInt(numStr));
+//         numStr = "";
+//       }
+//     }
+
+//     let words = [];
+//     for (let i = 0; i < chunks.length; i++) {
+//       let chunk = chunks[i];
+//       if (chunk === 0) continue;
+
+//       let chunkWords = [];
+//       if (chunk >= 100) {
+//         chunkWords.push(`${units[Math.floor(chunk / 100)]} Hundred`);
+//         chunk %= 100;
+//       }
+//       if (chunk >= 10 && chunk <= 19) {
+//         chunkWords.push(teens[chunk - 10]);
+//       } else if (chunk >= 20) {
+//         chunkWords.push(tens[Math.floor(chunk / 10)]);
+//         chunk %= 10;
+//         if (chunk > 0) chunkWords.push(units[chunk]);
+//       } else if (chunk > 0) {
+//         chunkWords.push(units[chunk]);
+//       }
+//       if (i > 0 && chunkWords.length > 0) {
+//         chunkWords.push(scales[i]);
+//       }
+//       words.unshift(...chunkWords);
+//     }
+
+//     return words.join(" ");
+//   };
+
+//   // Download Invoice with Dark Blue and White Theme
+//   const downloadInvoice = (booking) => {
+//     const doc = new jsPDF();
+//     let yPosition = 10;
+
+//     // Colors
+//     const darkBlue = [30, 58, 138]; // #1E3A8A
+//     const lightGray = [243, 244, 246]; // #F3F4F6
+//     const white = [255, 255, 255]; // #FFFFFF
+//     const darkGray = [55, 65, 81]; // #374151
+
+//     // Outer Border
+//     doc.setLineWidth(0.5);
+//     doc.setDrawColor(...darkBlue);
+//     doc.rect(5, 5, 200, 287, "S");
+
+//     // Header: Dark Blue Background with White Text
+//     doc.setFillColor(...darkBlue);
+//     doc.rect(0, 0, 210, 30, "F");
+//     doc.setFontSize(18);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(...white);
+//     doc.text("TripGlide", 15, yPosition + 10);
+//     doc.setFontSize(14);
+//     doc.text("INVOICE", 190, yPosition + 10, { align: "right" });
+//     yPosition += 20;
+
+//     // Invoice Number and Booking Date
+//     doc.setFontSize(9);
+//     doc.setFont("helvetica", "normal");
+//     doc.text(`Invoice No: INV-2025-${booking.booking_number}`, 190, yPosition, {
+//       align: "right",
+//     });
+//     yPosition += 5;
+//     doc.text(
+//       `Booking Date: ${new Date(booking.booked_on).toLocaleDateString("en-US", {
+//         weekday: "short",
+//         day: "numeric",
+//         month: "short",
+//         year: "numeric",
+//       })}`,
+//       190,
+//       yPosition,
+//       { align: "right" }
+//     );
+//     yPosition += 10;
+
+//     // Customer Info Section
+//     doc.setFillColor(...white);
+//     doc.rect(10, yPosition - 5, 190, 40, "F");
+//     doc.setFontSize(12);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(...darkGray);
+//     doc.text("Customer Information", 15, yPosition);
+//     doc.setLineWidth(0.2);
+//     doc.setDrawColor(...darkBlue);
+//     doc.line(15, yPosition + 2, 85, yPosition + 2);
+//     yPosition += 10;
+
+//     doc.setFontSize(10);
+//     doc.setFont("helvetica", "normal");
+//     doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
+//     yPosition += 5;
+//     doc.text(`Email: ${booking.email || "Not provided"}`, 15, yPosition);
+//     yPosition += 5;
+//     doc.text(`Booking ID: TG-${booking.booking_number}`, 15, yPosition);
+//     yPosition += 15;
+
+//     // Hotel Details Section
+//     doc.setFillColor(...lightGray);
+//     doc.rect(10, yPosition - 5, 190, 10, "F");
+//     doc.setFontSize(12);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(...darkGray);
+//     doc.text("Hotel Details", 15, yPosition);
+//     doc.setLineWidth(0.2);
+//     doc.line(15, yPosition + 2, 65, yPosition + 2);
+//     yPosition += 10;
+
+//     doc.setFontSize(10);
+//     doc.setFont("helvetica", "normal");
+//     const hotelTitle = `${booking.hotel_name} - ${booking.room_type} (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`;
+//     doc.text(hotelTitle, 15, yPosition, { maxWidth: 180 });
+//     yPosition += 8;
+//     const checkIn = `Check-In: ${new Date(booking.check_in_date).toLocaleDateString(
+//       "en-US",
+//       {
+//         weekday: "short",
+//         day: "numeric",
+//         month: "short",
+//         year: "numeric",
+//       }
+//     )}, 02:00 PM`;
+//     doc.text(checkIn, 15, yPosition);
+//     yPosition += 5;
+//     const checkOut = `Check-Out: ${new Date(booking.check_out_date).toLocaleDateString(
+//       "en-US",
+//       {
+//         weekday: "short",
+//         day: "numeric",
+//         month: "short",
+//         year: "numeric",
+//       }
+//     )}, 11:00 AM`;
+//     doc.text(checkOut, 15, yPosition);
+//     yPosition += 5;
+//     doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
+//     yPosition += 10;
+
+//     // Fare Breakdown Table
+//     doc.setFillColor(...darkBlue);
+//     doc.rect(15, yPosition - 5, 180, 8, "F");
+//     doc.setFontSize(10);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(...white);
+//     doc.text("Description", 20, yPosition);
+//     doc.text("Base Rate", 100, yPosition, { align: "right" });
+//     doc.text("Taxes & Fees", 150, yPosition, { align: "right" });
+//     doc.text("Amount", 190, yPosition, { align: "right" });
+//     yPosition += 8;
+
+//     doc.setLineWidth(0.1);
+//     doc.setDrawColor(...darkGray);
+//     doc.line(15, yPosition - 2, 195, yPosition - 2);
+//     yPosition += 5;
+
+//     doc.setFont("helvetica", "normal");
+//     doc.setTextColor(...darkGray);
+//     const baseRate = Math.round(booking.total_amount * 0.7); // Assume 70% is base rate
+//     const taxes = Math.round(booking.total_amount * 0.3); // Assume 30% is taxes
+//     const total = booking.total_amount;
+
+//     // Row 1: Room Charges
+//     doc.setFillColor(245, 245, 245);
+//     doc.rect(15, yPosition - 5, 180, 8, "F");
+//     doc.text(
+//       `Room Charges (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`,
+//       20,
+//       yPosition
+//     );
+//     doc.text(`Rs. ${baseRate.toLocaleString()}`, 100, yPosition, {
+//       align: "right",
+//     });
+//     doc.text(`Rs. ${taxes.toLocaleString()}`, 150, yPosition, { align: "right" });
+//     doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+//       align: "right",
+//     });
+//     yPosition += 10;
+
+//     // Total Row
+//     doc.setFillColor(...lightGray);
+//     doc.rect(15, yPosition - 5, 180, 8, "F");
+//     doc.setFont("helvetica", "bold");
+//     doc.text("Total", 20, yPosition);
+//     doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+//       align: "right",
+//     });
+//     yPosition += 15;
+
+//     // Total in Words
+//     doc.setFont("helvetica", "normal");
+//     doc.setFontSize(9);
+//     const totalInWords = `${numberToWords(total).toUpperCase()} ONLY (INR)`;
+//     doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
+//       maxWidth: 180,
+//     });
+//     yPosition += 15;
+    
+
+//     // Footer: Dark Blue Background with White Text
+//     doc.setFillColor(...darkBlue);
+//     doc.rect(0, 260, 210, 37, "F");
+//     doc.setFontSize(10);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(...white);
+//     doc.text("TripGlide Customer Support", 15, 270);
+//     yPosition = 275;
+//     doc.setFont("helvetica", "normal");
+//     doc.text("TripGlide Pvt. Ltd.", 15, yPosition);
+//     yPosition += 5;
+//     doc.text("123 Travel Lane, Phase 1, Gujarat, India", 15, yPosition);
+//     yPosition += 5;
+//     doc.text("India Toll Free: 1-800-123-4567", 15, yPosition);
+
+//     // Footer Note
+//     doc.setFontSize(8);
+//     doc.setTextColor(200, 200, 200);
+//     doc.text(
+//       "Note: This is a computer-generated invoice and does not require a signature/stamp.",
+//       15,
+//       290,
+//       { maxWidth: 180 }
+//     );
+
+//     doc.save(`invoice_${booking.booking_number}.pdf`);
+//   };
+
 //   useEffect(() => {
 //     const storedUser = localStorage.getItem("user");
 //     if (storedUser) {
-// <<<<<<< HEAD
-//       try {
-//         const parsedUser = JSON.parse(storedUser);
-//         setUser(parsedUser);
-//         setFormData({
-//           ...parsedUser,
-//           birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
-//         });
-//         setCompletionPercentage(calculateCompletionPercentage(parsedUser));
-//         fetchProfile(getIdentifier(parsedUser));
-//         fetchBookingHistory(parsedUser);
-//       } catch {
-//         navigate("/login");
-//       }
-// =======
 //       const parsedUser = JSON.parse(storedUser);
 //       setUser(parsedUser);
 //       setFormData({
@@ -148,7 +415,6 @@
 //       setCompletionPercentage(calculateCompletionPercentage(parsedUser));
 //       fetchProfile(getIdentifier(parsedUser));
 //       fetchBookingHistory(parsedUser);
-// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //     } else {
 //       navigate("/login");
 //     }
@@ -191,47 +457,29 @@
 //   };
 
 //   const fetchBookingHistory = async (user) => {
-// <<<<<<< HEAD
-//     setIsLoading(true);
-//     try {
-//       const user_id = user.user_id;
-//       if (!user_id) {
-//         setError("User ID is required to fetch bookings");
-//         return;
-//       }
-// =======
 //     try {
 //       const identifier = getIdentifier(user);
-// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //       const endpoints = [
 //         { url: `${API_URL}/flight_bookings?user_id=${user.user_id}`, setter: setFlightBookings, key: "bookings" },
 //         { url: `http://localhost:5003/api/hotel_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setHotelBookings, key: "bookings" },
 //         { url: `${API_URL}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
 //       ];
 //       for (const { url, setter, key } of endpoints) {
-//         const controller = new AbortController();
-//         const timeoutId = setTimeout(() => controller.abort(), 10000);
-//         try {
-//           const response = await fetch(url, { signal: controller.signal });
-//           if (!response.ok) {
-//             const errorData = await response.json();
-//             throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-//           }
-//           const data = await response.json();
-//           if (data.success) {
-//             setter(data[key] || []);
-//           } else {
-//             setError(data.error || `Failed to load ${key}`);
-//           }
-//         } finally {
-//           clearTimeout(timeoutId);
+//         const response = await fetch(url);
+//         if (!response.ok) {
+//           const errorData = await response.json();
+//           throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+//         }
+//         const data = await response.json();
+//         if (data.success) {
+//           setter(data[key] || []);
+//         } else {
+//           setError(data.error || `Failed to load ${key}`);
 //         }
 //       }
 //     } catch (err) {
 //       console.error("Fetch booking history error:", err);
 //       setError(`Failed to load booking history: ${err.message}`);
-//     } finally {
-//       setIsLoading(false);
 //     }
 //   };
 
@@ -408,6 +656,49 @@
 
 //   const openEditPopup = () => setShowPopup(true);
 
+//   const handleCancelBooking = async (bookingId) => {
+//     try {
+//       const response = await fetch(`http://localhost:5003/api/hotel_bookings/${bookingId}/cancel`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//       });
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+//       }
+//       const res = await response.json();
+//       if (res.success) {
+//         alert("Booking cancelled successfully!");
+//         fetchBookingHistory(user);
+//       } else {
+//         setError(res.error || "Failed to cancel booking");
+//       }
+//     } catch (err) {
+//       console.error("Cancel booking error:", err);
+//       setError(`Failed to cancel booking: ${err.message}`);
+//     }
+//   };
+
+//   const confirmCancelBooking = (bookingId) => {
+//     setBookingToCancel(bookingId);
+//     setShowCancelConfirmation(true);
+//   };
+
+//   const handleConfirmCancel = async () => {
+//     if (bookingToCancel) {
+//       await handleCancelBooking(bookingToCancel);
+//       setShowCancelConfirmation(false);
+//       setBookingToCancel(null);
+//       setSuccessMessage("Your booking has been cancelled successfully!");
+//       setTimeout(() => setSuccessMessage(""), 3000);
+//     }
+//   };
+
+//   const handleCancelConfirmation = () => {
+//     setShowCancelConfirmation(false);
+//     setBookingToCancel(null);
+//   };
+
 //   if (!user) {
 //     return (
 //       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -424,6 +715,7 @@
 
 //   return (
 //     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
+//       {/* Mobile Header */}
 //       <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-md border-b border-gray-200">
 //         <motion.button
 //           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -441,7 +733,7 @@
 //           initial={{ x: -100, opacity: 0 }}
 //           animate={{ x: 0, opacity: 1 }}
 //           transition={{ duration: 0.5 }}
-//           className={`lg:w-64 bg-white rounded-xl shadow-lg p-6 fixed inset-y-0 left-0 z-50 w-64 transform ${
+//           className={`lg:w-64 bg-white rounded-xl shadow-lg p-6 fixed inset-y-0 left-0 z-50 w-64 h-140 transform ${
 //             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
 //           } lg:static lg:translate-x-0 transition-transform duration-300 ease-in-out border border-gray-100`}
 //         >
@@ -564,22 +856,16 @@
 //                     {error}
 //                   </motion.div>
 //                 )}
-// <<<<<<< HEAD
-//                 {isLoading && <p className="text-gray-500 text-sm mb-4">Loading bookings...</p>}
-//                 {!isLoading && (
-//                   <div className="flex border-b border-gray-200 mb-6">
-//                     {["Flights", "Hotels", "Cars"].map((tab) => (
-//                       <button
-//                         key={tab}
-//                         onClick={() => setHistoryTab(tab)}
-//                         className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-//                       >
-//                         {tab}
-//                       </button>
-//                     ))}
-//                   </div>
+//                 {successMessage && (
+//                   <motion.div
+//                     initial={{ opacity: 0, y: -10 }}
+//                     animate={{ opacity: 1, y: 0 }}
+//                     exit={{ opacity: 0, y: -10 }}
+//                     className="bg-green-50 text-green-600 p-3 rounded-lg mb-4 text-sm border border-green-200"
+//                   >
+//                     {successMessage}
+//                   </motion.div>
 //                 )}
-// =======
 //                 <div className="flex border-b border-gray-200 mb-6">
 //                   {["Flights", "Hotels", "Cars"].map((tab) => (
 //                     <button
@@ -593,7 +879,6 @@
 //                     </button>
 //                   ))}
 //                 </div>
-// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
 //                   {historyTab === "Flights" && (
 //                     <>
@@ -616,85 +901,33 @@
 //                       )}
 //                     </>
 //                   )}
-//                   {historyTab === "Hotels" && !isLoading && (
+//                   {historyTab === "Hotels" && (
 //                     <>
 //                       <h3 className="text-lg font-semibold text-gray-800">Hotel Bookings</h3>
 //                       {hotelBookings.length === 0 ? (
 //                         <p className="text-gray-500 text-sm">No hotel bookings found.</p>
 //                       ) : (
-// <<<<<<< HEAD
-//                         hotelBookings.map((booking) => (
-//                           <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
-//                             <div className="flex justify-between items-center mb-2">
-//                               <p className="text-sm font-medium text-gray-800">
-//                                 {booking.hotel_name || "Hotel Details"}
-//                               </p>
-//                               <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
-//                                 {booking.status || "N/A"}
-//                               </span>
-//                             </div>
-//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Booking Number</p>
-//                                 <p className="text-sm font-semibold">{booking.booking_number || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Guest Name</p>
-//                                 <p className="text-sm">{booking.guest_name || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Email</p>
-//                                 <p className="text-sm">{booking.email || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Room Type</p>
-//                                 <p className="text-sm font-semibold">{booking.room_type || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Check-in</p>
-//                                 <p className="text-sm">{formatDate(booking.check_in_date)} • {booking.check_in_time || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Check-out</p>
-//                                 <p className="text-sm">{formatDate(booking.check_out_date)} • {booking.check_out_time || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Total Price</p>
-//                                 <p className="text-sm font-semibold">₹{Number(booking.total_amount || 0).toLocaleString()}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Arrival</p>
-//                                 <p className="text-sm">{booking.arrival || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Booked On</p>
-//                                 <p className="text-sm">{formatDate(booking.booked_on) || "N/A"}</p>
-//                               </div>
-//                               <div>
-//                                 <p className="text-xs text-gray-500">Created At</p>
-//                                 <p className="text-sm">{formatDate(booking.created_at) || "N/A"}</p>
-//                               </div>
-//                             </div>
-//                           </motion.div>
-//                         ))
-// =======
-//                         hotelBookings.map((booking) => {
-//                           const isUpcoming = new Date(booking.check_in_date) > new Date("2025-04-15");
-//                           return (
+//                         hotelBookings
+//                           .filter((booking) => booking.status !== "Cancelled")
+//                           .map((booking) => (
 //                             <motion.div
 //                               key={booking.id}
 //                               variants={itemVariants}
-//                               className="rounded-lg p-4 shadow-xl"
+//                               className="rounded-lg p-4 shadow-md border border-gray-200"
 //                             >
 //                               <div className="flex justify-between items-start mb-2">
 //                                 <h4 className="text-md font-medium text-gray-800">
 //                                   {booking.hotel_name} - {booking.room_type}
 //                                 </h4>
-//                                 {isUpcoming && (
+//                                 {booking.status === "Ongoing" ? (
+//                                   <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">
+//                                     Ongoing
+//                                   </span>
+//                                 ) : booking.status === "Upcoming" ? (
 //                                   <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
 //                                     Upcoming
 //                                   </span>
-//                                 )}
+//                                 ) : null}
 //                               </div>
 //                               <div className="grid grid-cols-2 gap-2 text-sm">
 //                                 <div>
@@ -762,10 +995,82 @@
 //                                   <p className="font-medium">{formatDate(booking.created_at)}</p>
 //                                 </div>
 //                               </div>
+//                               <div className="mt-4 flex gap-4">
+//                                 {booking.status === "Upcoming" && (
+//                                   <motion.button
+//                                     variants={buttonVariants}
+//                                     whileHover="hover"
+//                                     whileTap="tap"
+//                                     onClick={() => confirmCancelBooking(booking.id)}
+//                                     className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+//                                   >
+//                                     Cancel Booking
+//                                   </motion.button>
+//                                 )}
+//                                 <motion.button
+//                                   variants={buttonVariants}
+//                                   whileHover="hover"
+//                                   whileTap="tap"
+//                                   onClick={() => downloadInvoice(booking)}
+//                                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+//                                 >
+//                                   Download Invoice
+//                                 </motion.button>
+//                               </div>
 //                             </motion.div>
-//                           );
-//                         })
-// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
+//                           ))
+//                       )}
+//                       {hotelBookings.filter((booking) => booking.status === "Cancelled").length > 0 && (
+//                         <>
+//                           <h3 className="text-lg font-semibold text-gray-800 mt-6">Cancelled Bookings</h3>
+//                           {hotelBookings
+//                             .filter((booking) => booking.status === "Cancelled")
+//                             .map((booking) => (
+//                               <motion.div
+//                                 key={booking.id}
+//                                 variants={itemVariants}
+//                                 className="rounded-lg p-4 shadow-xl bg-gray-100"
+//                               >
+//                                 <div className="flex justify-between items-start mb-2">
+//                                   <h4 className="text-md font-medium text-gray-800">
+//                                     {booking.hotel_name} - {booking.room_type}
+//                                   </h4>
+//                                   <span className="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">
+//                                     Cancelled
+//                                   </span>
+//                                 </div>
+//                                 <div className="grid grid-cols-2 gap-2 text-sm">
+//                                   <div>
+//                                     <p className="text-gray-600">Booking Number</p>
+//                                     <p className="font-medium">{booking.booking_number}</p>
+//                                   </div>
+//                                   <div>
+//                                     <p className="text-gray-600">Traveler</p>
+//                                     <p className="font-medium">{booking.guest_name}</p>
+//                                   </div>
+//                                   <div>
+//                                     <p className="text-gray-600">Check-in Date</p>
+//                                     <p className="font-medium">{formatDate(booking.check_in_date)}</p>
+//                                   </div>
+//                                   <div>
+//                                     <p className="text-gray-600">Check-out Date</p>
+//                                     <p className="font-medium">{formatDate(booking.check_out_date)}</p>
+//                                   </div>
+//                                 </div>
+//                                 <div className="mt-4">
+//                                   <motion.button
+//                                     variants={buttonVariants}
+//                                     whileHover="hover"
+//                                     whileTap="tap"
+//                                     onClick={() => downloadInvoice(booking)}
+//                                     className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+//                                   >
+//                                     Download Invoice
+//                                   </motion.button>
+//                                 </div>
+//                               </motion.div>
+//                             ))}
+//                         </>
 //                       )}
 //                     </>
 //                   )}
@@ -973,6 +1278,7 @@
 //         </div>
 //       </div>
 
+//       {/* Edit Profile Popup */}
 //       <AnimatePresence>
 //         {showPopup && (
 //           <motion.div
@@ -1066,12 +1372,9 @@
 //         )}
 //       </AnimatePresence>
 
+//       {/* Change Password Popup */}
 //       <AnimatePresence>
 //         {showPasswordPopup && (
-// <<<<<<< HEAD
-//           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-//             <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1}} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
-// =======
 //           <motion.div
 //             initial={{ opacity: 0 }}
 //             animate={{ opacity: 1 }}
@@ -1086,7 +1389,6 @@
 //               exit={{ scale: 0.9 }}
 //               transition={{ type: "spring", stiffness: 200, damping: 20 }}
 //             >
-// >>>>>>> 2410ee08f1ed2bd6434b87965acbcf6b2a603d3a
 //               <div className="flex justify-between items-center mb-4">
 //                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
 //                 <motion.button
@@ -1155,6 +1457,7 @@
 //         )}
 //       </AnimatePresence>
 
+//       {/* Verification Popup */}
 //       <AnimatePresence>
 //         {showVerificationPopup && (
 //           <motion.div
@@ -1219,11 +1522,66 @@
 //           </motion.div>
 //         )}
 //       </AnimatePresence>
+
+//       {/* Cancel Confirmation Popup */}
+//       <AnimatePresence>
+//         {showCancelConfirmation && (
+//           <motion.div
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             exit={{ opacity: 0 }}
+//             transition={{ duration: 0.2 }}
+//             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+//           >
+//             <motion.div
+//               className="bg-white rounded-xl p-6 w-full max-w-md relative"
+//               initial={{ scale: 0.9 }}
+//               animate={{ scale: 1 }}
+//               exit={{ scale: 0.9 }}
+//               transition={{ type: "spring", stiffness: 200, damping: 20 }}
+//             >
+//               <motion.button
+//                 whileHover={{ scale: 1.1 }}
+//                 whileTap={{ scale: 0.9 }}
+//                 onClick={handleCancelConfirmation}
+//                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+//               >
+//                 <IoClose size={24} />
+//               </motion.button>
+//               <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Cancellation</h2>
+//               <p className="text-gray-600 mb-6">Are you sure you want to cancel your booking?</p>
+//               <div className="flex justify-end gap-4">
+//                 <motion.button
+//                   variants={buttonVariants}
+//                   whileHover="hover"
+//                   whileTap="tap"
+//                   onClick={handleCancelConfirmation}
+//                   className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition"
+//                 >
+//                   No
+//                 </motion.button>
+//                 <motion.button
+//                   variants={buttonVariants}
+//                   whileHover="hover"
+//                   whileTap="tap"
+//                   onClick={handleConfirmCancel}
+//                   className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+//                 >
+//                   Yes
+//                 </motion.button>
+//               </div>
+//             </motion.div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
 //     </div>
 //   );
 // };
 
 // export default Dashboard;
+
+
+
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -1244,6 +1602,7 @@ import {
 import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
+import jsPDF from "jspdf";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -1349,6 +1708,285 @@ const Dashboard = () => {
   };
 
   const getIdentifier = (user) => user.email || user.phone;
+
+  const numberToWords = (num) => {
+    const units = [
+      "",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+    ];
+    const tens = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+    const teens = [
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+    const scales = ["", "Thousand", "Lakh", "Crore"];
+
+    if (num === 0) return "Zero";
+
+    let numStr = num.toString();
+    let chunks = [];
+    while (numStr.length > 0) {
+      if (numStr.length > 3) {
+        chunks.push(parseInt(numStr.slice(-3)));
+        numStr = numStr.slice(0, -3);
+      } else {
+        chunks.push(parseInt(numStr));
+        numStr = "";
+      }
+    }
+
+    let words = [];
+    for (let i = 0; i < chunks.length; i++) {
+      let chunk = chunks[i];
+      if (chunk === 0) continue;
+
+      let chunkWords = [];
+      if (chunk >= 100) {
+        chunkWords.push(`${units[Math.floor(chunk / 100)]} Hundred`);
+        chunk %= 100;
+      }
+      if (chunk >= 10 && chunk <= 19) {
+        chunkWords.push(teens[chunk - 10]);
+      } else if (chunk >= 20) {
+        chunkWords.push(tens[Math.floor(chunk / 10)]);
+        chunk %= 10;
+        if (chunk > 0) chunkWords.push(units[chunk]);
+      } else if (chunk > 0) {
+        chunkWords.push(units[chunk]);
+      }
+      if (i > 0 && chunkWords.length > 0) {
+        chunkWords.push(scales[i]);
+      }
+      words.unshift(...chunkWords);
+    }
+
+    return words.join(" ");
+  };
+
+  const downloadInvoice = (booking) => {
+    const doc = new jsPDF();
+    let yPosition = 10;
+
+    const darkBlue = [30, 58, 138];
+    const lightGray = [243, 244, 246];
+    const white = [255, 255, 255];
+    const darkGray = [55, 65, 81];
+
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(...darkBlue);
+    doc.rect(5, 5, 200, 287, "S");
+
+    doc.setFillColor(...darkBlue);
+    doc.rect(0, 0, 210, 30, "F");
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("TripGlide", 15, yPosition + 10);
+    doc.setFontSize(14);
+    doc.text("INVOICE", 190, yPosition + 10, { align: "right" });
+    yPosition += 20;
+
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice No: INV-2025-${booking.booking_number}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 5;
+    doc.text(
+      `Booking Date: ${new Date(booking.booked_on).toLocaleDateString("en-US", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })}`,
+      190,
+      yPosition,
+      { align: "right" }
+    );
+    yPosition += 10;
+
+    doc.setFillColor(...white);
+    doc.rect(10, yPosition - 5, 190, 40, "F");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...darkGray);
+    doc.text("Customer Information", 15, yPosition);
+    doc.setLineWidth(0.2);
+    doc.setDrawColor(...darkBlue);
+    doc.line(15, yPosition + 2, 85, yPosition + 2);
+    yPosition += 10;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Email: ${booking.email || "Not provided"}`, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Phone: ${booking.phone || "Not provided"}`, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Booking ID: TG-${booking.booking_number}`, 15, yPosition);
+    yPosition += 15;
+
+    doc.setFillColor(...lightGray);
+    doc.rect(10, yPosition - 5, 190, 10, "F");
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...darkGray);
+    doc.text("Hotel Details", 15, yPosition);
+    doc.setLineWidth(0.2);
+    doc.line(15, yPosition + 2, 65, yPosition + 2);
+    yPosition += 10;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    const hotelTitle = `${booking.hotel_name} - ${booking.room_type} (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`;
+    doc.text(hotelTitle, 15, yPosition, { maxWidth: 180 });
+    yPosition += 8;
+    const totalGuests = (booking.adults || 0) + (booking.children || 0);
+    doc.text(`Guest: ${totalGuests} (Adults: ${booking.adults || 0}, Children: ${booking.children || 0})`, 15, yPosition);
+    yPosition += 5;
+
+    const checkIn = `Check-In: ${new Date(booking.check_in_date).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    )}, 02:00 PM`;
+    doc.text(checkIn, 15, yPosition);
+    yPosition += 5;
+    const checkOut = `Check-Out: ${new Date(booking.check_out_date).toLocaleDateString(
+      "en-US",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    )}, 11:00 AM`;
+    doc.text(checkOut, 15, yPosition);
+    yPosition += 5;
+    doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
+    yPosition += 10;
+
+    doc.setFillColor(...darkBlue);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("Description", 20, yPosition);
+    doc.text("Base Rate", 100, yPosition, { align: "right" });
+    doc.text("Taxes & Fees", 150, yPosition, { align: "right" });
+    doc.text("Amount", 190, yPosition, { align: "right" });
+    yPosition += 8;
+
+    doc.setLineWidth(0.1);
+    doc.setDrawColor(...darkGray);
+    doc.line(15, yPosition - 2, 195, yPosition - 2);
+    yPosition += 5;
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...darkGray);
+    const baseRate = Math.round(booking.total_amount * 0.7);
+    const taxes = Math.round(booking.total_amount * 0.3);
+    const total = booking.total_amount;
+
+    doc.setFillColor(245, 245, 245);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.text(
+      `Room Charges (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`,
+      20,
+      yPosition
+    );
+    doc.text(`Rs. ${baseRate.toLocaleString()}`, 100, yPosition, {
+      align: "right",
+    });
+    doc.text(`Rs. ${taxes.toLocaleString()}`, 150, yPosition, { align: "right" });
+    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 10;
+
+    doc.setFillColor(...lightGray);
+    doc.rect(15, yPosition - 5, 180, 8, "F");
+    doc.setFont("helvetica", "bold");
+    doc.text("Total", 20, yPosition);
+    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
+      align: "right",
+    });
+    yPosition += 15;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    const totalInWords = `${numberToWords(total).toUpperCase()} ONLY (INR)`;
+    doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
+      maxWidth: 180,
+    });
+    yPosition += 10;
+
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      "Policy: Please ensure to present valid identification proof at the time of check-in.",
+      15,
+      yPosition,
+      { maxWidth: 180 }
+    );
+    yPosition += 15;
+
+    doc.setFillColor(...darkBlue);
+    doc.rect(0, 260, 210, 37, "F");
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...white);
+    doc.text("TripGlide Customer Support", 15, 270);
+    yPosition = 275;
+    doc.setFont("helvetica", "normal");
+    doc.text("TripGlide Pvt. Ltd.", 15, yPosition);
+    yPosition += 5;
+    doc.text("123 Travel Lane, Phase 1, Gujarat, India", 15, yPosition);
+    yPosition += 5;
+    doc.text("India Toll Free: 1-800-123-4567", 15, yPosition);
+
+    doc.setFontSize(8);
+    doc.setTextColor(200, 200, 200);
+    doc.text(
+      "Note: This is a computer-generated invoice and does not require a signature/stamp.",
+      15,
+      290,
+      { maxWidth: 180 }
+    );
+
+    doc.save(`invoice_${booking.booking_number}.pdf`);
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -1664,7 +2302,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
-      {/* Mobile Header */}
       <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-md border-b border-gray-200">
         <motion.button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -1858,23 +2495,30 @@ const Dashboard = () => {
                       ) : (
                         hotelBookings
                           .filter((booking) => booking.status !== "Cancelled")
-                          .map((booking) => {
-                            const isUpcoming = new Date(booking.check_in_date) > new Date("2025-04-15");
-                            return (
-                              <motion.div
-                                key={booking.id}
-                                variants={itemVariants}
-                                className="rounded-lg p-4 shadow-xl"
-                              >
-                                <div className="flex justify-between items-start mb-2">
-                                  <h4 className="text-md font-medium text-gray-800">
-                                    {booking.hotel_name} - {booking.room_type}
-                                  </h4>
-                                  {isUpcoming && (
-                                    <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
-                                      Upcoming
-                                    </span>
-                                  )}
+                          .map((booking) => (
+                            <motion.div
+                              key={booking.id}
+                              variants={itemVariants}
+                              className="rounded-lg p-4 shadow-md border border-gray-200"
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="text-md font-medium text-gray-800">
+                                  {booking.hotel_name} - {booking.room_type}
+                                </h4>
+                                {booking.status === "Ongoing" ? (
+                                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">
+                                    Ongoing
+                                  </span>
+                                ) : booking.status === "Upcoming" ? (
+                                  <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+                                    Upcoming
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div className="grid grid-cols-2 gap-2 text-sm">
+                                <div>
+                                  <p className="text-gray-600">Booking Number</p>
+                                  <p className="font-medium">{booking.booking_number}</p>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-sm">
                                   <div>
@@ -1886,18 +2530,6 @@ const Dashboard = () => {
                                     <p className="font-medium">{booking.guest_name}</p>
                                   </div>
                                   <div>
-                                    <p className="text-gray-600">Email</p>
-                                    <p className="font-medium">{booking.email}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Phone</p>
-                                    <p className="font-medium">{booking.phone}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Arrival</p>
-                                    <p className="font-medium">{booking.arrival}</p>
-                                  </div>
-                                  <div>
                                     <p className="text-gray-600">Check-in Date</p>
                                     <p className="font-medium">{formatDate(booking.check_in_date)}</p>
                                   </div>
@@ -1905,57 +2537,88 @@ const Dashboard = () => {
                                     <p className="text-gray-600">Check-out Date</p>
                                     <p className="font-medium">{formatDate(booking.check_out_date)}</p>
                                   </div>
-                                  <div>
-                                    <p className="text-gray-600">Adults</p>
-                                    <p className="font-medium">{booking.adults}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Children</p>
-                                    <p className="font-medium">{booking.children}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Rooms</p>
-                                    <p className="font-medium">{booking.rooms}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Room Type</p>
-                                    <p className="font-medium">{booking.room_type}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Price Per Night</p>
-                                    <p className="font-medium">₹{booking.price_per_night.toLocaleString()}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Total Price</p>
-                                    <p className="font-medium">₹{booking.total_amount.toLocaleString()}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Payment Method</p>
-                                    <p className="font-medium">{booking.payment_method}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Booked On</p>
-                                    <p className="font-medium">{formatDate(booking.booked_on)}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Created At</p>
-                                    <p className="font-medium">{formatDate(booking.created_at)}</p>
-                                  </div>
                                 </div>
+                                <div>
+                                  <p className="text-gray-600">Email</p>
+                                  <p className="font-medium">{booking.email}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Phone</p>
+                                  <p className="font-medium">{booking.phone}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Arrival</p>
+                                  <p className="font-medium">{booking.arrival}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Check-in Date</p>
+                                  <p className="font-medium">{formatDate(booking.check_in_date)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Check-out Date</p>
+                                  <p className="font-medium">{formatDate(booking.check_out_date)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Adults</p>
+                                  <p className="font-medium">{booking.adults}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Children</p>
+                                  <p className="font-medium">{booking.children}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Rooms</p>
+                                  <p className="font-medium">{booking.rooms}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Room Type</p>
+                                  <p className="font-medium">{booking.room_type}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Price Per Night</p>
+                                  <p className="font-medium">₹{booking.price_per_night.toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Total Price</p>
+                                  <p className="font-medium">₹{booking.total_amount.toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Payment Method</p>
+                                  <p className="font-medium">{booking.payment_method}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Booked On</p>
+                                  <p className="font-medium">{formatDate(booking.booked_on)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Created At</p>
+                                  <p className="font-medium">{formatDate(booking.created_at)}</p>
+                                </div>
+                              </div>
+                              <div className="mt-4 flex gap-4">
                                 {booking.status === "Upcoming" && (
                                   <motion.button
                                     variants={buttonVariants}
                                     whileHover="hover"
                                     whileTap="tap"
                                     onClick={() => confirmCancelBooking(booking.id)}
-                                    className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
                                   >
                                     Cancel Booking
                                   </motion.button>
                                 )}
-                              </motion.div>
-                            );
-                          })
+                                <motion.button
+                                  variants={buttonVariants}
+                                  whileHover="hover"
+                                  whileTap="tap"
+                                  onClick={() => downloadInvoice(booking)}
+                                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                                >
+                                  Download Invoice
+                                </motion.button>
+                              </div>
+                            </motion.div>
+                          ))
                       )}
                       {hotelBookings.filter((booking) => booking.status === "Cancelled").length > 0 && (
                         <>
@@ -1993,6 +2656,17 @@ const Dashboard = () => {
                                     <p className="text-gray-600">Check-out Date</p>
                                     <p className="font-medium">{formatDate(booking.check_out_date)}</p>
                                   </div>
+                                </div>
+                                <div className="mt-4">
+                                  <motion.button
+                                    variants={buttonVariants}
+                                    whileHover="hover"
+                                    whileTap="tap"
+                                    onClick={() => downloadInvoice(booking)}
+                                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                                  >
+                                    Download Invoice
+                                  </motion.button>
                                 </div>
                               </motion.div>
                             ))}
@@ -2204,7 +2878,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Edit Profile Popup */}
       <AnimatePresence>
         {showPopup && (
           <motion.div
@@ -2298,7 +2971,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Change Password Popup */}
       <AnimatePresence>
         {showPasswordPopup && (
           <motion.div
@@ -2383,7 +3055,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Verification Popup */}
       <AnimatePresence>
         {showVerificationPopup && (
           <motion.div
@@ -2449,7 +3120,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Cancel Confirmation Popup */}
       <AnimatePresence>
         {showCancelConfirmation && (
           <motion.div
