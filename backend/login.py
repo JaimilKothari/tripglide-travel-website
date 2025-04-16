@@ -287,23 +287,22 @@ def login():
             return jsonify({"success": False, "error": "Invalid credentials"}), 401
 
         identifiers_to_verify = []
-        try:
-            channel = 'email' if is_email(identifier) else 'sms'
-            send_verification(identifier, channel=channel)
-            identifiers_to_verify.append({"identifier": identifier, "type": channel})
+        channel = 'email' if is_email(identifier) else 'sms'
+        send_verification(identifier, channel=channel)
+        identifiers_to_verify.append({"identifier": identifier, "type": channel})
 
-            if field == "phone" and user["email"]:
-                try:
-                    send_verification(user["email"], channel='email')
-                    identifiers_to_verify.append({"identifier": user["email"], "type": "email"})
-                except Exception as e:
-                    logger.warning(f"Failed to send email OTP to {user['email']}: {e}")
-            elif field == "email" and user["phone"]:
-                try:
-                    send_verification(user["phone"], channel='sms')
-                    identifiers_to_verify.append({"identifier": user["phone"], "type": "phone"})
-                except Exception as e:
-                    logger.warning(f"Failed to send SMS OTP to {user['phone']}: {e}")
+        if field == "phone" and user["email"]:
+            try:
+                send_verification(user["email"], channel='email')
+                identifiers_to_verify.append({"identifier": user["email"], "type": "email"})
+            except Exception as e:
+                logger.warning(f"Failed to send email OTP to {user['email']}: {e}")
+        elif field == "email" and user["phone"]:
+            try:
+                send_verification(user["phone"], channel='sms')
+                identifiers_to_verify.append({"identifier": user["phone"], "type": "phone"})
+            except Exception as e:
+                logger.warning(f"Failed to send SMS OTP to {user['phone']}: {e}")
 
             user_data = {k: v for k, v in user.items() if k != "password"}
             logger.info(f"Login pending OTP: {field}={identifier}, sent to {identifiers_to_verify}")
@@ -313,10 +312,10 @@ def login():
                 "identifiers": identifiers_to_verify,
                 "user": user_data
             }), 200
-        except TwilioRestException as e:
+    except TwilioRestException as e:
             logger.error(f"Twilio error sending OTP: {e}")
             return jsonify({"success": False, "error": "Failed to send OTP, please try again later"}), 503
-        except Exception as e:
+    except Exception as e:
             logger.error(f"Unexpected error sending OTP: {e}")
             return jsonify({"success": False, "error": "Failed to send OTP, please try again later"}), 503
     except mysql.connector.Error as e:

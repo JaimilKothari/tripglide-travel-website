@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"; // Added useLocation
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
 
 const Login = ({ onLogIn, mockUsers }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get location to check redirectTo
+  const location = useLocation();
   const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [error, setError] = useState("");
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
@@ -73,9 +73,12 @@ const Login = ({ onLogIn, mockUsers }) => {
         setShowVerificationPopup(false);
         setVerificationData({ identifier: "", code: "" });
 
-        // Check if redirected from FlightCart
-        const redirectTo = location.state?.redirectTo || "/dashboard";
-        navigate(redirectTo, { state: location.state }); // Preserve original state
+        // Redirect back to HotelDetails page
+        const { redirectTo, bookingData, checkInDate, checkOutDate, adults, children, rooms } = location.state || {};
+        const target = redirectTo || "/dashboard";
+        navigate(target, {
+          state: { checkInDate, checkOutDate, adults, children, rooms, bookingData },
+        });
       } else {
         setVerificationError(data.error || "Invalid code");
       }
