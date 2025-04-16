@@ -1,7 +1,18 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  FaCheckCircle, FaUser, FaBars, FaEdit, FaLock, FaMobileAlt, FaSignOutAlt, FaUsers, FaLaptop, FaPlane, FaHotel, FaCar,
+  FaCheckCircle,
+  FaUser,
+  FaBars,
+  FaEdit,
+  FaLock,
+  FaMobileAlt,
+  FaSignOutAlt,
+  FaUsers,
+  FaLaptop,
+  FaPlane,
+  FaHotel,
+  FaCar,
 } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
@@ -18,7 +29,11 @@ const Dashboard = () => {
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [verificationData, setVerificationData] = useState({ identifier: "", code: "" });
-  const [passwordData, setPasswordData] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [verificationError, setVerificationError] = useState("");
@@ -34,13 +49,43 @@ const Dashboard = () => {
   const API_URL = "http://localhost:5003/api"; // Updated to match your backend port
 
   const statesList = [
-    "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
-    "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi",
-    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand",
-    "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra",
-    "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab",
-    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
-    "Uttarakhand", "West Bengal",
+    "Andaman and Nicobar",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli",
+    "Daman and Diu",
+    "Delhi",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Ladakh",
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
   ];
 
   const profileFields = [
@@ -79,19 +124,15 @@ const Dashboard = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setFormData({
-          ...parsedUser,
-          birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
-        });
-        setCompletionPercentage(calculateCompletionPercentage(parsedUser));
-        fetchProfile(getIdentifier(parsedUser));
-        fetchBookingHistory(parsedUser);
-      } catch {
-        navigate("/login");
-      }
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setFormData({
+        ...parsedUser,
+        birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split("T")[0] : "",
+      });
+      setCompletionPercentage(calculateCompletionPercentage(parsedUser));
+      fetchProfile(getIdentifier(parsedUser));
+      fetchBookingHistory(parsedUser);
     } else {
       navigate("/login");
     }
@@ -118,7 +159,7 @@ const Dashboard = () => {
       if (res.success) {
         const updatedUser = {
           ...res.user,
-          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split('T')[0] : ""
+          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split("T")[0] : "",
         };
         setUser(updatedUser);
         setFormData(updatedUser);
@@ -134,17 +175,12 @@ const Dashboard = () => {
   };
 
   const fetchBookingHistory = async (user) => {
-    setIsLoading(true);
     try {
-      const user_id = user.user_id;
-      if (!user_id) {
-        setError("User ID is required to fetch bookings");
-        return;
-      }
+      const identifier = getIdentifier(user);
       const endpoints = [
-        { url: `${API_URL}/flight_bookings?user_id=${user_id}`, setter: setFlightBookings, key: "bookings" },
-        { url: `${API_URL}/hotel_bookings?user_id=${user_id}`, setter: setHotelBookings, key: "bookings" },
-        { url: `${API_URL}/car_rentals?user_id=${user_id}`, setter: setCarRentals, key: "bookings" },
+        { url: `${API_URL}/flight_bookings?user_id=${user.user_id}`, setter: setFlightBookings, key: "bookings" },
+        { url: `http://localhost:5003/api/hotel_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setHotelBookings, key: "bookings" },
+        { url: `${API_URL}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
         const controller = new AbortController();
@@ -422,7 +458,14 @@ const Dashboard = () => {
         <div className="flex-1 w-full lg:ml-0 mt-4 lg:mt-0 overflow-y-auto">
           <AnimatePresence mode="wait">
             {activeSection === "Profile" && (
-              <motion.div key="Profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="space-y-6">
+              <motion.div
+                key="Profile"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-6"
+              >
                 <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile Completion</h2>
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
@@ -477,7 +520,14 @@ const Dashboard = () => {
             )}
 
             {activeSection === "BookingHistory" && (
-              <motion.div key="BookingHistory" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="BookingHistory"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Booking History</h2>
                 {error && (
                   <motion.div
@@ -488,20 +538,19 @@ const Dashboard = () => {
                     {error}
                   </motion.div>
                 )}
-                {isLoading && <p className="text-gray-500 text-sm mb-4">Loading bookings...</p>}
-                {!isLoading && (
-                  <div className="flex border-b border-gray-200 mb-6">
-                    {["Flights", "Hotels", "Cars"].map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setHistoryTab(tab)}
-                        className={`px-4 py-2 text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
-                      >
-                        {tab}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <div className="flex border-b border-gray-200 mb-6">
+                  {["Flights", "Hotels", "Cars"].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setHistoryTab(tab)}
+                      className={`px-4 py-2 text-sm font-medium ${
+                        historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
                   {historyTab === "Flights" && (
                     <>
@@ -510,7 +559,11 @@ const Dashboard = () => {
                         <p className="text-gray-500 text-sm">No flight bookings found.</p>
                       ) : (
                         flightBookings.map((booking) => (
-                          <motion.div key={booking.booking_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                          <motion.div
+                            key={booking.booking_id}
+                            variants={itemVariants}
+                            className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                          >
                             <div>
                               <p className="text-sm font-medium text-gray-800">{booking.flight_details || "Flight Details"}</p>
                               <p className="text-sm text-gray-500">{formatDate(booking.booking_date)}</p>
@@ -526,60 +579,93 @@ const Dashboard = () => {
                       {hotelBookings.length === 0 ? (
                         <p className="text-gray-500 text-sm">No hotel bookings found.</p>
                       ) : (
-                        hotelBookings.map((booking) => (
-                          <motion.div key={booking.booking_id || booking.booking_number} variants={itemVariants} className="border rounded-lg p-4 mb-4 shadow-sm">
-                            <div className="flex justify-between items-center mb-2">
-                              <p className="text-sm font-medium text-gray-800">
-                                {booking.hotel_name || "Hotel Details"}
-                              </p>
-                              <span className={`text-xs px-2 py-1 rounded ${booking.status === 'Upcoming' ? 'bg-green-100 text-green-800' : booking.status === 'Completed' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
-                                {booking.status || "N/A"}
-                              </span>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              <div>
-                                <p className="text-xs text-gray-500">Booking Number</p>
-                                <p className="text-sm font-semibold">{booking.booking_number || "N/A"}</p>
+                        hotelBookings.map((booking) => {
+                          const isUpcoming = new Date(booking.check_in_date) > new Date("2025-04-15");
+                          return (
+                            <motion.div
+                              key={booking.id}
+                              variants={itemVariants}
+                              className="rounded-lg p-4 shadow-xl"
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <h4 className="text-md font-medium text-gray-800">
+                                  {booking.hotel_name} - {booking.room_type}
+                                </h4>
+                                {isUpcoming && (
+                                  <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+                                    Upcoming
+                                  </span>
+                                )}
                               </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Guest Name</p>
-                                <p className="text-sm">{booking.guest_name || "N/A"}</p>
+                              <div className="grid grid-cols-2 gap-2 text-sm">
+                                <div>
+                                  <p className="text-gray-600">Booking Number</p>
+                                  <p className="font-medium">{booking.booking_number}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Traveler</p>
+                                  <p className="font-medium">{booking.guest_name}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Email</p>
+                                  <p className="font-medium">{booking.email}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Phone</p>
+                                  <p className="font-medium">{booking.phone}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Arrival</p>
+                                  <p className="font-medium">{booking.arrival}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Check-in Date</p>
+                                  <p className="font-medium">{formatDate(booking.check_in_date)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Check-out Date</p>
+                                  <p className="font-medium">{formatDate(booking.check_out_date)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Adults</p>
+                                  <p className="font-medium">{booking.adults}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Children</p>
+                                  <p className="font-medium">{booking.children}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Rooms</p>
+                                  <p className="font-medium">{booking.rooms}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Room Type</p>
+                                  <p className="font-medium">{booking.room_type}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Price Per Night</p>
+                                  <p className="font-medium">₹{booking.price_per_night.toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Total Price</p>
+                                  <p className="font-medium">₹{booking.total_amount.toLocaleString()}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Payment Method</p>
+                                  <p className="font-medium">{booking.payment_method}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Booked On</p>
+                                  <p className="font-medium">{formatDate(booking.booked_on)}</p>
+                                </div>
+                                <div>
+                                  <p className="text-gray-600">Created At</p>
+                                  <p className="font-medium">{formatDate(booking.created_at)}</p>
+                                </div>
                               </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Email</p>
-                                <p className="text-sm">{booking.email || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Room Type</p>
-                                <p className="text-sm font-semibold">{booking.room_type || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Check-in</p>
-                                <p className="text-sm">{formatDate(booking.check_in_date)} • {booking.check_in_time || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Check-out</p>
-                                <p className="text-sm">{formatDate(booking.check_out_date)} • {booking.check_out_time || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Total Price</p>
-                                <p className="text-sm font-semibold">₹{Number(booking.total_amount || 0).toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Arrival</p>
-                                <p className="text-sm">{booking.arrival || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Booked On</p>
-                                <p className="text-sm">{formatDate(booking.booked_on) || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Created At</p>
-                                <p className="text-sm">{formatDate(booking.created_at) || "N/A"}</p>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))
+                            </motion.div>
+                          );
+                        })
                       )}
                     </>
                   )}
@@ -590,7 +676,11 @@ const Dashboard = () => {
                         <p className="text-gray-500 text-sm">No car rentals found.</p>
                       ) : (
                         carRentals.map((rental) => (
-                          <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                          <motion.div
+                            key={rental.rental_id}
+                            variants={itemVariants}
+                            className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                          >
                             <div>
                               <p className="text-sm font-medium text-gray-800">{rental.car_details || "Car Details"}</p>
                               <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
@@ -605,7 +695,14 @@ const Dashboard = () => {
             )}
 
             {activeSection === "Login_details" && (
-              <motion.div key="Login_details" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="Login_details"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Login Details</h2>
                 {error && (
                   <motion.div
@@ -625,7 +722,13 @@ const Dashboard = () => {
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">{user.phone || "Not provided"}</span>
                       {user.phone && (user.phone_verified ? <FaCheckCircle className="text-green-500" /> : (
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleRequestVerification(user.phone)} className="text-blue-600 text-sm hover:underline">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => handleRequestVerification(user.phone)}
+                          className="text-blue-600 text-sm hover:underline"
+                        >
                           Verify
                         </motion.button>
                       ))}
@@ -642,7 +745,13 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">•••••••</span>
-                      <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => setShowPasswordPopup(true)} className="text-blue-600 text-sm hover:underline">
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                        onClick={() => setShowPasswordPopup(true)}
+                        className="text-blue-600 text-sm hover:underline"
+                      >
                         Change
                       </motion.button>
                     </div>
@@ -652,7 +761,14 @@ const Dashboard = () => {
             )}
 
             {activeSection === "coTravellersSection" && (
-              <motion.div key="coTravellersSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="coTravellersSection"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Co-Travellers</h2>
                 <div className="mb-6">
                   <div className="flex flex-col sm:flex-row gap-3 mb-3">
@@ -670,7 +786,13 @@ const Dashboard = () => {
                       onChange={(e) => setNewTraveller({ ...newTraveller, relationship: e.target.value })}
                       className="border border-gray-200 rounded-lg p-3 flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
                     />
-                    <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleAddCoTraveller} className="flex items-center bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition">
+                    <motion.button
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                      onClick={handleAddCoTraveller}
+                      className="flex items-center bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
+                    >
                       <AiOutlinePlus className="mr-2" />
                       Add
                     </motion.button>
@@ -682,12 +804,22 @@ const Dashboard = () => {
                     <p className="text-gray-500 text-sm">No co-travellers added yet.</p>
                   ) : (
                     coTravellers.map((traveller) => (
-                      <motion.div key={traveller.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                      <motion.div
+                        key={traveller.id}
+                        variants={itemVariants}
+                        className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                      >
                         <div>
                           <p className="text-sm font-medium text-gray-800">{traveller.name}</p>
                           <p className="text-sm text-gray-500">{traveller.relationship}</p>
                         </div>
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteCoTraveller(traveller.id)} className="text-red-500 hover:text-red-700">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => handleDeleteCoTraveller(traveller.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       </motion.div>
@@ -698,17 +830,37 @@ const Dashboard = () => {
             )}
 
             {activeSection === "devicesSection" && (
-              <motion.div key="devicesSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="devicesSection"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Devices</h2>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4">
                   {devices.map((device) => (
-                    <motion.div key={device.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                    <motion.div
+                      key={device.id}
+                      variants={itemVariants}
+                      className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                    >
                       <div>
                         <p className="text-sm font-medium text-gray-800">{device.name.substring(0, 50)}...</p>
-                        <p className="text-sm text-gray-500">Last login: {new Date(device.lastLogin).toLocaleString()}{device.isCurrent && " (Current)"}</p>
+                        <p className="text-sm text-gray-500">
+                          Last login: {new Date(device.lastLogin).toLocaleString()}{" "}
+                          {device.isCurrent && "(Current)"}
+                        </p>
                       </div>
                       {!device.isCurrent && (
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteDevice(device.id)} className="text-red-500 hover:text-red-700">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => handleDeleteDevice(device.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       )}
@@ -723,7 +875,13 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
             <motion.div
               className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg relative"
               initial={{ scale: 0.9 }}
@@ -731,18 +889,31 @@ const Dashboard = () => {
               exit={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowPopup(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
                 <IoClose size={24} />
               </motion.button>
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Edit Profile</h2>
               {error && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {error}
                 </motion.div>
               )}
               <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-h-[60vh] overflow-y-auto">
                 {profileFields.map((item, index) => (
-                  <motion.div key={index} variants={itemVariants} className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}>
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}
+                  >
                     <label className="block text-sm font-medium text-gray-700 mb-1">{item.label}</label>
                     {item.name === "state" ? (
                       <select
@@ -780,7 +951,13 @@ const Dashboard = () => {
                 ))}
               </motion.div>
               <div className="flex justify-end">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleSave} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleSave}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Save
                 </motion.button>
               </div>
@@ -791,16 +968,37 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPasswordPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1}} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              className="bg-white rounded-xl p-6 w-full max-w-md"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPasswordPopup(false)} className="text-gray-500 hover:text-gray-700">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowPasswordPopup(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {passwordError && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {passwordError}
                 </motion.div>
               )}
@@ -837,7 +1035,13 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleChangePassword} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleChangePassword}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Save
                 </motion.button>
               </div>
@@ -848,16 +1052,37 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showVerificationPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              className="bg-white rounded-xl p-6 w-full max-w-md"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Verify Phone</h2>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowVerificationPopup(false)} className="text-gray-500 hover:text-gray-700">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowVerificationPopup(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {verificationError && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {verificationError}
                 </motion.div>
               )}
@@ -875,7 +1100,13 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleVerifyCode} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleVerifyCode}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Verify
                 </motion.button>
               </div>
