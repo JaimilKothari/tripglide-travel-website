@@ -427,7 +427,7 @@ def cancel_booking(booking_id):
         connection.commit()
         cursor.close()
         connection.close()
-        return jsonify({"success": true, "message": "Booking cancelled successfully"})
+        return jsonify({"success": True, "message": "Booking cancelled successfully"})
     except Exception as e:
         print(f"Error cancelling booking: {e}")
         return jsonify({"error": f"An error occurred: {e}"}), 500

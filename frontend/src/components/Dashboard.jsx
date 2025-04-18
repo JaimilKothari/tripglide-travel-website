@@ -1,24 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  FaDownload,
-  FaCheckCircle,
-  FaUser,
-  FaBars,
-  FaEdit,
-  FaLock,
-  FaMobileAlt,
-  FaSignOutAlt,
-  FaUsers,
-  FaLaptop,
-  FaPlane,
-  FaHotel,
-  FaCar,
+  FaCheckCircle, FaUser, FaBars, FaEdit, FaLock, FaMobileAlt, FaSignOutAlt, FaUsers, FaLaptop, FaPlane, FaHotel, FaCar
 } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
-import { jsPDF } from "jspdf";
+import FlightBookingHistory from "./FlightBookingHistory";
+import HotelBookingHistory from "./HotelBookingHistory";
 
 const numberToWords = (num) => {
   const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
@@ -90,69 +79,29 @@ const Dashboard = () => {
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
   const [showVerificationPopup, setShowVerificationPopup] = useState(false);
   const [verificationData, setVerificationData] = useState({ identifier: "", code: "" });
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+  const [passwordData, setPasswordData] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [verificationError, setVerificationError] = useState("");
   const [completionPercentage, setCompletionPercentage] = useState(0);
   const [activeSection, setActiveSection] = useState("Profile");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [flightBookings, setFlightBookings] = useState([]);
-  const [hotelBookings, setHotelBookings] = useState([]);
   const [carRentals, setCarRentals] = useState([]);
   const [historyTab, setHistoryTab] = useState("Flights");
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState({ message: "", type: "", visible: false });
-  const [cancellingBookings, setCancellingBookings] = useState(new Set());
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
-  const [bookingToCancel, setBookingToCancel] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const API_URL_LOGIN = "http://localhost:5001/api";
   const API_URL_FLIGHT = "http://localhost:5000/api";
 
   const statesList = [
-    "Andaman and Nicobar",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chhattisgarh",
-    "Dadra and Nagar Haveli",
-    "Daman and Diu",
-    "Delhi",
-    "Goa",
-    "Gujarat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu and Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Ladakh",
-    "Lakshadweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Odisha",
-    "Puducherry",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttarakhand",
-    "West Bengal",
+    "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+    "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand",
+    "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra",
+    "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab",
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+    "Uttarakhand", "West Bengal",
   ];
 
   const profileFields = [
@@ -191,360 +140,6 @@ const Dashboard = () => {
   const showToast = (message, type) => {
     setToast({ message, type, visible: true });
     setTimeout(() => setToast({ message: "", type: "", visible: false }), 3000);
-  const numberToWords = (num) => {
-    const units = [
-      "",
-      "One",
-      "Two",
-      "Three",
-      "Four",
-      "Five",
-      "Six",
-      "Seven",
-      "Eight",
-      "Nine",
-    ];
-    const tens = [
-      "",
-      "",
-      "Twenty",
-      "Thirty",
-      "Forty",
-      "Fifty",
-      "Sixty",
-      "Seventy",
-      "Eighty",
-      "Ninety",
-    ];
-    const teens = [
-      "Ten",
-      "Eleven",
-      "Twelve",
-      "Thirteen",
-      "Fourteen",
-      "Fifteen",
-      "Sixteen",
-      "Seventeen",
-      "Eighteen",
-      "Nineteen",
-    ];
-    const scales = ["", "Thousand", "Lakh", "Crore"];
-
-    if (num === 0) return "Zero";
-
-    let numStr = num.toString();
-    let chunks = [];
-    while (numStr.length > 0) {
-      if (numStr.length > 3) {
-        chunks.push(parseInt(numStr.slice(-3)));
-        numStr = numStr.slice(0, -3);
-      } else {
-        chunks.push(parseInt(numStr));
-        numStr = "";
-      }
-    }
-
-    let words = [];
-    for (let i = 0; i < chunks.length; i++) {
-      let chunk = chunks[i];
-      if (chunk === 0) continue;
-
-      let chunkWords = [];
-      if (chunk >= 100) {
-        chunkWords.push(`${units[Math.floor(chunk / 100)]} Hundred`);
-        chunk %= 100;
-      }
-      if (chunk >= 10 && chunk <= 19) {
-        chunkWords.push(teens[chunk - 10]);
-      } else if (chunk >= 20) {
-        chunkWords.push(tens[Math.floor(chunk / 10)]);
-        chunk %= 10;
-        if (chunk > 0) chunkWords.push(units[chunk]);
-      } else if (chunk > 0) {
-        chunkWords.push(units[chunk]);
-      }
-      if (i > 0 && chunkWords.length > 0) {
-        chunkWords.push(scales[i]);
-      }
-      words.unshift(...chunkWords);
-    }
-
-    return words.join(" ");
-  };
-
-  const downloadInvoice = (booking) => {
-    const doc = new jsPDF();
-    let yPosition = 10;
-
-    // Colors
-    const darkBlue = [30, 58, 138]; // #1E3A8A
-    const lightGray = [243, 244, 246]; // #F3F4F6
-    const white = [255, 255, 255]; // #FFFFFF
-    const darkGray = [55, 65, 81]; // #374151
-
-    // Outer Border
-    doc.setLineWidth(0.5);
-    doc.setDrawColor(...darkBlue);
-    doc.rect(5, 5, 200, 287, "S"); // Border around the entire page
-
-    // Header: Dark Blue Background with White Text
-    doc.setFillColor(...darkBlue);
-    doc.rect(0, 0, 210, 30, "F"); // Full-width header
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...white);
-    doc.text("TripGlide", 15, yPosition + 10);
-    doc.setFontSize(14);
-    doc.text("INVOICE", 190, yPosition + 10, { align: "right" });
-    yPosition += 20;
-
-    // Invoice Number and Booking Date
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Invoice No: INV-2025-${booking.booking_number}`, 190, yPosition, { align: "right" });
-    yPosition += 5;
-    doc.text(
-      `Booking Date: ${new Date(booking.booked_on).toLocaleDateString("en-US", {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })}`,
-      190,
-      yPosition,
-      { align: "right" }
-    );
-    yPosition += 10;
-
-    // Customer Info Section
-    doc.setFillColor(...white);
-    doc.rect(10, yPosition - 5, 190, 40, "F"); // White background for customer info
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...darkGray);
-    doc.text("Customer Information", 15, yPosition);
-    doc.setLineWidth(0.2);
-    doc.setDrawColor(...darkBlue);
-    doc.line(15, yPosition + 2, 85, yPosition + 2); // Underline for header
-    yPosition += 10;
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Traveler: ${booking.traveler_name || "Guest"}`, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Email: ${booking.email || "Not provided"}`, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Booking ID: TG-${booking.booking_number}`, 15, yPosition);
-    yPosition += 15;
-
-    // Flight Details Section
-    doc.setFillColor(...lightGray);
-    doc.rect(10, yPosition - 5, 190, 10, "F"); // Light gray background for section header
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...darkGray);
-    doc.text("Flight Details", 15, yPosition);
-    doc.setLineWidth(0.2);
-    doc.line(15, yPosition + 2, 65, yPosition + 2); // Underline for header
-    doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Email: ${booking.email || "Not provided"}`, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Phone: ${booking.phone || "Not provided"}`, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Booking ID: TG-${booking.booking_number}`, 15, yPosition);
-    yPosition += 15;
-
-    doc.setFillColor(...lightGray);
-    doc.rect(10, yPosition - 5, 190, 10, "F");
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...darkGray);
-    doc.text("Hotel Details", 15, yPosition);
-    doc.setLineWidth(0.2);
-    doc.line(15, yPosition + 2, 65, yPosition + 2);
-    yPosition += 10;
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    const flightTitle = `${booking.airline || "Unknown Airline"} • ${
-      booking.flight_number || "N/A"
-    } - ${booking.departure_airport} to ${booking.arrival_airport}`;
-    doc.text(flightTitle, 15, yPosition, { maxWidth: 180 });
-    yPosition += 8;
-    const travelDate = `Travel Date: ${new Date(booking.departure_date).toLocaleDateString("en-US", {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    })}, ${booking.departure_time || "N/A"}`;
-    doc.text(travelDate, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Traveler: ${booking.traveler_name || "Guest"}`, 15, yPosition);
-    yPosition += 10;
-
-    // Fare Breakdown Table
-    doc.setFillColor(...darkBlue);
-    doc.rect(15, yPosition - 5, 180, 8, "F"); // Dark blue header for table
-    const hotelTitle = `${booking.hotel_name} - ${booking.room_type} (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`;
-    doc.text(hotelTitle, 15, yPosition, { maxWidth: 180 });
-    yPosition += 8;
-    const totalGuests = (booking.adults || 0) + (booking.children || 0);
-    doc.text(`Guest: ${totalGuests} (Adults: ${booking.adults || 0}, Children: ${booking.children || 0})`, 15, yPosition);
-    yPosition += 5;
-
-    const checkIn = `Check-In: ${new Date(booking.check_in_date).toLocaleDateString(
-      "en-US",
-      {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }
-    )}, 02:00 PM`;
-    doc.text(checkIn, 15, yPosition);
-    yPosition += 5;
-    const checkOut = `Check-Out: ${new Date(booking.check_out_date).toLocaleDateString(
-      "en-US",
-      {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }
-    )}, 11:00 AM`;
-    doc.text(checkOut, 15, yPosition);
-    yPosition += 5;
-    doc.text(`Traveler: ${booking.guest_name || "Guest"}`, 15, yPosition);
-    yPosition += 10;
-
-    doc.setFillColor(...darkBlue);
-    doc.rect(15, yPosition - 5, 180, 8, "F");
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...white);
-    doc.text("Description", 20, yPosition);
-    doc.text("Base Fare", 100, yPosition, { align: "right" });
-    doc.text("Service Fee & Taxes", 150, yPosition, { align: "right" });
-    doc.text("Base Rate", 100, yPosition, { align: "right" });
-    doc.text("Taxes & Fees", 150, yPosition, { align: "right" });
-    doc.text("Amount", 190, yPosition, { align: "right" });
-    yPosition += 8;
-
-    doc.setLineWidth(0.1);
-    doc.setDrawColor(...darkGray);
-    doc.line(15, yPosition - 2, 195, yPosition - 2); // Divider below table header
-    yPosition += 5;
-
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(...darkGray);
-    const baseFare = Math.round(booking.total_price * 0.7) || 0; // Assume 70% is base fare
-    const taxes = Math.round(booking.total_price * 0.3) || 0; // Assume 30% is taxes
-    const total = booking.total_price || 0;
-
-    // Row 1: Base Fare
-    doc.setFillColor(245, 245, 245); // Very light gray for alternating row
-    doc.rect(15, yPosition - 5, 180, 8, "F");
-    doc.text("Flight Charges", 20, yPosition);
-    doc.text(`Rs. ${baseFare.toLocaleString()}`, 100, yPosition, { align: "right" });
-    doc.text(`Rs. ${taxes.toLocaleString()}`, 150, yPosition, { align: "right" });
-    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, { align: "right" });
-    yPosition += 10;
-
-    // Total Row
-    const baseRate = Math.round(booking.total_amount * 0.7);
-    const totalTaxes = Math.round(booking.total_amount * 0.3);
-    const grandTotal = booking.total_amount;
-
-    doc.setFillColor(245, 245, 245);
-    doc.rect(15, yPosition - 5, 180, 8, "F");
-    doc.text(
-      `Room Charges (${booking.rooms} Room${booking.rooms > 1 ? "s" : ""})`,
-      20,
-      yPosition
-    );
-    doc.text(`Rs. ${baseRate.toLocaleString()}`, 100, yPosition, {
-      align: "right",
-    });
-    doc.text(`Rs. ${taxes.toLocaleString()}`, 150, yPosition, { align: "right" });
-    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
-      align: "right",
-    });
-    yPosition += 10;
-
-    doc.setFillColor(...lightGray);
-    doc.rect(15, yPosition - 5, 180, 8, "F");
-    doc.setFont("helvetica", "bold");
-    doc.text("Total", 20, yPosition);
-    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, { align: "right" });
-    yPosition += 15;
-
-    // Total in Words
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    const totalInWords = `${numberToWords(total).toUpperCase()} ONLY (INR)`;
-    doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, { maxWidth: 180 });
-    yPosition += 15;
-
-    // Footer: Dark Blue Background with White Text
-    doc.setFillColor(...darkBlue);
-    doc.rect(0, 260, 210, 37, "F"); // Footer at the bottom
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...white);
-    doc.text("_tripglide Customer Support", 15, 270);
-    yPosition = 275;
-    doc.setFont("helvetica", "normal");
-    doc.text("_tripglide Pvt. Ltd.", 15, yPosition);
-    doc.text(`Rs. ${total.toLocaleString()}`, 190, yPosition, {
-      align: "right",
-    });
-    yPosition += 15;
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
-      maxWidth: 180,
-    });
-    doc.text(`Grand Total (in words): ${totalInWords}`, 15, yPosition, {
-      maxWidth: 180,
-    });
-    yPosition += 10;
-
-    doc.setFont("helvetica", "bold");
-    doc.text(
-      "Policy: Please ensure to present valid identification proof at the time of check-in.",
-      15,
-      yPosition,
-      { maxWidth: 180 }
-    );
-    yPosition += 15;
-
-    doc.setFillColor(...darkBlue);
-    doc.rect(0, 260, 210, 37, "F");
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...white);
-    doc.text("TripGlide Customer Support", 15, 270);
-    yPosition = 275;
-    doc.setFont("helvetica", "normal");
-    doc.text("TripGlide Pvt. Ltd.", 15, yPosition);
-    yPosition += 5;
-    doc.text("123 Travel Lane, Phase 1, Gujarat, India", 15, yPosition);
-    yPosition += 5;
-    doc.text("India Toll Free: 1-800-123-4567", 15, yPosition);
-
-    // Footer Note
-    doc.setFontSize(8);
-    doc.setTextColor(200, 200, 200); // Light gray for note
-    doc.text(
-      "Note: This is a computer-generated invoice and does not require a signature/stamp.",
-      15,
-      290,
-      { maxWidth: 180 }
-    );
-
-    doc.save(`invoice_${booking.booking_number}.pdf`);
   };
 
   useEffect(() => {
@@ -559,7 +154,6 @@ const Dashboard = () => {
         });
         setCompletionPercentage(calculateCompletionPercentage(parsedUser));
         fetchProfile(getIdentifier(parsedUser));
-        fetchBookingHistory(parsedUser);
       } catch {
         navigate("/login");
       }
@@ -589,7 +183,7 @@ const Dashboard = () => {
       if (res.success) {
         const updatedUser = {
           ...res.user,
-          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split("T")[0] : "",
+          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split('T')[0] : ""
         };
         setUser(updatedUser);
         setFormData(updatedUser);
@@ -605,107 +199,27 @@ const Dashboard = () => {
   };
 
   const fetchBookingHistory = async (user) => {
-    setIsLoading(true);
     try {
-      const identifier = getIdentifier(user);
-      if (!identifier) {
-        setError("User email or phone is required to fetch bookings");
-        return;
-      }
       const endpoints = [
-        { url: `${API_URL_FLIGHT}/flight_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setFlightBookings, key: "bookings" }
-      ];
-    try {
-      const identifier = getIdentifier(user);
-      const endpoints = [
-        { url: `${API_URL}/flight_bookings?user_id=${user.user_id}`, setter: setFlightBookings, key: "bookings" },
-        { url: `http://localhost:5003/api/hotel_bookings?identifier=${encodeURIComponent(identifier)}`, setter: setHotelBookings, key: "bookings" },
-        { url: `${API_URL}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
+        { url: `${API_URL_FLIGHT}/flight_bookings?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
+        { url: `${API_URL_FLIGHT}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
       ];
       for (const { url, setter, key } of endpoints) {
-        let attempts = 2;
-        while (attempts > 0) {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000);
-          try {
-            const response = await fetch(url, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!response.ok) {
-              const errorData = await response.json();
-              throw new Error(errorData.message || errorData.error || `Failed to load ${key} (Status: ${response.status})`);
-            }
-            const data = await response.json();
-            if (data.success) {
-              setter(data[key] || []);
-              break;
-            } else {
-              throw new Error(data.error || `Failed to load ${key}`);
-            }
-          } catch (err) {
-            clearTimeout(timeoutId);
-            if (err.name === 'AbortError') {
-              throw new Error(`Request timed out for ${key}`);
-            }
-            attempts--;
-            if (attempts === 0) {
-              console.error(`Failed to fetch ${key} after retries:`, err);
-              setError(`Unable to load ${key}: ${err.message}`);
-            }
-            if (attempts > 0) {
-              await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-          }
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (data.success) {
+          setter(data[key] || []);
+        } else {
+          setError(data.error || `Failed to load ${key}`);
         }
       }
     } catch (err) {
       console.error("Fetch booking history error:", err);
       setError(`Failed to load booking history: ${err.message}`);
-    }
-    } catch (err) {
-      console.error("Fetch booking history error:", err);
-      setError(`Failed to load booking history: ${err.message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCancelFlight = async (bookingNumber) => {
-    if (!window.confirm("Are you sure you want to cancel this flight booking?")) return;
-    setCancellingBookings((prev) => new Set([...prev, bookingNumber]));
-    try {
-      const response = await fetch(`${API_URL_FLIGHT}/cancel_flight_booking`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking_number: bookingNumber }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || `Failed to cancel booking (Status: ${response.status})`);
-      }
-      const data = await response.json();
-      if (data.success) {
-        showToast("Flight booking cancelled successfully", "success");
-        setFlightBookings((prev) => {
-          const updated = prev.map((b) =>
-            b.booking_number === bookingNumber ? { ...b, status: "Cancelled" } : b
-          );
-          return updated.sort((a, b) => {
-            const order = { Upcoming: 1, Completed: 2, Cancelled: 3 };
-            return order[a.status] - order[b.status] || new Date(b.booked_on) - new Date(a.booked_on);
-          });
-        });
-      } else {
-        throw new Error(data.error || "Failed to cancel booking");
-      }
-    } catch (err) {
-      console.error("Cancel flight error:", err);
-      showToast(`Failed to cancel booking: ${err.message}`, "error");
-    } finally {
-      setCancellingBookings((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(bookingNumber);
-        return newSet;
-      });
     }
   };
 
@@ -882,49 +396,6 @@ const Dashboard = () => {
 
   const openEditPopup = () => setShowPopup(true);
 
-  const handleCancelBooking = async (bookingId) => {
-    try {
-      const response = await fetch(`http://localhost:5003/api/hotel_bookings/${bookingId}/cancel`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-      }
-      const res = await response.json();
-      if (res.success) {
-        alert("Booking cancelled successfully!");
-        fetchBookingHistory(user);
-      } else {
-        setError(res.error || "Failed to cancel booking");
-      }
-    } catch (err) {
-      console.error("Cancel booking error:", err);
-      setError(`Failed to cancel booking: ${err.message}`);
-    }
-  };
-
-  const confirmCancelBooking = (bookingId) => {
-    setBookingToCancel(bookingId);
-    setShowCancelConfirmation(true);
-  };
-
-  const handleConfirmCancel = async () => {
-    if (bookingToCancel) {
-      await handleCancelBooking(bookingToCancel);
-      setShowCancelConfirmation(false);
-      setBookingToCancel(null);
-      setSuccessMessage("Your booking has been cancelled successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
-    }
-  };
-
-  const handleCancelConfirmation = () => {
-    setShowCancelConfirmation(false);
-    setBookingToCancel(null);
-  };
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -1017,14 +488,7 @@ const Dashboard = () => {
         <div className="flex-1 w-full lg:ml-0 mt-4 lg:mt-0 overflow-y-auto">
           <AnimatePresence mode="wait">
             {activeSection === "Profile" && (
-              <motion.div
-                key="Profile"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="space-y-6"
-              >
+              <motion.div key="Profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="space-y-6">
                 <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile Completion</h2>
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
@@ -1079,14 +543,7 @@ const Dashboard = () => {
             )}
 
             {activeSection === "BookingHistory" && (
-              <motion.div
-                key="BookingHistory"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
-              >
+              <motion.div key="BookingHistory" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Booking History</h2>
                 {error && (
                   <motion.div
@@ -1111,327 +568,28 @@ const Dashboard = () => {
                     ))}
                   </div>
                 )}
-                {successMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="bg-green-50 text-green-600 p-3 rounded-lg mb-4 text-sm border border-green-200"
-                  >
-                    {successMessage}
-                  </motion.div>
-                )}
-                <div className="flex border-b border-gray-200 mb-6">
-                  {["Flights", "Hotels", "Cars"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setHistoryTab(tab)}
-                      className={`px-4 py-2 text-sm font-medium ${
-                        historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-                  {historyTab === "Flights" && !isLoading && (
-                    <>
-                      <h3 className="text-lg font-semibold text-gray-800">Flight Bookings</h3>
-                      {flightBookings.length === 0 ? (
-                        <p className="text-gray-500 text-sm">No flight bookings found.</p>
-                      ) : (
-                        flightBookings.map((booking, index) => (
-                          <motion.div
-                            key={booking.booking_number}
-                            variants={itemVariants}
-                            className={`border rounded-lg p-4 mb-4 shadow-sm ${
-                              booking.status === "Cancelled" ? "bg-gray-100 opacity-75 border-gray-300" : "bg-white"
-                            }`}
-                            layout
-                            transition={{ duration: 0.5 }}
-                          >
-                            <div className="flex justify-between items-center mb-2">
-                              <p className="text-sm font-medium text-gray-800 max-w-2xl">
-                                {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
-                              </p>
-                              <div className="flex items-center space-x-2">
-                                <span
-                                  className={`text-xs px-2 py-1 rounded ${
-                                    booking.status === "Upcoming"
-                                      ? "bg-green-100 text-green-800"
-                                      : booking.status === "Completed"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : "bg-red-100 text-red-800"
-                                  }`}
-                                >
-                                  {booking.status}
-                                </span>
-                                {booking.status === "Upcoming" && !cancellingBookings.has(booking.booking_number) && (
-                                  <motion.button
-                                    variants={buttonVariants}
-                                    whileHover="hover"
-                                    whileTap="tap"
-                                    onClick={() => handleCancelFlight(booking.booking_number)}
-                                    className="text-sm text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition"
-                                  >
-                                    Cancel Flight
-                                  </motion.button>
-                                )}
-                                {cancellingBookings.has(booking.booking_number) && (
-                                  <p className="text-sm text-gray-500">Cancelling...</p>
-                                )}
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              <div>
-                                <p className="text-xs text-gray-500">Booking Number</p>
-                                <p className="text-sm font-semibold">{booking.booking_number}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Traveler</p>
-                                <p className="text-sm">{booking.traveler_name}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Email</p>
-                                <p className="text-sm">{booking.email || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Flight Number</p>
-                                <p className="text-sm font-semibold">{booking.flight_number || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Departure</p>
-                                <p className="text-sm">{formatDate(booking.departure_date)} • {booking.departure_time}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Arrival</p>
-                                <p className="text-sm">{formatDate(booking.arrival_date)} • {booking.arrival_time}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Duration</p>
-                                <p className="text-sm">{booking.duration || "N/A"}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Total Price</p>
-                                <p className="text-sm font-semibold">₹{Number(booking.total_price).toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Trip Type</p>
-                                <p className="text-sm">{booking.trip_type}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Booked On</p>
-                                <p className="text-sm">{formatDate(booking.booked_on)}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-gray-500">Created At</p>
-                                <p className="text-sm">{formatDate(booking.created_at)}</p>
-                              </div>
-                            </div>
-                            <div className="flex justify-end mt-4">
-                              <motion.button
-                                variants={buttonVariants}
-                                whileHover="hover"
-                                whileTap="tap"
-                                onClick={() => downloadInvoice(booking)}
-                                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm flex items-center"
-                              >
-                                <FaDownload className="mr-2" />
-                                Invoice
-                              </motion.button>
-                            </div>
-                          </motion.div>
-                        ))
-                      )}
-                    </>
+                  {historyTab === "Flights" && (
+                    <FlightBookingHistory
+                      user={user}
+                      setError={setError}
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
+                      showToast={showToast}
+                      API_URL_FLIGHT={API_URL_FLIGHT}
+                      formatDate={formatDate}
+                      numberToWords={numberToWords}
+                    />
                   )}
                   {historyTab === "Hotels" && (
-                    <>
-                      <h3 className="text-lg font-semibold text-gray-800">Hotel Bookings</h3>
-                      {hotelBookings.length === 0 ? (
-                        <p className="text-gray-500 text-sm">No hotel bookings found.</p>
-                      ) : (
-                        hotelBookings
-                          .filter((booking) => booking.status !== "Cancelled")
-                          .map((booking) => (
-                            <motion.div
-                              key={booking.id}
-                              variants={itemVariants}
-                              className="rounded-lg p-4 shadow-md border border-gray-200"
-                            >
-                              <div className="flex justify-between items-start mb-2">
-                                <h4 className="text-md font-medium text-gray-800">
-                                  {booking.hotel_name} - {booking.room_type}
-                                </h4>
-                                {booking.status === "Ongoing" ? (
-                                  <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">
-                                    Ongoing
-                                  </span>
-                                ) : booking.status === "Upcoming" ? (
-                                  <span className="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
-                                    Upcoming
-                                  </span>
-                                ) : null}
-                              </div>
-                              <div className="grid grid-cols-2 gap-2 text-sm">
-                                <div>
-                                  <p className="text-gray-600">Booking Number</p>
-                                  <p className="font-medium">{booking.booking_number}</p>
-                                </div>
-                                <div className="grid grid-cols-2 gap-2 text-sm">
-                                  <div>
-                                    <p className="text-gray-600">Booking Number</p>
-                                    <p className="font-medium">{booking.booking_number}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Traveler</p>
-                                    <p className="font-medium">{booking.guest_name}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Check-in Date</p>
-                                    <p className="font-medium">{formatDate(booking.check_in_date)}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Check-out Date</p>
-                                    <p className="font-medium">{formatDate(booking.check_out_date)}</p>
-                                  </div>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Email</p>
-                                  <p className="font-medium">{booking.email}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Phone</p>
-                                  <p className="font-medium">{booking.phone}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Arrival</p>
-                                  <p className="font-medium">{booking.arrival}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Check-in Date</p>
-                                  <p className="font-medium">{formatDate(booking.check_in_date)}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Check-out Date</p>
-                                  <p className="font-medium">{formatDate(booking.check_out_date)}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Adults</p>
-                                  <p className="font-medium">{booking.adults}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Children</p>
-                                  <p className="font-medium">{booking.children}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Rooms</p>
-                                  <p className="font-medium">{booking.rooms}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Room Type</p>
-                                  <p className="font-medium">{booking.room_type}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Price Per Night</p>
-                                  <p className="font-medium">₹{booking.price_per_night.toLocaleString()}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Total Price</p>
-                                  <p className="font-medium">₹{booking.total_amount.toLocaleString()}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Payment Method</p>
-                                  <p className="font-medium">{booking.payment_method}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Booked On</p>
-                                  <p className="font-medium">{formatDate(booking.booked_on)}</p>
-                                </div>
-                                <div>
-                                  <p className="text-gray-600">Created At</p>
-                                  <p className="font-medium">{formatDate(booking.created_at)}</p>
-                                </div>
-                              </div>
-                              <div className="mt-4 flex gap-4">
-                                {booking.status === "Upcoming" && (
-                                  <motion.button
-                                    variants={buttonVariants}
-                                    whileHover="hover"
-                                    whileTap="tap"
-                                    onClick={() => confirmCancelBooking(booking.id)}
-                                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                                  >
-                                    Cancel Booking
-                                  </motion.button>
-                                )}
-                                <motion.button
-                                  variants={buttonVariants}
-                                  whileHover="hover"
-                                  whileTap="tap"
-                                  onClick={() => downloadInvoice(booking)}
-                                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                                >
-                                  Download Invoice
-                                </motion.button>
-                              </div>
-                            </motion.div>
-                          ))
-                      )}
-                      {hotelBookings.filter((booking) => booking.status === "Cancelled").length > 0 && (
-                        <>
-                          <h3 className="text-lg font-semibold text-gray-800 mt-6">Cancelled Bookings</h3>
-                          {hotelBookings
-                            .filter((booking) => booking.status === "Cancelled")
-                            .map((booking) => (
-                              <motion.div
-                                key={booking.id}
-                                variants={itemVariants}
-                                className="rounded-lg p-4 shadow-xl bg-gray-100"
-                              >
-                                <div className="flex justify-between items-start mb-2">
-                                  <h4 className="text-md font-medium text-gray-800">
-                                    {booking.hotel_name} - {booking.room_type}
-                                  </h4>
-                                  <span className="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">
-                                    Cancelled
-                                  </span>
-                                </div>
-                                <div className="grid grid-cols-2 gap-2 text-sm">
-                                  <div>
-                                    <p className="text-gray-600">Booking Number</p>
-                                    <p className="font-medium">{booking.booking_number}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Traveler</p>
-                                    <p className="font-medium">{booking.guest_name}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Check-in Date</p>
-                                    <p className="font-medium">{formatDate(booking.check_in_date)}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-gray-600">Check-out Date</p>
-                                    <p className="font-medium">{formatDate(booking.check_out_date)}</p>
-                                  </div>
-                                </div>
-                                <div className="mt-4">
-                                  <motion.button
-                                    variants={buttonVariants}
-                                    whileHover="hover"
-                                    whileTap="tap"
-                                    onClick={() => downloadInvoice(booking)}
-                                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                                  >
-                                    Download Invoice
-                                  </motion.button>
-                                </div>
-                              </motion.div>
-                            ))}
-                        </>
-                      )}
-                    </>
+                    <HotelBookingHistory
+                      user={user}
+                      setError={setError}
+                      formatDate={formatDate}
+                      numberToWords={numberToWords}
+                      fetchBookingHistory={fetchBookingHistory}
+                      showToast={showToast}
+                    />
                   )}
                   {historyTab === "Cars" && (
                     <>
@@ -1440,11 +598,7 @@ const Dashboard = () => {
                         <p className="text-gray-500 text-sm">No car rentals found.</p>
                       ) : (
                         carRentals.map((rental) => (
-                          <motion.div
-                            key={rental.rental_id}
-                            variants={itemVariants}
-                            className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
-                          >
+                          <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
                             <div>
                               <p className="text-sm font-medium text-gray-800">{rental.car_name || "Car Details"}</p>
                               <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
@@ -1459,14 +613,7 @@ const Dashboard = () => {
             )}
 
             {activeSection === "Login_details" && (
-              <motion.div
-                key="Login_details"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
-              >
+              <motion.div key="Login_details" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Login Details</h2>
                 {error && (
                   <motion.div
@@ -1485,14 +632,8 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">{user.phone || "Not provided"}</span>
-                      {user.phone && (user.phone_verified ? <FaCheckCircle className="text-green-500" /> : (
-                        <motion.button
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => handleRequestVerification(user.phone)}
-                          className="text-blue-600 text-sm hover:underline"
-                        >
+                      {user.phone && (user.otp_verified ? <FaCheckCircle className="text-green-500" /> : (
+                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleRequestVerification(user.phone)} className="text-blue-600 text-sm hover:underline">
                           Verify
                         </motion.button>
                       ))}
@@ -1509,13 +650,7 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">•••••••</span>
-                      <motion.button
-                        variants={buttonVariants}
-                        whileHover="hover"
-                        whileTap="tap"
-                        onClick={() => setShowPasswordPopup(true)}
-                        className="text-blue-600 text-sm hover:underline"
-                      >
+                      <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => setShowPasswordPopup(true)} className="text-blue-600 cursor-pointer text-sm hover:underline">
                         Change
                       </motion.button>
                     </div>
@@ -1525,14 +660,7 @@ const Dashboard = () => {
             )}
 
             {activeSection === "coTravellersSection" && (
-              <motion.div
-                key="coTravellersSection"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
-              >
+              <motion.div key="coTravellersSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Co-Travellers</h2>
                 <div className="mb-6">
                   <div className="flex flex-col sm:flex-row gap-3 mb-3">
@@ -1550,13 +678,7 @@ const Dashboard = () => {
                       onChange={(e) => setNewTraveller({ ...newTraveller, relationship: e.target.value })}
                       className="border border-gray-200 rounded-lg p-3 flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
                     />
-                    <motion.button
-                      variants={buttonVariants}
-                      whileHover="hover"
-                      whileTap="tap"
-                      onClick={handleAddCoTraveller}
-                      className="flex items-center bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
-                    >
+                    <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleAddCoTraveller} className="flex items-center cursor-pointer bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition">
                       <AiOutlinePlus className="mr-2" />
                       Add
                     </motion.button>
@@ -1568,22 +690,12 @@ const Dashboard = () => {
                     <p className="text-gray-500 text-sm">No co-travellers added yet.</p>
                   ) : (
                     coTravellers.map((traveller) => (
-                      <motion.div
-                        key={traveller.id}
-                        variants={itemVariants}
-                        className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
-                      >
+                      <motion.div key={traveller.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
                         <div>
                           <p className="text-sm font-medium text-gray-800">{traveller.name}</p>
                           <p className="text-sm text-gray-500">{traveller.relationship}</p>
                         </div>
-                        <motion.button
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => handleDeleteCoTraveller(traveller.id)}
-                          className="text-red-500 hover:text-red-700"
-                        >
+                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteCoTraveller(traveller.id)} className="text-red-500 hover:text-red-700">
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       </motion.div>
@@ -1594,37 +706,17 @@ const Dashboard = () => {
             )}
 
             {activeSection === "devicesSection" && (
-              <motion.div
-                key="devicesSection"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
-              >
+              <motion.div key="devicesSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Devices</h2>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4">
                   {devices.map((device) => (
-                    <motion.div
-                      key={device.id}
-                      variants={itemVariants}
-                      className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
-                    >
+                    <motion.div key={device.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
                       <div>
                         <p className="text-sm font-medium text-gray-800">{device.name.substring(0, 50)}...</p>
-                        <p className="text-sm text-gray-500">
-                          Last login: {new Date(device.lastLogin).toLocaleString()}{" "}
-                          {device.isCurrent && "(Current)"}
-                        </p>
+                        <p className="text-sm text-gray-500">Last login: {new Date(device.lastLogin).toLocaleString()}{device.isCurrent && " (Current)"}</p>
                       </div>
                       {!device.isCurrent && (
-                        <motion.button
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => handleDeleteDevice(device.id)}
-                          className="text-red-500 hover:text-red-700"
-                        >
+                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteDevice(device.id)} className="text-red-500 hover:text-red-700">
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       )}
@@ -1639,13 +731,7 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPopup && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
             <motion.div
               className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg relative"
               initial={{ scale: 0.9 }}
@@ -1653,31 +739,18 @@ const Dashboard = () => {
               exit={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setShowPopup(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              >
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
                 <IoClose size={24} />
               </motion.button>
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Edit Profile</h2>
               {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
-                >
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
                   {error}
                 </motion.div>
               )}
               <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-h-[60vh] overflow-y-auto">
                 {profileFields.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}
-                  >
+                  <motion.div key={index} variants={itemVariants} className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}>
                     <label className="block text-sm font-medium text-gray-700 mb-1">{item.label}</label>
                     {item.name === "state" ? (
                       <select
@@ -1715,13 +788,7 @@ const Dashboard = () => {
                 ))}
               </motion.div>
               <div className="flex justify-end">
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  onClick={handleSave}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-                >
+                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleSave} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                   Save
                 </motion.button>
               </div>
@@ -1732,37 +799,16 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPasswordPopup && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              className="bg-white rounded-xl p-6 w-full max-w-md"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
+            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setShowPasswordPopup(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPasswordPopup(false)} className="text-gray-500 hover:text-gray-700">
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {passwordError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
-                >
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
                   {passwordError}
                 </motion.div>
               )}
@@ -1799,13 +845,7 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  onClick={handleChangePassword}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-                >
+                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleChangePassword} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                   Save
                 </motion.button>
               </div>
@@ -1820,21 +860,12 @@ const Dashboard = () => {
             <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Verify Phone</h2>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setShowVerificationPopup(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
+                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowVerificationPopup(false)} className="text-gray-500 hover:text-gray-700">
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {verificationError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
-                >
+                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
                   {verificationError}
                 </motion.div>
               )}
@@ -1852,65 +883,8 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  onClick={handleVerifyCode}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-                >
+                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleVerifyCode} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
                   Verify
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showCancelConfirmation && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              className="bg-white rounded-xl p-6 w-full max-w-md relative"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            >
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleCancelConfirmation}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              >
-                <IoClose size={24} />
-              </motion.button>
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Cancellation</h2>
-              <p className="text-gray-600 mb-6">Are you sure you want to cancel your booking?</p>
-              <div className="flex justify-end gap-4">
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  onClick={handleCancelConfirmation}
-                  className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition"
-                >
-                  No
-                </motion.button>
-                <motion.button
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  onClick={handleConfirmCancel}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
-                >
-                  Yes
                 </motion.button>
               </div>
             </motion.div>
@@ -1920,7 +894,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
-}
 
 export default Dashboard;

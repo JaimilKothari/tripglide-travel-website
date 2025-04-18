@@ -78,7 +78,7 @@ const FlightData = ({
   const [favorites, setFavorites] = useState({});
   const [multiCityFlights, setMultiCityFlights] = useState(initialSearchParams.multiCityFlights || []);
 
-  const [priceRange, setPriceRange] = useState([3000, 6000]);
+  const [priceRange, setPriceRange] = useState([8000, 15000]);
   const [stopFilter, setStopFilter] = useState("direct");
   const [timeFilter, setTimeFilter] = useState("all");
   const [airlinesFilter, setAirlinesFilter] = useState([]);

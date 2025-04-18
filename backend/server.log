@@ -3134,3 +3134,233 @@
 2025-04-16 17:01:28,726 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 7.70ms
 2025-04-16 17:01:29,052 - INFO - Car rentals fetched for user_id=1
 2025-04-16 17:01:29,053 - INFO - 200 GET /api/car_rentals?user_id=1 (127.0.0.1) 3.28ms
+2025-04-16 18:31:19,059 - DEBUG - Starting authorization phase
+2025-04-16 18:31:19,059 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-16 18:31:19,059 - INFO - package: mysql.connector.plugins
+2025-04-16 18:31:19,059 - INFO - plugin_name: mysql_native_password
+2025-04-16 18:31:19,059 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-16 18:31:19,059 - DEBUG - mysql_native_password completed succesfully
+2025-04-16 18:31:19,059 - INFO - Database connection established
+2025-04-16 18:31:19,067 - INFO - Database tables initialized
+2025-04-16 18:31:19,076 - INFO - Twilio client initialized successfully
+2025-04-16 18:31:19,084 - INFO - Serving on http://0.0.0.0:5001
+2025-04-16 18:31:19,084 - DEBUG - Using selector: SelectSelector
+2025-04-16 18:31:19,092 - INFO - Start watching changes
+2025-04-16 18:31:19,092 - INFO - Start detecting changes
+2025-04-18 10:25:10,870 - ERROR - Failed to connect to database: 2002: Can't connect to local MySQL server through socket '%-.100s' (%s) (Warning: not all arguments converted during string formatting)
+2025-04-18 10:25:10,879 - INFO - Twilio client initialized successfully
+2025-04-18 10:25:10,883 - INFO - Serving on http://0.0.0.0:5001
+2025-04-18 10:25:10,884 - DEBUG - Using selector: SelectSelector
+2025-04-18 10:25:10,906 - INFO - Start watching changes
+2025-04-18 10:25:10,906 - INFO - Start detecting changes
+2025-04-18 10:52:59,201 - WARNING - Database connection lost, attempting to reconnect
+2025-04-18 10:52:59,201 - DEBUG - Starting authorization phase
+2025-04-18 10:52:59,201 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-18 10:52:59,201 - INFO - package: mysql.connector.plugins
+2025-04-18 10:52:59,201 - INFO - plugin_name: mysql_native_password
+2025-04-18 10:52:59,217 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-18 10:52:59,217 - DEBUG - mysql_native_password completed succesfully
+2025-04-18 10:52:59,217 - INFO - Database connection established
+2025-04-18 10:52:59,217 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:52:59,217 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 15.86ms
+2025-04-18 10:53:33,214 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:53:33,216 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.84ms
+2025-04-18 10:53:33,224 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:53:33,225 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.99ms
+2025-04-18 10:54:04,804 - INFO - 200 OPTIONS /api/login (127.0.0.1) 3.01ms
+2025-04-18 10:54:04,811 - DEBUG - Login attempt: identifier=8799188207
+2025-04-18 10:54:04,814 - DEBUG - Query: SELECT * FROM users WHERE phone = %s AND password = %s, Result: {'user_id': 27, 'username': 'varun.in', 'email': 'quizzicalbassi1@freethecookies.com', 'password': '123456', 'birthday': datetime.date(2019, 1, 1), 'gender': 'MALE', 'phone': '8799188207', 'address': 'gaziyabad', 'state': 'Gujarat', 'pincode': '391740', 'otp': None, 'otp_verified': 1}
+2025-04-18 10:54:05,622 - INFO - -- BEGIN Twilio API Request --
+2025-04-18 10:54:05,623 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-18 10:54:05,623 - INFO - Headers:
+2025-04-18 10:54:05,623 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-18 10:54:05,623 - INFO - Accept : application/json
+2025-04-18 10:54:05,623 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.9
+2025-04-18 10:54:05,623 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-18 10:54:05,623 - INFO - Accept-Charset : utf-8
+2025-04-18 10:54:05,624 - INFO - -- END Twilio API Request --
+2025-04-18 10:54:05,627 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-18 10:54:06,556 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 634
+2025-04-18 10:54:06,557 - INFO - Response Status Code: 201
+2025-04-18 10:54:06,558 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '634', 'Connection': 'keep-alive', 'Date': 'Fri, 18 Apr 2025 05:24:06 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQe673246c4a482b2aad2a21ada02a9c56', 'Twilio-Request-Duration': '0.206', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 98c5164a86e0d67efb9bf35971e4d56c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'c-ekelfSiMVdtFa8_3crR9nZ-3t0VIDOctB58RWIO6flD1nH4FqZAw=='}
+2025-04-18 10:54:06,642 - INFO - Verification sent to 8799188207 via sms: VE0a20654229845de94c672ab0305eb2e7
+2025-04-18 10:54:06,642 - INFO - -- BEGIN Twilio API Request --
+2025-04-18 10:54:06,643 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-18 10:54:06,643 - INFO - Headers:
+2025-04-18 10:54:06,643 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-18 10:54:06,643 - INFO - Accept : application/json
+2025-04-18 10:54:06,643 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.9
+2025-04-18 10:54:06,644 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-18 10:54:06,644 - INFO - Accept-Charset : utf-8
+2025-04-18 10:54:06,644 - INFO - -- END Twilio API Request --
+2025-04-18 10:54:07,397 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 699
+2025-04-18 10:54:07,397 - INFO - Response Status Code: 201
+2025-04-18 10:54:07,398 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '699', 'Connection': 'keep-alive', 'Date': 'Fri, 18 Apr 2025 05:24:07 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQa6c65d4ec8f1bb2105676058a880a514', 'Twilio-Request-Duration': '0.151', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 98c5164a86e0d67efb9bf35971e4d56c.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'AWWy0qhuQlNH4tr8QZRhV56ykdqA8HqDSZkDeQ0dCf3Zoc4Q2xI2hw=='}
+2025-04-18 10:54:07,398 - INFO - Verification sent to quizzicalbassi1@freethecookies.com via email: VE25fed72b44f0999b3e05e4ec9dba37c3
+2025-04-18 10:54:07,398 - ERROR - Exception on /api/login [POST]
+Traceback (most recent call last):
+  File "C:\Users\varun shah\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\varun shah\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 920, in full_dispatch_request
+    return self.finalize_request(rv)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\varun shah\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 939, in finalize_request
+    response = self.make_response(rv)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\varun shah\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\flask\app.py", line 1212, in make_response
+    raise TypeError(
+TypeError: The view function for 'login' did not return a valid response. The function either returned None or ended without a return statement.
+2025-04-18 10:54:07,434 - ERROR - 500 POST /api/login (127.0.0.1) 2624.72ms
+2025-04-18 10:55:54,424 - INFO - C:\xampp\htdocs\Internship\tripglide\backend\login.py modified; restarting server
+2025-04-18 10:55:56,403 - DEBUG - Starting authorization phase
+2025-04-18 10:55:56,403 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-18 10:55:56,403 - INFO - package: mysql.connector.plugins
+2025-04-18 10:55:56,403 - INFO - plugin_name: mysql_native_password
+2025-04-18 10:55:56,404 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-18 10:55:56,405 - DEBUG - mysql_native_password completed succesfully
+2025-04-18 10:55:56,406 - INFO - Database connection established
+2025-04-18 10:55:56,406 - INFO - Database tables initialized
+2025-04-18 10:55:56,406 - INFO - Twilio client initialized successfully
+2025-04-18 10:55:56,406 - INFO - Serving on http://0.0.0.0:5001
+2025-04-18 10:55:56,406 - DEBUG - Using selector: SelectSelector
+2025-04-18 10:55:56,438 - INFO - Start watching changes
+2025-04-18 10:55:56,438 - INFO - Start detecting changes
+2025-04-18 10:56:36,878 - INFO - 200 OPTIONS /api/login (127.0.0.1) 2.22ms
+2025-04-18 10:56:36,884 - DEBUG - Login attempt: identifier=8799188207
+2025-04-18 10:56:36,888 - DEBUG - Query: SELECT * FROM users WHERE phone = %s AND password = %s, Result: {'user_id': 27, 'username': 'varun.in', 'email': 'quizzicalbassi1@freethecookies.com', 'password': '123456', 'birthday': datetime.date(2019, 1, 1), 'gender': 'MALE', 'phone': '8799188207', 'address': 'gaziyabad', 'state': 'Gujarat', 'pincode': '391740', 'otp': None, 'otp_verified': 1}
+2025-04-18 10:56:37,013 - INFO - -- BEGIN Twilio API Request --
+2025-04-18 10:56:37,013 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-18 10:56:37,014 - INFO - Headers:
+2025-04-18 10:56:37,014 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-18 10:56:37,014 - INFO - Accept : application/json
+2025-04-18 10:56:37,014 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.9
+2025-04-18 10:56:37,014 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-18 10:56:37,015 - INFO - Accept-Charset : utf-8
+2025-04-18 10:56:37,015 - INFO - -- END Twilio API Request --
+2025-04-18 10:56:37,019 - DEBUG - Starting new HTTPS connection (1): verify.twilio.com:443
+2025-04-18 10:56:37,499 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 743
+2025-04-18 10:56:37,500 - INFO - Response Status Code: 201
+2025-04-18 10:56:37,500 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '743', 'Connection': 'keep-alive', 'Date': 'Fri, 18 Apr 2025 05:26:37 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ69f2c50a3f50f3ac7eb0c7a02e8785d4', 'Twilio-Request-Duration': '0.152', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 506d6d1ddb17b8a43beef70dfaec0dec.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'NisJ9RE13oLcoHG77Tg1SvqSkxZcURC-JmHlKHDobk3p_jGBGxVBRQ=='}
+2025-04-18 10:56:37,506 - INFO - Verification sent to 8799188207 via sms: VE0a20654229845de94c672ab0305eb2e7
+2025-04-18 10:56:37,507 - INFO - -- BEGIN Twilio API Request --
+2025-04-18 10:56:37,507 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications
+2025-04-18 10:56:37,507 - INFO - Headers:
+2025-04-18 10:56:37,507 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-18 10:56:37,507 - INFO - Accept : application/json
+2025-04-18 10:56:37,508 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.9
+2025-04-18 10:56:37,508 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-18 10:56:37,508 - INFO - Accept-Charset : utf-8
+2025-04-18 10:56:37,508 - INFO - -- END Twilio API Request --
+2025-04-18 10:56:38,315 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/Verifications HTTP/1.1" 201 850
+2025-04-18 10:56:38,316 - INFO - Response Status Code: 201
+2025-04-18 10:56:38,316 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '850', 'Connection': 'keep-alive', 'Date': 'Fri, 18 Apr 2025 05:26:38 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQ0d58ea6e71a6804b45676553df6fbb4a', 'Twilio-Request-Duration': '0.200', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 506d6d1ddb17b8a43beef70dfaec0dec.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': '1puTZKtRIyLokRtA1ECfrd5_V43a5h2feL95VEH9OK4bP7VaKRUMfA=='}
+2025-04-18 10:56:38,316 - INFO - Verification sent to quizzicalbassi1@freethecookies.com via email: VE25fed72b44f0999b3e05e4ec9dba37c3
+2025-04-18 10:56:38,317 - INFO - Login pending OTP: phone=8799188207, sent to [{'identifier': '8799188207', 'type': 'sms'}, {'identifier': 'quizzicalbassi1@freethecookies.com', 'type': 'email'}]
+2025-04-18 10:56:38,318 - INFO - 200 POST /api/login (127.0.0.1) 1436.45ms
+2025-04-18 10:56:48,548 - INFO - 200 OPTIONS /api/verify_code (127.0.0.1) 1.94ms
+2025-04-18 10:56:48,556 - INFO - -- BEGIN Twilio API Request --
+2025-04-18 10:56:48,556 - INFO - POST Request: https://verify.twilio.com/v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck
+2025-04-18 10:56:48,556 - INFO - Headers:
+2025-04-18 10:56:48,556 - INFO - Content-Type : application/x-www-form-urlencoded
+2025-04-18 10:56:48,556 - INFO - Accept : application/json
+2025-04-18 10:56:48,556 - INFO - User-Agent : twilio-python/9.5.2 (Windows AMD64) Python/3.11.9
+2025-04-18 10:56:48,556 - INFO - X-Twilio-Client : python-9.5.2
+2025-04-18 10:56:48,557 - INFO - Accept-Charset : utf-8
+2025-04-18 10:56:48,557 - INFO - -- END Twilio API Request --
+2025-04-18 10:56:48,830 - DEBUG - https://verify.twilio.com:443 "POST /v2/Services/VA6ccc14de778f3c64e166fb35b4f8ea1f/VerificationCheck HTTP/1.1" 200 340
+2025-04-18 10:56:48,831 - INFO - Response Status Code: 200
+2025-04-18 10:56:48,831 - INFO - Response Headers: {'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '340', 'Connection': 'keep-alive', 'Date': 'Fri, 18 Apr 2025 05:26:48 GMT', 'X-API-Domain': 'verify.twilio.com', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Twilio-Request-Id': 'RQa1b36ec359bbf39075d04afe839e668f', 'Twilio-Request-Duration': '0.038', 'Twilio-Concurrent-Requests': '1', 'X-Verification-Disclosure': 'Message Accepted. Pending content verification for US/Canada destination numbers:', 'X-Shenanigans': 'none', 'X-Powered-By': 'AT-5000', 'X-Home-Region': 'us1', 'X-Cache': 'Miss from cloudfront', 'Via': '1.1 506d6d1ddb17b8a43beef70dfaec0dec.cloudfront.net (CloudFront)', 'X-Amz-Cf-Pop': 'BOM78-P10', 'X-Amz-Cf-Id': 'j5I9FU7Ysg_bN5mPBngX_gsYO5R_MWcMhiKSOaf7bpDZv8oDcBZAGA=='}
+2025-04-18 10:56:48,833 - INFO - Verification check for 8799188207: approved
+2025-04-18 10:56:48,838 - INFO - phone verified for 8799188207
+2025-04-18 10:56:48,839 - INFO - 200 POST /api/verify_code (127.0.0.1) 287.76ms
+2025-04-18 10:56:49,069 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:56:49,071 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.95ms
+2025-04-18 10:56:49,078 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:56:49,079 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.28ms
+2025-04-18 10:58:10,236 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:58:10,237 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 3.00ms
+2025-04-18 10:58:10,244 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:58:10,245 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.80ms
+2025-04-18 10:59:25,167 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:59:25,170 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.55ms
+2025-04-18 10:59:25,180 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 10:59:25,182 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.00ms
+2025-04-18 11:04:07,286 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:04:07,288 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.53ms
+2025-04-18 11:04:07,296 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:04:07,298 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.00ms
+2025-04-18 11:05:32,130 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:05:32,133 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.16ms
+2025-04-18 11:05:32,144 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:05:32,146 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.53ms
+2025-04-18 11:21:51,224 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:21:51,226 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.58ms
+2025-04-18 11:23:06,545 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:23:06,549 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 13.22ms
+2025-04-18 11:23:06,549 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:23:06,549 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 0.00ms
+2025-04-18 11:24:54,417 - WARNING - 404 GET /location (127.0.0.1) 2.99ms
+2025-04-18 11:24:54,536 - WARNING - 404 GET /location (127.0.0.1) 111.34ms
+2025-04-18 11:45:48,605 - WARNING - 404 GET /location (127.0.0.1) 3.00ms
+2025-04-18 11:45:48,617 - WARNING - 404 GET /location (127.0.0.1) 4.52ms
+2025-04-18 11:45:50,850 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:45:50,851 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.53ms
+2025-04-18 11:45:50,856 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:45:50,858 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.99ms
+2025-04-18 11:45:53,096 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:45:53,097 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.38ms
+2025-04-18 11:45:53,105 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:45:53,107 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.57ms
+2025-04-18 11:46:04,860 - WARNING - 404 GET /location (127.0.0.1) 2.00ms
+2025-04-18 11:46:04,878 - WARNING - 404 GET /location (127.0.0.1) 2.54ms
+2025-04-18 11:46:07,585 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:46:07,587 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.95ms
+2025-04-18 11:46:07,595 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:46:07,598 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.28ms
+2025-04-18 11:46:43,286 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:46:43,289 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.00ms
+2025-04-18 11:46:43,294 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:46:43,296 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.01ms
+2025-04-18 11:47:03,618 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:47:03,619 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.00ms
+2025-04-18 11:47:03,627 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:47:03,629 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.60ms
+2025-04-18 11:54:28,222 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:54:28,224 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.10ms
+2025-04-18 11:54:28,224 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:54:28,224 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 0.00ms
+2025-04-18 11:54:43,892 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:54:43,893 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.00ms
+2025-04-18 11:54:43,898 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 11:54:43,899 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 3.26ms
+2025-04-18 12:01:18,243 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:01:18,245 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.31ms
+2025-04-18 12:01:18,260 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:01:18,262 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.00ms
+2025-04-18 12:01:32,632 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:01:32,634 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.53ms
+2025-04-18 12:01:32,641 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:01:32,643 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.03ms
+2025-04-18 12:06:24,903 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:06:24,903 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 0.00ms
+2025-04-18 12:10:39,645 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:10:39,646 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.23ms
+2025-04-18 12:10:39,655 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:10:39,657 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.73ms
+2025-04-18 12:11:56,425 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:11:56,427 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 6.99ms
+2025-04-18 12:11:56,553 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:11:56,555 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.34ms
+2025-04-18 12:13:19,578 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:13:19,580 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.48ms
+2025-04-18 12:13:19,586 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:13:19,587 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.41ms
+2025-04-18 12:13:42,141 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:13:42,142 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.69ms
+2025-04-18 12:13:42,146 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:13:42,146 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 3.00ms
+2025-04-18 12:17:41,890 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:17:41,891 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 3.93ms
+2025-04-18 12:17:41,891 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-18 12:17:41,891 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 0.00ms

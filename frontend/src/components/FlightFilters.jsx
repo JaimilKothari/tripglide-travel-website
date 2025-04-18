@@ -45,8 +45,8 @@ const FlightFilters = ({
         </div>
         <input
           type="range"
-          min="3000"
-          max="6000"
+          min="8000"
+          max="15000"
           step="100"
           value={priceRange[0]}
           onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
@@ -54,8 +54,8 @@ const FlightFilters = ({
         />
         <input
           type="range"
-          min="3000"
-          max="6000"
+          min="8000"
+          max="15000"
           step="100"
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
