@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function CabPopup({
   isOpen,
@@ -20,20 +20,19 @@ export default function CabPopup({
   setDropoffLocation,
   isDriverAgeValid,
   setIsDriverAgeValid,
-  handleSearch
+  handleSearch,
+  locations: availableLocations, // Renamed to match your prop
 }) {
   if (!isOpen) return null;
 
   const today = new Date().toISOString().split("T")[0];
   const currentTime = new Date().toTimeString().slice(0, 5);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Added state for dropdown
 
-  const [availableLocations, setAvailableLocations] = useState([]);
-  
   const handlePickupDateChange = (e) => {
     const newPickupDate = e.target.value;
     setPickupDate(newPickupDate);
     
-    // If dropoff date is before new pickup date, reset it
     if (dropoffDate && dropoffDate < newPickupDate) {
       setDropoffDate(newPickupDate);
     }
@@ -43,18 +42,17 @@ export default function CabPopup({
     setDropoffDate(e.target.value);
   };
 
-  // Fetch available cities from Flask API when component loads
   useEffect(() => {
     axios
-      .get("http://localhost:5001/location") // Flask API endpoint
+      .get("http://localhost:5005/locations")
       .then((response) => {
-        setAvailableLocations(response.data.car_city || []); // Set available locations
+        setAvailableLocations(response.data.locations || []);
       })
       .catch((error) => {
         console.error("Error fetching locations:", error);
       });
   }, []);
-  
+
   const isFormComplete = 
     pickupLocation && 
     pickupDate && 
@@ -62,6 +60,26 @@ export default function CabPopup({
     dropoffDate && 
     dropoffTime && 
     (!isDifferentLocation || (isDifferentLocation && dropoffLocation));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearch({
+      pickupLocation,
+      pickupDate,
+      pickupTime,
+      dropoffDate,
+      dropoffTime,
+      dropoffLocation,
+      isDifferentLocation,
+      isDriverAgeValid
+    });
+    onClose();
+  };
+
+  const handleSelectLocation = (location) => {
+    setPickupLocation(location);
+    setIsDropdownOpen(false); // Close dropdown on selection
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -73,31 +91,60 @@ export default function CabPopup({
           </button>
         </div>
 
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleSearch();
-        }} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Pickup Location */}
-            <div className="md:col-span-1">
-              <label className="block text-white font-semibold mb-1">
-                Pick-up location
-              </label>
-              <input
-              list='pickup-locations'
-                type="text"
-                placeholder="City, airport or station"
-                className="w-full p-3 rounded-lg bg-white text-black"
-                value={pickupLocation}
-                onChange={(e) => setPickupLocation(e.target.value)}
-                required
-              />
-              <datalist id="pickup-locations">
-                {availableLocations.map((location, index) => (
-                  <option key={index} value={location} />
-                ))}
-              </datalist>
-            </div>
+          
+<div className="md:col-span-1 relative">
+  <label className="block text-white font-semibold mb-1">
+    Pick-up location
+  </label>
+  <div className="relative">
+    <input
+      type="text"
+      placeholder="City, airport or station"
+      className="w-full p-3 rounded-lg bg-white text-black"
+      value={pickupLocation}
+      onChange={(e) => setPickupLocation(e.target.value)}
+      onFocus={() => setIsDropdownOpen(true)}
+      onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+      required
+    />
+    {isDropdownOpen && availableLocations.length > 0 && (
+      <ul className="absolute z-10 w-full bg-white text-black rounded-lg shadow-lg max-h-60 overflow-y-auto mt-1">
+        {availableLocations.map((location, index) => (
+          <li
+            key={index}
+            className="p-2 hover:bg-gray-200 cursor-pointer"
+            onClick={() => {
+              setPickupLocation(location);
+              setIsDropdownOpen(false);
+            }}
+            onMouseDown={(e) => e.preventDefault()}
+          >
+            {location}
+          </li>
+        ))}
+      </ul>
+    )}
+    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <svg
+        className="w-4 h-4 text-gray-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M19 9l-7 7-7-7"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</div>
 
             {/* Different drop-off location checkbox */}
             <div className="md:col-span-1 flex items-end">

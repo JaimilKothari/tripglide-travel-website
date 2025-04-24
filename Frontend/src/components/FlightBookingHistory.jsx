@@ -291,108 +291,114 @@ const FlightBookingHistory = ({
       {flightBookings.length === 0 ? (
         <p className="text-gray-500 text-sm">No flight bookings found.</p>
       ) : (
-        flightBookings.map((booking) => (
-          <motion.div
-            key={booking.booking_number}
-            variants={itemVariants}
-            className={`border rounded-lg p-4 mb-4 shadow-sm ${
-              booking.status === "Cancelled" ? "bg-gray-100 opacity-75 border-gray-300" : "bg-white"
-            }`}
-            layout
-            transition={{ duration: 0.5 }}
-          >
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-sm font-medium text-gray-800 max-w-2xl">
-                {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
-              </p>
-              <div className="flex items-center space-x-2">
-                <span
-                  className={`text-xs px-2 py-1 rounded ${
-                    booking.status === "Upcoming"
-                      ? "bg-green-100 text-green-800"
-                      : booking.status === "Completed"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
-                >
-                  {booking.status}
-                </span>
-                {booking.status === "Upcoming" && !cancellingBookings.has(booking.booking_number) && (
-                  <motion.button
-                    variants={buttonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    onClick={() => handleCancelFlight(booking.booking_number)}
-                    className="text-sm text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition"
+        <motion.div variants={containerVariants} initial="hidden" animate="visible">
+          {flightBookings.map((booking) => (
+            <motion.div
+              key={booking.booking_number}
+              variants={itemVariants}
+              className={`border rounded-lg p-4 mb-4 shadow-sm ${
+                booking.status === "Cancelled"
+                  ? "bg-gray-100 opacity-75 border-gray-300"
+                  : booking.status === "Completed"
+                  ? "bg-blue-50 border-blue-200"
+                  : "bg-white"
+              }`}
+              layout
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-sm font-medium text-gray-800 max-w-2xl">
+                  {booking.airline} • {booking.departure_airport} → {booking.arrival_airport}
+                </p>
+                <div className="flex items-center space-x-2">
+                  <span
+                    className={`text-xs px-2 py-1 rounded ${
+                      booking.status === "Upcoming"
+                        ? "bg-green-100 text-green-800"
+                        : booking.status === "Completed"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
                   >
-                    Cancel Flight
-                  </motion.button>
-                )}
-                {cancellingBookings.has(booking.booking_number) && (
-                  <p className="text-sm text-gray-500">Cancelling...</p>
-                )}
+                    {booking.status}
+                  </span>
+                  {booking.status === "Upcoming" && !cancellingBookings.has(booking.booking_number) && (
+                    <motion.button
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                      onClick={() => handleCancelFlight(booking.booking_number)}
+                      className="text-sm text-white bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg transition"
+                    >
+                      Cancel Flight
+                    </motion.button>
+                  )}
+                  {cancellingBookings.has(booking.booking_number) && (
+                    <p className="text-sm text-gray-500">Cancelling...</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <p className="text-xs text-gray-500">Booking Number</p>
-                <p className="text-sm font-semibold">{booking.booking_number}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <p className="text-xs text-gray-500">Booking Number</p>
+                  <p className="text-sm font-semibold">{booking.booking_number}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Traveler</p>
+                  <p className="text-sm">{booking.traveler_name}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Email</p>
+                  <p className="text-sm">{booking.email || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Flight Number</p>
+                  <p className="text-sm font-semibold">{booking.flight_number || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Departure</p>
+                  <p className="text-sm">{formatDate(booking.departure_date)} • {booking.departure_time}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Arrival</p>
+                  <p className="text-sm">{formatDate(booking.arrival_date)} • {booking.arrival_time}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Duration</p>
+                  <p className="text-sm">{booking.duration || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Total Price</p>
+                  <p className="text-sm font-semibold">₹{Number(booking.total_price).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Trip Type</p>
+                  <p className="text-sm">{booking.trip_type}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Booked On</p>
+                  <p className="text-sm">{formatDate(booking.booked_on)}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500">Created At</p>
+                  <p className="text-sm">{formatDate(booking.created_at)}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-gray-500">Traveler</p>
-                <p className="text-sm">{booking.traveler_name}</p>
+              <div className="flex justify-end mt-4">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={() => downloadInvoice(booking)}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm flex items-center"
+                >
+                  <FaDownload className="mr-2" />
+                  Invoice
+                </motion.button>
               </div>
-              <div>
-                <p className="text-xs text-gray-500">Email</p>
-                <p className="text-sm">{booking.email || "N/A"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Flight Number</p>
-                <p className="text-sm font-semibold">{booking.flight_number || "N/A"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Departure</p>
-                <p className="text-sm">{formatDate(booking.departure_date)} • {booking.departure_time}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Arrival</p>
-                <p className="text-sm">{formatDate(booking.arrival_date)} • {booking.arrival_time}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Duration</p>
-                <p className="text-sm">{booking.duration || "N/A"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Total Price</p>
-                <p className="text-sm font-semibold">₹{Number(booking.total_price).toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Trip Type</p>
-                <p className="text-sm">{booking.trip_type}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Booked On</p>
-                <p className="text-sm">{formatDate(booking.booked_on)}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">Created At</p>
-                <p className="text-sm">{formatDate(booking.created_at)}</p>
-              </div>
-            </div>
-            <div className="flex justify-end mt-4">
-              <motion.button
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                onClick={() => downloadInvoice(booking)}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm flex items-center"
-              >
-                <FaDownload className="mr-2" />
-                Invoice
-              </motion.button>
-            </div>
-          </motion.div>
-        ))
+            </motion.div>
+          ))}
+        </motion.div>
       )}
     </>
   );

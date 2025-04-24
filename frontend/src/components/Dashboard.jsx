@@ -8,6 +8,7 @@ import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
 import FlightBookingHistory from "./FlightBookingHistory";
 import HotelBookingHistory from "./HotelBookingHistory";
+import CabBookingHistory from "./CabBookingHistory";
 
 const numberToWords = (num) => {
   const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
@@ -93,6 +94,7 @@ const Dashboard = () => {
 
   const API_URL_LOGIN = "http://localhost:5001/api";
   const API_URL_FLIGHT = "http://localhost:5000/api";
+  const API_URL_CAB = "http://localhost:5005/api";
 
   const statesList = [
     "Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
@@ -150,10 +152,11 @@ const Dashboard = () => {
         setUser(parsedUser);
         setFormData({
           ...parsedUser,
-          birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split('T')[0] : ""
+          birthday: parsedUser.birthday ? new Date(parsedUser.birthday).toISOString().split("T")[0] : "",
         });
         setCompletionPercentage(calculateCompletionPercentage(parsedUser));
         fetchProfile(getIdentifier(parsedUser));
+        fetchBookingHistory(parsedUser);
       } catch {
         navigate("/login");
       }
@@ -183,7 +186,7 @@ const Dashboard = () => {
       if (res.success) {
         const updatedUser = {
           ...res.user,
-          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split('T')[0] : ""
+          birthday: res.user.birthday ? new Date(res.user.birthday).toISOString().split("T")[0] : "",
         };
         setUser(updatedUser);
         setFormData(updatedUser);
@@ -199,27 +202,24 @@ const Dashboard = () => {
   };
 
   const fetchBookingHistory = async (user) => {
+    setIsLoading(true);
     try {
-      const endpoints = [
-        { url: `${API_URL_FLIGHT}/flight_bookings?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
-        { url: `${API_URL_FLIGHT}/car_rentals?user_id=${user.user_id}`, setter: setCarRentals, key: "bookings" },
-      ];
-      for (const { url, setter, key } of endpoints) {
-        const response = await fetch(url);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.success) {
-          setter(data[key] || []);
-        } else {
-          setError(data.error || `Failed to load ${key}`);
-        }
+      const response = await fetch(`${API_URL_CAB}/bookings?user_id=${user.user_id}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.success) {
+        setCarRentals(data.bookings || []);
+      } else {
+        setError(data.error || "Failed to load car bookings");
       }
     } catch (err) {
-      console.error("Fetch booking history error:", err);
-      setError(`Failed to load booking history: ${err.message}`);
+      console.error("Fetch car booking history error:", err);
+      setError(`Failed to load car booking history: ${err.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -437,7 +437,7 @@ const Dashboard = () => {
         >
           <FaBars size={24} />
         </motion.button>
-        <h1 className="text-xl font-semibold text-gray-800 cursor-pointer">Dashboard</h1>
+        <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
       </div>
 
       <div className="flex flex-col lg:flex-row flex-1 max-w-7xl mx-auto w-full p-4 gap-6">
@@ -468,7 +468,7 @@ const Dashboard = () => {
                 <motion.button
                   onClick={() => (item.onClick ? item.onClick() : handleSectionChange(item.section))}
                   variants={itemVariants}
-                  className={`w-full flex cursor-pointer items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition ${
+                  className={`w-full flex items-center p-3 rounded-lg text-gray-700 hover:bg-blue-50 transition ${
                     activeSection === item.section ? "bg-blue-100 text-blue-600 font-semibold" : ""
                   }`}
                   whileHover={{ x: 5 }}
@@ -482,13 +482,23 @@ const Dashboard = () => {
         </motion.nav>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 backdrop-brightness-30 z-40" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <div
+            className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setIsMobileMenuOpen(false)}
+          ></div>
         )}
 
         <div className="flex-1 w-full lg:ml-0 mt-4 lg:mt-0 overflow-y-auto">
           <AnimatePresence mode="wait">
             {activeSection === "Profile" && (
-              <motion.div key="Profile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="space-y-6">
+              <motion.div
+                key="Profile"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-6"
+              >
                 <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile Completion</h2>
                   <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
@@ -509,7 +519,7 @@ const Dashboard = () => {
                       whileHover="hover"
                       whileTap="tap"
                       onClick={openEditPopup}
-                      className="mt-4 sm:mt-0 flex cursor-pointer items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                      className="mt-4 sm:mt-0 flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                     >
                       <FaEdit className="mr-2" />
                       Edit Profile
@@ -543,7 +553,14 @@ const Dashboard = () => {
             )}
 
             {activeSection === "BookingHistory" && (
-              <motion.div key="BookingHistory" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="BookingHistory"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Booking History</h2>
                 {error && (
                   <motion.div
@@ -561,7 +578,9 @@ const Dashboard = () => {
                       <button
                         key={tab}
                         onClick={() => setHistoryTab(tab)}
-                        className={`px-4 py-2 cursor-pointer text-sm font-medium ${historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"}`}
+                        className={`px-4 py-2 text-sm font-medium ${
+                          historyTab === tab ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-600 hover:text-blue-600"
+                        }`}
                       >
                         {tab}
                       </button>
@@ -592,28 +611,28 @@ const Dashboard = () => {
                     />
                   )}
                   {historyTab === "Cars" && (
-                    <>
-                      <h3 className="text-lg font-semibold text-gray-800">Car Rentals</h3>
-                      {carRentals.length === 0 ? (
-                        <p className="text-gray-500 text-sm">No car rentals found.</p>
-                      ) : (
-                        carRentals.map((rental) => (
-                          <motion.div key={rental.rental_id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
-                            <div>
-                              <p className="text-sm font-medium text-gray-800">{rental.car_name || "Car Details"}</p>
-                              <p className="text-sm text-gray-500">{formatDate(rental.start_date)} - {formatDate(rental.end_date)}</p>
-                            </div>
-                          </motion.div>
-                        ))
-                      )}
-                    </>
+                    <CabBookingHistory
+                      user={user}
+                      carRentals={carRentals}
+                      setCarRentals={setCarRentals}
+                      fetchBookingHistory={fetchBookingHistory}
+                      showToast={showToast}
+                      isLoading={isLoading}
+                    />
                   )}
                 </motion.div>
               </motion.div>
             )}
 
             {activeSection === "Login_details" && (
-              <motion.div key="Login_details" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="Login_details"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Login Details</h2>
                 {error && (
                   <motion.div
@@ -625,21 +644,36 @@ const Dashboard = () => {
                   </motion.div>
                 )}
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-6">
-                  <motion.div variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex justify-between items-center py-3 border-b border-gray-100"
+                  >
                     <span className="text-sm font-medium text-gray-700 flex items-center">
                       <FaMobileAlt className="mr-2 text-gray-500" />
                       Mobile Number
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">{user.phone || "Not provided"}</span>
-                      {user.phone && (user.otp_verified ? <FaCheckCircle className="text-green-500" /> : (
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleRequestVerification(user.phone)} className="text-blue-600 text-sm hover:underline">
-                          Verify
-                        </motion.button>
-                      ))}
+                      {user.phone &&
+                        (user.otp_verified ? (
+                          <FaCheckCircle className="text-green-500" />
+                        ) : (
+                          <motion.button
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            onClick={() => handleRequestVerification(user.phone)}
+                            className="text-blue-600 text-sm hover:underline"
+                          >
+                            Verify
+                          </motion.button>
+                        ))}
                     </div>
                   </motion.div>
-                  <motion.div variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100">
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex justify-between items-center py-3 border-b border-gray-100"
+                  >
                     <span className="text-sm font-medium text-gray-700">Email</span>
                     <span className="text-sm text-gray-600">{user.email || "Not provided"}</span>
                   </motion.div>
@@ -650,7 +684,13 @@ const Dashboard = () => {
                     </span>
                     <div className="flex items-center space-x-3">
                       <span className="text-sm text-gray-600">•••••••</span>
-                      <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => setShowPasswordPopup(true)} className="text-blue-600 cursor-pointer text-sm hover:underline">
+                      <motion.button
+                        variants={buttonVariants}
+                        whileHover="hover"
+                        whileTap="tap"
+                        onClick={() => setShowPasswordPopup(true)}
+                        className="text-blue-600 text-sm hover:underline"
+                      >
                         Change
                       </motion.button>
                     </div>
@@ -660,7 +700,14 @@ const Dashboard = () => {
             )}
 
             {activeSection === "coTravellersSection" && (
-              <motion.div key="coTravellersSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="coTravellersSection"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Co-Travellers</h2>
                 <div className="mb-6">
                   <div className="flex flex-col sm:flex-row gap-3 mb-3">
@@ -678,7 +725,13 @@ const Dashboard = () => {
                       onChange={(e) => setNewTraveller({ ...newTraveller, relationship: e.target.value })}
                       className="border border-gray-200 rounded-lg p-3 flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition bg-gray-50"
                     />
-                    <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleAddCoTraveller} className="flex items-center cursor-pointer bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition">
+                    <motion.button
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                      onClick={handleAddCoTraveller}
+                      className="flex items-center bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition"
+                    >
                       <AiOutlinePlus className="mr-2" />
                       Add
                     </motion.button>
@@ -690,12 +743,22 @@ const Dashboard = () => {
                     <p className="text-gray-500 text-sm">No co-travellers added yet.</p>
                   ) : (
                     coTravellers.map((traveller) => (
-                      <motion.div key={traveller.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                      <motion.div
+                        key={traveller.id}
+                        variants={itemVariants}
+                        className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                      >
                         <div>
                           <p className="text-sm font-medium text-gray-800">{traveller.name}</p>
                           <p className="text-sm text-gray-500">{traveller.relationship}</p>
                         </div>
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteCoTraveller(traveller.id)} className="text-red-500 hover:text-red-700">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => handleDeleteCoTraveller(traveller.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       </motion.div>
@@ -706,17 +769,37 @@ const Dashboard = () => {
             )}
 
             {activeSection === "devicesSection" && (
-              <motion.div key="devicesSection" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }} className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+              <motion.div
+                key="devicesSection"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+              >
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Devices</h2>
                 <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4">
                   {devices.map((device) => (
-                    <motion.div key={device.id} variants={itemVariants} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0">
+                    <motion.div
+                      key={device.id}
+                      variants={itemVariants}
+                      className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
+                    >
                       <div>
                         <p className="text-sm font-medium text-gray-800">{device.name.substring(0, 50)}...</p>
-                        <p className="text-sm text-gray-500">Last login: {new Date(device.lastLogin).toLocaleString()}{device.isCurrent && " (Current)"}</p>
+                        <p className="text-sm text-gray-500">
+                          Last login: {new Date(device.lastLogin).toLocaleString()}
+                          {device.isCurrent && " (Current)"}
+                        </p>
                       </div>
                       {!device.isCurrent && (
-                        <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={() => handleDeleteDevice(device.id)} className="text-red-500 hover:text-red-700">
+                        <motion.button
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => handleDeleteDevice(device.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
                           <AiOutlineDelete size={20} />
                         </motion.button>
                       )}
@@ -731,7 +814,13 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
             <motion.div
               className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg relative"
               initial={{ scale: 0.9 }}
@@ -739,18 +828,36 @@ const Dashboard = () => {
               exit={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
-              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPopup(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowPopup(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
                 <IoClose size={24} />
               </motion.button>
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Edit Profile</h2>
               {error && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {error}
                 </motion.div>
               )}
-              <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-h-[60vh] overflow-y-auto">
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 max-h-[60vh] overflow-y-auto"
+              >
                 {profileFields.map((item, index) => (
-                  <motion.div key={index} variants={itemVariants} className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}>
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className={item.name === "address" ? "col-span-1 sm:col-span-2" : "col-span-1"}
+                  >
                     <label className="block text-sm font-medium text-gray-700 mb-1">{item.label}</label>
                     {item.name === "state" ? (
                       <select
@@ -761,7 +868,9 @@ const Dashboard = () => {
                       >
                         <option value="">Select State</option>
                         {statesList.map((state, stateIndex) => (
-                          <option key={stateIndex} value={state}>{state}</option>
+                          <option key={stateIndex} value={state}>
+                            {state}
+                          </option>
                         ))}
                       </select>
                     ) : item.name === "gender" ? (
@@ -788,7 +897,13 @@ const Dashboard = () => {
                 ))}
               </motion.div>
               <div className="flex justify-end">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleSave} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleSave}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Save
                 </motion.button>
               </div>
@@ -799,16 +914,37 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showPasswordPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
-            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              className="bg-white rounded-xl p-6 w-full max-w-md"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Change Password</h2>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowPasswordPopup(false)} className="text-gray-500 hover:text-gray-700">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowPasswordPopup(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {passwordError && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {passwordError}
                 </motion.div>
               )}
@@ -845,7 +981,13 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleChangePassword} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleChangePassword}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Save
                 </motion.button>
               </div>
@@ -856,16 +998,37 @@ const Dashboard = () => {
 
       <AnimatePresence>
         {showVerificationPopup && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 backdrop-brightness-30 flex items-center justify-center z-50 p-4">
-            <motion.div className="bg-white rounded-xl p-6 w-full max-w-md" initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              className="bg-white rounded-xl p-6 w-full max-w-md"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">Verify Phone</h2>
-                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setShowVerificationPopup(false)} className="text-gray-500 hover:text-gray-700">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setShowVerificationPopup(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
                   <IoClose size={24} />
                 </motion.button>
               </div>
               {verificationError && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200">
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm border border-red-200"
+                >
                   {verificationError}
                 </motion.div>
               )}
@@ -883,7 +1046,13 @@ const Dashboard = () => {
                 </motion.div>
               </motion.div>
               <div className="flex justify-end mt-6">
-                <motion.button variants={buttonVariants} whileHover="hover" whileTap="tap" onClick={handleVerifyCode} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleVerifyCode}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
                   Verify
                 </motion.button>
               </div>

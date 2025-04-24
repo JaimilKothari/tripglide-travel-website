@@ -244,6 +244,46 @@ def get_profile():
         connection.close()
         logger.info("Database connection closed for /api/profile")
 
+# API: Update completed flights
+@app.route('/api/update_completed_flights', methods=['POST', 'OPTIONS'])
+@cross_origin()
+def update_completed_flights():
+    if request.method == 'OPTIONS':
+        logger.info("Handling OPTIONS for /api/update_completed_flights")
+        return jsonify({}), 200
+    logger.info("Received POST request for /api/update_completed_flights")
+    connection = get_db_connection()
+    if connection is None:
+        logger.error("Failed to connect to database for /api/update_completed_flights")
+        return jsonify({"error": "DatabaseConnectionError", "message": "Failed to connect to database"}), 500
+    cursor = connection.cursor()
+    try:
+        # Update flights where arrival date and time have passed and status is Upcoming
+        query = """
+            UPDATE flight_bookings 
+            SET status = 'Completed'
+            WHERE status = 'Upcoming'
+            AND STR_TO_DATE(CONCAT(arrival_date, ' ', arrival_time), '%Y-%m-%d %H:%i:%s') < NOW()
+        """
+        cursor.execute(query)
+        updated_rows = cursor.rowcount
+        connection.commit()
+        logger.info(f"Updated {updated_rows} flights to Completed status")
+        return jsonify({
+            "success": True,
+            "message": f"Updated {updated_rows} flights to Completed status"
+        }), 200
+    except mysql.connector.Error as e:
+        logger.error(f"Database error in /api/update_completed_flights: {str(e)}")
+        return jsonify({"error": "DatabaseQueryError", "message": str(e)}), 500
+    except Exception as e:
+        logger.error(f"Unexpected error in /api/update_completed_flights: {str(e)}\n{traceback.format_exc()}")
+        return jsonify({"error": "UnexpectedError", "message": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+        logger.info("Database connection closed for /api/update_completed_flights")
+
 # API: Fetch flight bookings by email or phone
 @app.route('/api/flight_bookings', methods=['GET', 'OPTIONS'])
 @cross_origin()
@@ -258,6 +298,17 @@ def get_flight_bookings():
         return jsonify({"error": "DatabaseConnectionError", "message": "Failed to connect to database"}), 500
     cursor = connection.cursor(dictionary=True)
     try:
+        # First, update completed flights
+        cursor.execute("""
+            UPDATE flight_bookings 
+            SET status = 'Completed'
+            WHERE status = 'Upcoming'
+            AND STR_TO_DATE(CONCAT(arrival_date, ' ', arrival_time), '%Y-%m-%d %H:%i:%s') < NOW()
+        """)
+        updated_rows = cursor.rowcount
+        connection.commit()
+        logger.info(f"Updated {updated_rows} flights to Completed status before fetching bookings")
+
         identifier = request.args.get('identifier')
         if not identifier:
             logger.warning("Missing identifier in /api/flight_bookings request")

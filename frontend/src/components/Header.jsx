@@ -16,7 +16,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes("/hotel") || path.includes("/hotel-search")) {
+    if (path.includes("/hotel") || path.includes("/hotel-search") || path.includes("/individual-hotel-deals")) {
       setActiveTab("hotels");
     } else if (path.includes("/carhire")) {
       setActiveTab("carhire");
