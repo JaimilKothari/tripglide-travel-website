@@ -18,7 +18,7 @@ export default function Header({ user, allFlights, tripType, returnDate }) {
     const path = location.pathname;
     if (path.includes("/hotel") || path.includes("/hotel-search") || path.includes("/individual-hotel-deals")) {
       setActiveTab("hotels");
-    } else if (path.includes("/carhire")) {
+    } else if (path.includes("/carhire") || path.includes("/cab-booking-confirmation") || path.includes("/car-confirmation") || path.includes("/car-hire") || path.includes("/car-card") || path.includes("/cab-listing") || path.includes("/cabs")) {
       setActiveTab("carhire");
     } else {
       setActiveTab("flights");

@@ -30,7 +30,7 @@ import Cancel from "./components/Cancel";
 import CarCard from "./components/CarCard";
 import CabListing from "./components/CabListing";
 import IndividualHotelDeals from "./components/IndividualHotelDeals";
-
+import TermsAndConditions from "./components/TermsAndConditions";
 
 const initialFlightData = [
   {
@@ -427,7 +427,8 @@ function App() {
           <Route path="/car-card" element={<CarCard />} />
           <Route path="/cabs" element={<CabListing />} />
           <Route path="/cab-booking-history" element={<CabBookingHistory />} />
-          <Route path="/individual-hotel-deals/:hotel/:arrival" element={<IndividualHotelDeals />} />
+          <Route path="/individual-hotel-deals/:hotel/:arrival" element={<IndividualHotelDeals/>}/>
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         </Routes>
       
       

@@ -81,6 +81,20 @@ export default function CarHire() {
     setIsDropdownOpen(false);
   };
 
+  // Filter locations based on input
+  const filteredLocations = availableLocations.filter((location) =>
+    location.toLowerCase().includes(pickupLocation.toLowerCase())
+  );
+
+  // Form data to pass to PopularCarDeals
+  const formData = {
+    pickupLocation,
+    pickupDate,
+    pickupTime,
+    dropoffDate,
+    dropoffTime,
+  };
+
   return (
     <section className="w-full">
       {/* Background Image */}
@@ -101,7 +115,7 @@ export default function CarHire() {
             {/* Pickup Location */}
             <div className="lg:col-span-1 relative">
               <label className="block text-white font-semibold mb-1">
-                Pick-up location
+                Location
               </label>
               <div className="relative">
                 <input
@@ -109,14 +123,17 @@ export default function CarHire() {
                   placeholder="City, airport or station"
                   className="w-full p-3 rounded-lg bg-white text-black"
                   value={pickupLocation}
-                  onChange={(e) => setPickupLocation(e.target.value)}
+                  onChange={(e) => {
+                    setPickupLocation(e.target.value);
+                    setIsDropdownOpen(true); // Keep dropdown open while typing
+                  }}
                   onFocus={() => setIsDropdownOpen(true)}
                   onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
                   required
                 />
-                {isDropdownOpen && availableLocations.length > 0 && (
+                {isDropdownOpen && filteredLocations.length > 0 && (
                   <ul className="absolute z-10 w-full bg-white text-black rounded-lg shadow-lg max-h-60 overflow-y-auto mt-1">
-                    {availableLocations.map((location, index) => (
+                    {filteredLocations.map((location, index) => (
                       <li
                         key={index}
                         className="p-2 hover:bg-gray-200 cursor-pointer"
@@ -246,7 +263,7 @@ export default function CarHire() {
 
       <div className="bg-gray-100">
         <div className="container mx-auto max-w-7xl px-8 py-12">
-          <PopularCarDeals />
+          <PopularCarDeals state={formData} />
         </div>
       </div>
 

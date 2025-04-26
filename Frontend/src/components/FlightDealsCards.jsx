@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Load Stripe with your publishable key
-const stripePromise = loadStripe("pk_test_51R9No7RtOB964nOwbCnB8DQSDfS5G66dozt3WRe0mwu3E5hwlxsObPZHYORqKrmWuVVhpn8EYUsWi075a1WYCshV00IbVFQLYi");
+const stripePromise = loadStripe("pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ");
 
 // Utility function to format date with correct day for 2025
 const formatDateWithDay = (day, month) => {
@@ -39,7 +39,7 @@ const calculateArrivalDate = (departureDateStr, durationStr) => {
 // Updated flightDeals with unique flight codes
 const flightDeals = [
   { 
-    id: 1, city: "Moscow", country: "Russia", date: "Tue, 22 Apr", price: 8788,
+    id: 1, city: "Moscow", country: "Russia", date: "Tue, 22 May", price: 8788,
     airline: "IndiGo", airlineCode: "6E", flightCode: "6E-1234", departureTime: "06:15", arrivalTime: "09:25", duration: "3h 10m",
     stops: 0, stopCities: [], cabinClass: "Economy",
     departureAirport: "Indira Gandhi International Airport (DEL)",
@@ -66,7 +66,7 @@ const flightDeals = [
     image: "https://i.pinimg.com/474x/e6/30/66/e6306613b1ecb7afc1d0b9e3e5c41a62.jpg" 
   },
   { 
-    id: 4, city: "Dhaka", country: "Bangladesh", date: "Thu, 24 Apr", price: 9646,
+    id: 4, city: "Dhaka", country: "Bangladesh", date: "Thu, 24 June", price: 9646,
     airline: "Biman Bangladesh", airlineCode: "BG", flightCode: "BG-3456", departureTime: "13:25", arrivalTime: "22:15", duration: "8h 50m",
     stops: 0, stopCities: ["Kolkata"], cabinClass: "Economy",
     departureAirport: "Sardar Vallabhbhai Patel International Airport (AMD)",
@@ -75,7 +75,7 @@ const flightDeals = [
     image: "https://i.pinimg.com/474x/6f/64/7c/6f647c4f9940c7b9fed6cd336e537374.jpg" 
   },
   { 
-    id: 5, city: "Colombo", country: "Sri Lanka", date: "Mon, 5 May", price: 11075,
+    id: 5, city: "Colombo", country: "Sri Lanka", date: "Mon, 15 May", price: 11075,
     airline: "SriLankan Airlines", airlineCode: "UL", flightCode: "UL-7890", departureTime: "11:05", arrivalTime: "16:25", duration: "5h 20m",
     stops: 0, stopCities: [], cabinClass: "Economy",
     departureAirport: "Indira Gandhi International Airport (DEL)",
@@ -93,7 +93,7 @@ const flightDeals = [
     image: "https://i.pinimg.com/474x/1f/7a/36/1f7a36ee1580c0fc154ba480a16d5ec1.jpg" 
   },
   { 
-    id: 7, city: "Bali", country: "Indonesia", date: "Fri, 28 Apr", price: 15450,
+    id: 7, city: "Bali", country: "Indonesia", date: "Fri, 28 June", price: 15450,
     airline: "Garuda Indonesia", airlineCode: "GA", flightCode: "GA-6789", departureTime: "21:05", arrivalTime: "06:45", duration: "9h 40m",
     stops: 0, stopCities: ["Jakarta"], cabinClass: "Economy",
     departureAirport: "Kempegowda International Airport (BLR)",
@@ -111,7 +111,7 @@ const flightDeals = [
     image: "https://i.pinimg.com/474x/4d/5c/d1/4d5cd1565e04ee98ec74056275136d1e.jpg" 
   },
   { 
-    id: 9, city: "Paris", country: "France", date: "Sun, 15 Jun", price: 34500,
+    id: 9, city: "Paris", country: "France", date: "Sun, 5 Jun", price: 34500,
     airline: "Air France", airlineCode: "AF", flightCode: "AF-8765", departureTime: "10:30", arrivalTime: "19:45", duration: "9h 15m",
     stops: 0, stopCities: [], cabinClass: "Economy",
     departureAirport: "Indira Gandhi International Airport (DEL)",

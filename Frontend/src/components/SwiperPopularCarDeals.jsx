@@ -14,22 +14,34 @@ import Footer from "./Footer";
 
 // Load Stripe with your public key
 const stripePromise = loadStripe(
-  "pk_test_51R9No7RtOB964nOwbCnB8DQSDfS5G66dozt3WRe0mwu3E5hwlxsObPZHYORqKrmWuVVhpn8EYUsWi075a1WYCshV00IbVFQLYi"
+  "pk_test_51R9gCp2RiOcrGJvieLzKDxaRl6BUuUMsLgqRw9JtzVE7ODz7SJSy7NPqSfTySDpE42Z66YlDFTHSTqZakuWN58u200VoXJx5zQ"
 );
 
-const CarConfirmation = () => {
+const SwiperPopularCarDeals = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {
+    city,
+    price,
     pickupDate,
     pickupTime,
     dropoffDate,
     dropoffTime,
     pickupLocation,
-    car = {},
-    selectedDeal = {},
   } = location.state || {};
-  const [carData, setCarData] = useState(car || {});
+
+  console.log("SwiperPopularCarDeals location.state:", location.state); // Debug log
+
+  const [carData] = useState({
+    id: city || "unknown",
+    make: "Generic",
+    model: "Economy",
+    type: "Economy",
+    passengers: 5,
+    transmission: "Automatic",
+    fuel_policy: "Full to Full",
+    rating: 4.5,
+  });
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(true);
   const [extras, setExtras] = useState({
@@ -48,7 +60,7 @@ const CarConfirmation = () => {
   // Store booking details in localStorage when component mounts
   useEffect(() => {
     if (location.state) {
-      localStorage.setItem("carConfirmationState", JSON.stringify(location.state));
+      localStorage.setItem("swiperPopularCarDealsState", JSON.stringify(location.state));
     }
   }, [location.state]);
 
@@ -60,11 +72,21 @@ const CarConfirmation = () => {
         !dropoffDate ||
         !dropoffTime ||
         !pickupLocation ||
-        !selectedDeal?.price
+        !price
       ) {
+        console.log("Missing required data for price calculation:", {
+          pickupDate,
+          pickupTime,
+          dropoffDate,
+          dropoffTime,
+          pickupLocation,
+          price,
+        });
         setTotalPrice(0);
+        setLoading(false);
         return;
       }
+
       const pickup = new Date(`${pickupDate}T${pickupTime}`);
       const dropoff = new Date(`${dropoffDate}T${dropoffTime}`);
       if (
@@ -72,65 +94,82 @@ const CarConfirmation = () => {
         isNaN(dropoff.getTime()) ||
         pickup >= dropoff
       ) {
+        console.log("Invalid date/time for price calculation:", { pickup, dropoff });
         setTotalPrice(0);
+        setLoading(false);
         return;
       }
+
       const calculatedHours = Math.max(
         1,
         Math.ceil((dropoff - pickup) / (1000 * 60 * 60))
       );
-      const basePrice = calculatedHours * selectedDeal.price; // Use price from CarCard
+      const pricePerHour = parseFloat(price.replace(/[^0-9.]/g, "")) / 24; // Convert daily price to hourly
+      const basePrice = calculatedHours * pricePerHour;
       const extraCost =
         (extras.additionalDriver ? EXTRA_PRICES.additionalDriver : 0) +
         (extras.extraLuggage ? EXTRA_PRICES.extraLuggage : 0) +
         (extras.childSeat ? EXTRA_PRICES.childSeat : 0);
-      setTotalPrice(basePrice + extraCost);
-      console.log("Calculated Total Price:", basePrice + extraCost); // Debug log
+      const calculatedTotal = Math.round(basePrice + extraCost);
+      
+      console.log("Price calculation:", {
+        calculatedHours,
+        pricePerHour,
+        basePrice,
+        extraCost,
+        totalPrice: calculatedTotal,
+      });
+      
+      setTotalPrice(calculatedTotal);
+      setLoading(false);
     };
     calculatePrice();
-    setLoading(false);
   }, [
     pickupDate,
     pickupTime,
     dropoffDate,
     dropoffTime,
     pickupLocation,
-    selectedDeal,
+    price,
     extras,
   ]);
 
   const handlePayment = async () => {
-    if (!totalPrice || totalPrice <= 0 || !termsAccepted) return;
+    if (!totalPrice || totalPrice <= 0 || !termsAccepted) {
+      console.log("Payment blocked:", { totalPrice, termsAccepted });
+      return;
+    }
 
-    // Store booking details in localStorage before payment
     const bookingData = {
-      pickupLocation,
+      pickupLocation: pickupLocation || city,
       pickupDate,
       pickupTime,
       dropoffDate,
       dropoffTime,
-      dropoffLocation: location.state.dropoffLocation || pickupLocation,
-      isDifferentLocation: location.state.isDifferentLocation || false,
+      dropoffLocation: pickupLocation || city,
+      isDifferentLocation: false,
       car: carData,
       selectedDeal: {
-        agency: selectedDeal.agency,
-        pricePerDay: selectedDeal.price, // Map price to pricePerDay
-        fuelPolicy: selectedDeal.fuelPolicy || carData.fuel_policy,
-        id: selectedDeal.id,
+        agency: "TripGlide",
+        pricePerDay: parseFloat(price.replace(/[^0-9.]/g, "")),
+        fuelPolicy: carData.fuel_policy,
+        id: city || "unknown",
       },
       extras,
-      totalPrice, // Ensure totalPrice is included
+      totalPrice,
     };
-    localStorage.setItem("lastBooking", JSON.stringify(bookingData));
-    console.log("Stored Booking Data:", bookingData); // Debug log
 
-    const stripe = await stripePromise;
+    console.log("Booking data for payment:", bookingData); // Debug log
+
+    localStorage.setItem("lastPopularBooking", JSON.stringify(bookingData));
+
     try {
+      const stripe = await stripePromise;
       const response = await axios.post(
         "http://localhost:5005/create-checkout-session",
         {
-          amount: totalPrice * 100,
-          pickupLocation,
+          amount: Math.round(totalPrice * 100), // Convert to cents
+          pickupLocation: pickupLocation || city,
           pickupDate,
           pickupTime,
           dropoffDate,
@@ -138,15 +177,27 @@ const CarConfirmation = () => {
           carId: carData.id,
           carMake: carData.make,
           carModel: carData.model,
-          agency: selectedDeal.agency,
+          agency: "TripGlide",
           extras,
-        }
+        },
+        { headers: { "Content-Type": "application/json" } }
       );
+
+      console.log("Stripe API response:", response.data); // Debug log
+
       const { id: sessionId } = response.data;
-      await stripe.redirectToCheckout({ sessionId });
+      if (!sessionId) {
+        throw new Error("No sessionId received from API");
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId });
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
     } catch (error) {
       console.error("Payment error:", error);
-      localStorage.removeItem("lastBooking");
+      localStorage.removeItem("lastPopularBooking");
+      alert("Payment failed. Please try again.");
     }
   };
 
@@ -156,14 +207,18 @@ const CarConfirmation = () => {
 
   const handleClose = () => navigate(-1);
 
-  if (loading)
+  if (loading) {
     return <div className="text-center py-10 text-gray-800">Loading...</div>;
-  if (!carData || !selectedDeal)
+  }
+
+  if (!city || !price) {
+    console.log("Missing city or price:", { city, price });
     return (
       <div className="text-center py-10 text-gray-800">
-        Car or deal not found
+        Deal not found
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -178,7 +233,7 @@ const CarConfirmation = () => {
                 Booking Details
               </h4>
               <p className="text-gray-600">
-                <strong>Location:</strong> {pickupLocation || "N/A"}
+                <strong>Location:</strong> {pickupLocation || city || "N/A"}
               </p>
               <p className="text-gray-600">
                 <strong>Pickup Date & Time:</strong>{" "}
@@ -228,18 +283,16 @@ const CarConfirmation = () => {
                 <div className="w-full">
                   <div className="flex items-center space-x-3 mb-4">
                     <h3 className="text-xl font-semibold text-gray-800">
-                      {carData.make || "Unknown"} {carData.model || "Model"}
+                      {carData.make} {carData.model}
                     </h3>
                     <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                      {carData.type || "N/A"}
+                      {carData.type}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="flex items-center space-x-2 text-gray-600">
                       <FaUserFriends size={14} />
-                      <span className="text-sm">
-                        {carData.passengers || "N/A"} Passengers
-                      </span>
+                      <span className="text-sm">{carData.passengers} Passengers</span>
                     </div>
                     <div className="flex items-center space-x-2 text-gray-600">
                       <FaSuitcase size={14} />
@@ -247,9 +300,7 @@ const CarConfirmation = () => {
                     </div>
                     <div className="flex items-center space-x-2 text-gray-600">
                       <FaCogs size={14} />
-                      <span className="text-sm">
-                        {carData.transmission || "N/A"}
-                      </span>
+                      <span className="text-sm">{carData.transmission}</span>
                     </div>
                     <div className="flex items-center space-x-2 text-gray-600">
                       <FaMapMarkerAlt size={14} />
@@ -257,18 +308,12 @@ const CarConfirmation = () => {
                     </div>
                     <div className="flex items-center space-x-2 text-gray-600">
                       <FaStar size={14} className="text-yellow-400" />
-                      <span className="text-sm">
-                        {carData.rating || "N/A"}/5
-                      </span>
+                      <span className="text-sm">{carData.rating}/5</span>
                     </div>
                   </div>
                   <div className="bg-gray-100 p-4 rounded-lg mb-4">
-                    <p className="text-gray-800 font-semibold">
-                      Agency: {selectedDeal.agency || "N/A"}
-                    </p>
-                    <p className="text-gray-600">
-                      Fuel Policy: {carData.fuel_policy || "N/A"}
-                    </p>
+                    <p className="text-gray-800 font-semibold">Agency: TripGlide</p>
+                    <p className="text-gray-600">Fuel Policy: {carData.fuel_policy}</p>
                   </div>
                   <div className="bg-gray-100 p-4 rounded-lg mb-4">
                     <h4 className="text-lg font-semibold text-gray-800 mb-3">
@@ -366,9 +411,9 @@ const CarConfirmation = () => {
                     <button
                       onClick={handlePayment}
                       className={`bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition ${
-                        !termsAccepted ? "opacity-50 cursor-not-allowed" : ""
+                        !termsAccepted || totalPrice <= 0 ? "opacity-50 cursor-not-allowed" : ""
                       }`}
-                      disabled={!termsAccepted}
+                      disabled={!termsAccepted || totalPrice <= 0}
                     >
                       Confirm Booking
                     </button>
@@ -384,4 +429,4 @@ const CarConfirmation = () => {
   );
 };
 
-export default CarConfirmation;
+export default SwiperPopularCarDeals;

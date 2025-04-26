@@ -4,6 +4,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const carDeals = [
   {
@@ -43,7 +44,29 @@ const carDeals = [
   },
 ];
 
-const PopularCarDeals = () => {
+const PopularCarDeals = ({ state }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (deal) => {
+    const formData = state || {};
+    const today = new Date().toISOString().split("T")[0];
+    const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0];
+    
+    const navigateState = {
+      city: deal.city,
+      price: deal.price,
+      pickupLocation: formData.pickupLocation || deal.city,
+      pickupDate: formData.pickupDate || today,
+      pickupTime: formData.pickupTime || "09:00",
+      dropoffDate: formData.dropoffDate || tomorrow,
+      dropoffTime: formData.dropoffTime || "09:00",
+    };
+    
+    console.log("Navigating with state:", navigateState); // Debug log
+    
+    navigate("/swiper-popular-car-deals", { state: navigateState });
+  };
+
   return (
     <div className="w-full px-10 py-6">
       {/* Header */}
@@ -76,12 +99,15 @@ const PopularCarDeals = () => {
       >
         {carDeals.map((deal, index) => (
           <SwiperSlide key={index}>
-            <div className="cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div
+              onClick={() => handleCardClick(deal)}
+              className="cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+            >
               <img src={deal.image} alt={deal.city} className="w-full h-48 object-cover" />
               <div className="p-4 bg-white">
                 <h3 className="text-lg font-semibold">Car hire in {deal.city}</h3>
                 <p className="text-gray-600 text-sm">Most popular car type: Economy</p>
-                <p className="text-black font-bold mt-2">From {deal.price}  per day</p>
+                <p className="text-black font-bold mt-2">From {deal.price} per day</p>
               </div>
             </div>
           </SwiperSlide>

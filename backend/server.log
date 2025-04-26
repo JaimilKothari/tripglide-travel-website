@@ -3757,3 +3757,124 @@ TypeError: The view function for 'login' did not return a valid response. The fu
 2025-04-23 16:33:09,812 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 0.00ms
 2025-04-23 16:33:09,812 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
 2025-04-23 16:33:09,821 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.95ms
+2025-04-24 15:08:13,809 - DEBUG - Starting authorization phase
+2025-04-24 15:08:13,816 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-24 15:08:13,817 - INFO - package: mysql.connector.plugins
+2025-04-24 15:08:13,818 - INFO - plugin_name: mysql_native_password
+2025-04-24 15:08:13,819 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-24 15:08:13,822 - DEBUG - mysql_native_password completed succesfully
+2025-04-24 15:08:13,823 - INFO - Database connection established
+2025-04-24 15:08:13,899 - INFO - Database tables initialized
+2025-04-24 15:08:13,906 - INFO - Twilio client initialized successfully
+2025-04-24 15:08:13,909 - INFO - Serving on http://0.0.0.0:5001
+2025-04-24 15:08:13,911 - DEBUG - Using selector: SelectSelector
+2025-04-24 15:08:13,941 - INFO - Start watching changes
+2025-04-24 15:08:13,941 - INFO - Start detecting changes
+2025-04-24 15:09:01,837 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:09:01,837 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 13.78ms
+2025-04-24 15:09:01,852 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:09:01,855 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.86ms
+2025-04-24 15:10:40,723 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:10:40,730 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 14.71ms
+2025-04-24 15:10:40,743 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:10:40,743 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.03ms
+2025-04-24 15:18:08,285 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:18:08,287 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.20ms
+2025-04-24 15:18:08,302 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:18:08,305 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.05ms
+2025-04-24 15:41:25,763 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:41:25,766 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 11.18ms
+2025-04-24 15:41:25,785 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:41:25,785 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.22ms
+2025-04-24 15:41:31,224 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:41:31,225 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.47ms
+2025-04-24 15:41:31,239 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:41:31,239 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.40ms
+2025-04-24 15:42:28,391 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:42:28,393 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.93ms
+2025-04-24 15:42:28,397 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:42:28,397 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 3.16ms
+2025-04-24 15:42:34,778 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:42:34,780 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.71ms
+2025-04-24 15:42:34,792 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:42:34,794 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.47ms
+2025-04-24 15:44:39,141 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:44:39,146 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.53ms
+2025-04-24 15:44:39,158 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-24 15:44:39,161 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 12.24ms
+2025-04-25 12:14:56,775 - WARNING - Database connection lost, attempting to reconnect
+2025-04-25 12:14:56,794 - DEBUG - Starting authorization phase
+2025-04-25 12:14:56,795 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-25 12:14:56,800 - DEBUG - mysql_native_password completed succesfully
+2025-04-25 12:14:56,805 - INFO - Database connection established
+2025-04-25 12:14:56,821 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:14:56,826 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 170.06ms
+2025-04-25 12:14:56,844 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:14:56,846 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 17.62ms
+2025-04-25 12:23:21,149 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:23:21,150 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.91ms
+2025-04-25 12:23:21,156 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:23:21,157 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 4.05ms
+2025-04-25 12:26:44,607 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:26:44,610 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.99ms
+2025-04-25 12:26:44,619 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:26:44,621 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 5.99ms
+2025-04-25 12:28:26,171 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:28:26,174 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.07ms
+2025-04-25 12:28:26,186 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-25 12:28:26,187 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.26ms
+2025-04-26 15:29:45,595 - DEBUG - Starting authorization phase
+2025-04-26 15:29:45,595 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-26 15:29:45,595 - INFO - package: mysql.connector.plugins
+2025-04-26 15:29:45,595 - INFO - plugin_name: mysql_native_password
+2025-04-26 15:29:45,597 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-26 15:29:45,597 - DEBUG - mysql_native_password completed succesfully
+2025-04-26 15:29:45,597 - INFO - Database connection established
+2025-04-26 15:29:45,674 - INFO - Database tables initialized
+2025-04-26 15:29:45,677 - INFO - Twilio client initialized successfully
+2025-04-26 15:29:45,677 - INFO - Serving on http://0.0.0.0:5001
+2025-04-26 15:29:45,677 - DEBUG - Using selector: SelectSelector
+2025-04-26 15:29:45,717 - INFO - Start watching changes
+2025-04-26 15:29:45,717 - INFO - Start detecting changes
+2025-04-26 15:30:31,690 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:30:31,695 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 15.45ms
+2025-04-26 15:30:32,022 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:30:32,025 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 8.17ms
+2025-04-26 15:30:43,187 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:30:43,195 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 15.87ms
+2025-04-26 15:30:43,217 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:30:43,220 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.34ms
+2025-04-26 15:33:46,147 - DEBUG - Starting authorization phase
+2025-04-26 15:33:46,147 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-26 15:33:46,147 - INFO - package: mysql.connector.plugins
+2025-04-26 15:33:46,147 - INFO - plugin_name: mysql_native_password
+2025-04-26 15:33:46,149 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-26 15:33:46,149 - DEBUG - mysql_native_password completed succesfully
+2025-04-26 15:33:46,151 - INFO - Database connection established
+2025-04-26 15:33:46,157 - INFO - Database tables initialized
+2025-04-26 15:33:46,157 - INFO - Twilio client initialized successfully
+2025-04-26 15:33:46,157 - INFO - Serving on http://0.0.0.0:5001
+2025-04-26 15:33:46,167 - DEBUG - Using selector: SelectSelector
+2025-04-26 15:33:46,173 - INFO - Start watching changes
+2025-04-26 15:33:46,173 - INFO - Start detecting changes
+2025-04-26 15:34:54,968 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:34:54,972 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 17.12ms
+2025-04-26 15:34:55,005 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:34:55,009 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 20.80ms
+2025-04-26 15:36:08,395 - DEBUG - Starting authorization phase
+2025-04-26 15:36:08,395 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-26 15:36:08,395 - INFO - package: mysql.connector.plugins
+2025-04-26 15:36:08,395 - INFO - plugin_name: mysql_native_password
+2025-04-26 15:36:08,402 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-26 15:36:08,402 - DEBUG - mysql_native_password completed succesfully
+2025-04-26 15:36:08,402 - INFO - Database connection established
+2025-04-26 15:36:08,402 - INFO - Database tables initialized
+2025-04-26 15:36:08,402 - INFO - Twilio client initialized successfully
+2025-04-26 15:36:08,412 - INFO - Serving on http://0.0.0.0:5001
+2025-04-26 15:36:08,412 - DEBUG - Using selector: SelectSelector
+2025-04-26 15:36:08,420 - INFO - Start watching changes
+2025-04-26 15:36:08,420 - INFO - Start detecting changes
+2025-04-26 15:38:33,703 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:38:33,708 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 18.48ms
+2025-04-26 15:38:33,718 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 15:38:33,722 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.20ms
