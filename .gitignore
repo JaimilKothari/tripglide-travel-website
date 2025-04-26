@@ -3,3 +3,4 @@ backend/venv/
 .vscode/*
 backend/server.log
 backend/flight_api.log
+node_modules/
