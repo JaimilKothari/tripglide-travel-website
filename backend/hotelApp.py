@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 import mysql.connector
 from flask_cors import CORS
 import stripe
+from dotenv import load_dotenv
+load_dotenv()
+import os
 from datetime import date
 
 app = Flask(__name__)
@@ -15,7 +18,7 @@ CORS(app, resources={
 })
 
 # Stripe configuration
-stripe.api_key = '***REMOVED***'
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 def get_db_connection():
     try:

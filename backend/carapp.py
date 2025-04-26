@@ -4,6 +4,7 @@ from flask_cors import CORS
 import stripe
 import os
 from dotenv import load_dotenv
+load_dotenv()
 import re
 from datetime import datetime
 import logging
@@ -17,7 +18,7 @@ CORS(app, origins=["http://localhost:5173"])  # Allow frontend requests
 
 # Load environment variables
 load_dotenv()
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY', '***REMOVED***')
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 # MySQL connection function
 def get_db_connection():
