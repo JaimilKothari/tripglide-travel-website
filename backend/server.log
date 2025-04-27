@@ -3878,3 +3878,24 @@ TypeError: The view function for 'login' did not return a valid response. The fu
 2025-04-26 15:38:33,708 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 18.48ms
 2025-04-26 15:38:33,718 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
 2025-04-26 15:38:33,722 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.20ms
+2025-04-26 17:32:30,153 - DEBUG - Starting authorization phase
+2025-04-26 17:32:30,153 - DEBUG - The provided initial strategy is mysql_native_password
+2025-04-26 17:32:30,153 - INFO - package: mysql.connector.plugins
+2025-04-26 17:32:30,153 - INFO - plugin_name: mysql_native_password
+2025-04-26 17:32:30,163 - INFO - AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-04-26 17:32:30,163 - DEBUG - mysql_native_password completed succesfully
+2025-04-26 17:32:30,163 - INFO - Database connection established
+2025-04-26 17:32:30,167 - INFO - Database tables initialized
+2025-04-26 17:32:30,173 - INFO - Twilio client initialized successfully
+2025-04-26 17:32:30,177 - INFO - Serving on http://0.0.0.0:5001
+2025-04-26 17:32:30,179 - DEBUG - Using selector: SelectSelector
+2025-04-26 17:32:30,187 - INFO - Start watching changes
+2025-04-26 17:32:30,188 - INFO - Start detecting changes
+2025-04-26 17:33:16,446 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 17:33:16,451 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 20.21ms
+2025-04-26 17:33:16,464 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 17:33:16,467 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.58ms
+2025-04-26 17:33:47,512 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 17:33:47,515 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 12.23ms
+2025-04-26 17:33:47,525 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-26 17:33:47,528 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 10.13ms
