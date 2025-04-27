@@ -4,4 +4,3 @@ backend/venv/
 backend/server.log
 backend/flight_api.log
 node_modules/
-secrets.txt

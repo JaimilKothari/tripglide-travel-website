@@ -3916,3 +3916,7 @@ TypeError: The view function for 'login' did not return a valid response. The fu
 2025-04-27 15:08:41,307 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 29.91ms
 2025-04-27 15:08:41,322 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
 2025-04-27 15:08:41,324 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 9.54ms
+2025-04-27 16:11:14,948 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-27 16:11:14,961 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 66.30ms
+2025-04-27 16:11:14,969 - INFO - Profile fetched for email=quizzicalbassi1@freethecookies.com
+2025-04-27 16:11:14,971 - INFO - 200 GET /api/profile?identifier=quizzicalbassi1%40freethecookies.com (127.0.0.1) 7.28ms
