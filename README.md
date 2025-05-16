@@ -111,7 +111,7 @@ GET /get_hotels: Fetch available hotels.
 * Cars
 GET /get_cars: Fetch available car rentals.
 
-Contributing
+Contributing:
 Contributions are welcome! Please follow these steps:
 
 1. Fork the repository.
@@ -123,5 +123,5 @@ Contributions are welcome! Please follow these steps:
    git push origin feature-name
 Open a pull request.
 
-License
+License:
 This project is licensed under the MIT License. See the LICENSE file for details. 
